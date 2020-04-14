@@ -1,11 +1,17 @@
 const { orderedFor } = require('../lib/util');
 const jwtToken = require('../lib/jwt_token');
 const humps = require('humps');
-//const { slug } = require('../lib/util');
 const crypto = require('crypto');
 
 module.exports = pgPool => {
   return {
+
+    getReciepesByuserId(userIds) {
+      const queryString = `select * from users where id = ANY($1)`;
+      return pgPool.query(queryString, [userIds]).then(res => {
+        return orderedFor(res.row, userIds, 'id', true); 
+      });
+    },
     getAuthenticationInfo({ username, password }) {
       const queryString = `select * from users where username = $1 and password = $2`; 
       return pgPool.query(queryString, [username,password]).then(res => { 
@@ -48,7 +54,7 @@ module.exports = pgPool => {
         }else{ 
           const authenInfo =  { 
             status: 901,
-            message: 'old password is not match '+ oldpassword 
+            message: 'Your current password "'+oldpassword+'" is not currect '
           } 
           return  authenInfo;
         }  
@@ -58,9 +64,19 @@ module.exports = pgPool => {
     getUsersByIds(userIds) {
       const queryString = `select * from users where id = ANY($1)`;
       return pgPool.query(queryString, [userIds]).then(res => {
-        return orderedFor(res.row, userIds, 'id', true); // 'id' = pk
+        return orderedFor(res.row, userIds, 'id', true); 
       });
     }, 
+
+    getSigninUserByToken() {
+      const queryString = `select username,password,email,facebook,website,instagram from users where token = $1`;
+      return pgPool.query(queryString, global.token).then(res => {
+        console.log(res.rows[0]);
+        
+        global.userInfo = humps.camelizeKeys(res.rows[0]);
+        //return humps.camelizeKeys(res.rows[0]);
+      });
+    },
 
     addNewRecord({ username, password, email }) {
       const token = crypto.createHash('md5').update(username).digest("hex"); 

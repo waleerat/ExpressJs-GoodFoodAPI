@@ -1,4 +1,4 @@
-const description = require('../../lib/schemaDescription');  // Discription 
+const description = require('../../lib/shema_description');  // Discription 
 const graphql = require('graphql');
 const {
   GraphQLSchema,
@@ -7,16 +7,15 @@ const {
   GraphQLNonNull
 } = graphql;
 
-const UserType = require('./type/user_info');
-
+const userInfo = require('./type/user_info');
 
 const RootQueryType = new GraphQLObjectType({
   name : "RootQueryType",
   description : description['userRootQueryType'],
   fields : {
     user : {
-      type: UserType,
-      description : description['userType'],
+      type: userInfo,
+      description : description['userInfo'],
       args: {
         key: { type: new GraphQLNonNull(GraphQLString) }
       }

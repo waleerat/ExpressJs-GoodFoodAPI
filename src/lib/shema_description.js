@@ -1,17 +1,18 @@
 var graphQLDescription = {
   'userRootQueryType': '',
   'userRootMutationType': '',
-  'userType': '',
-  'userTypeFields': '',
-  
+  'userInfo': '',
+  'userInfoFields': '',
   'userNewRecode': '',
   'userNewRecodeFields': '',
-
   'userUpdateRecodeFields': '',
   'userUpdateRecode': '',
- 
   'userDeleteRecodeFields': '',
   'userDeleteRecode': '',
+
+  'recipeInfo': '',
+  'rootRecipe': '',
+  'userRecipeType': ''
   
 }; 
 

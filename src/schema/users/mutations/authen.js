@@ -5,7 +5,7 @@ const {
 } = require('graphql');
 
 const userModel = require('../../../models/usersModel');
-const description = require('../../../lib/schemaDescription'); 
+const description = require('../../../lib/shema_description'); 
 const authenInfo = require('../type/authen_info');
 
 const InputType = new GraphQLInputObjectType({

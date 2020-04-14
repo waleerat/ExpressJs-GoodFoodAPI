@@ -1,4 +1,4 @@
-const description = require('../../../lib/schemaDescription'); 
+const description = require('../../../lib/shema_description'); 
 const {
   GraphQLInputObjectType,
   GraphQLString,

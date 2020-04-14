@@ -1,4 +1,4 @@
-const description = require('../../lib/schemaDescription');
+const description = require('../../lib/shema_description');
 const authenInfo = require('./type/authen_info');
 const Authentication = require('./mutations/authen');
 
@@ -6,8 +6,7 @@ const Authentication = require('./mutations/authen');
 const graphql = require('graphql');
 const {
   GraphQLSchema,
-  GraphQLObjectType,
-  GraphQLString
+  GraphQLObjectType
 } = graphql;
 
 // The root query type is where in the data graph
