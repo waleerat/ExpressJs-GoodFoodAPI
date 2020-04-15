@@ -10,8 +10,8 @@ const {
 const userInfo = require('./type/user_info');
 
 const RootQueryType = new GraphQLObjectType({
-  name : "RootQueryType",
-  description : description['userRootQueryType'],
+  name : "UserQuery",
+  description : description['UserQuery'],
   fields : {
     user : {
       type: userInfo,

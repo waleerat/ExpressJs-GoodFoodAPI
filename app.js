@@ -4,19 +4,14 @@ const app = express();
 if (process.env.NODE_ENV === 'development') {
   require('dotenv').config({ path: 'development.env' })
 }
-
-const pgPool = require('./src/lib/dbConnect');
-const userModel = require('./src/models/usersModel')(pgPool);  
-
+ 
 // Check Token value
 const jwtToken = require('./src/lib/jwt_token'); 
 app.use((req) => {
   const tokenAccess = jwtToken.getTokenAccess(req);
   if (tokenAccess){
     const val = jwtToken.verify(tokenAccess); 
-    
-    global.token = val.token; 
-    //userModel.getSigninUserByToken(global.token); // get global.userInfo  in user module
+    global.token = val.token;
     req.next();
   }else{ 
     console.log('no token');

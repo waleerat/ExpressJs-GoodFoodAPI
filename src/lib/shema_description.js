@@ -1,6 +1,5 @@
 var graphQLDescription = {
-  'userRootQueryType': '',
-  'userRootMutationType': '',
+  'UserQuery': '',
   'userInfo': '',
   'userInfoFields': '',
   'userNewRecode': '',

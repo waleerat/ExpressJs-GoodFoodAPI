@@ -5,7 +5,6 @@ const crypto = require('crypto');
 
 module.exports = pgPool => {
   return {
-
     getReciepesByuserId(userIds) {
       const queryString = `select * from users where id = ANY($1)`;
       return pgPool.query(queryString, [userIds]).then(res => {
@@ -31,7 +30,6 @@ module.exports = pgPool => {
           return  authenInfo;
         } 
       }); 
- 
     },
 
     changePassword({ oldpassword, newpassword }) {
@@ -40,8 +38,7 @@ module.exports = pgPool => {
             password =$3
             where password = $2 and token = $1
             returning *
-            `;
-          
+            `; 
       return pgPool.query(sqlString , [global.token,oldpassword, newpassword]).then(res => {
         if (res.rows[0]){ 
           const playload = jwtToken.setTokenAccess(res.rows[0]);  

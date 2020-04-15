@@ -1,4 +1,3 @@
-const description = require('../../../lib/shema_description'); 
 const graphql = require('graphql')
 const {
   GraphQLID,
@@ -8,19 +7,14 @@ const {
 
 
 module.exports = new GraphQLObjectType({
-  name : 'userInfo',
-  description : description['userTypeFields'],
+  name : 'authorInfo',
   fields: {
     id: { type: GraphQLID },
-    firstName: { type : GraphQLString },
-    lastName: { type : GraphQLString },
     username: { type : GraphQLString},
-    email: { type : GraphQLString},
     fullName: {
       type: GraphQLString,
       resolve: obj => `${obj.firstName} ${obj.lastName}`
     },
-    //token: { type : GraphQLString },
     image: { type : GraphQLString },
     website: { type : GraphQLString },
     facebook: { type : GraphQLString },

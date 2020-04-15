@@ -18,7 +18,7 @@ const InputType = new GraphQLInputObjectType({
 });
 
 module.exports = {
-  type: authenInfo, // mutation authenInfo($input: requestLogin!) {
+  type: authenInfo,
   description : description['userGetAuthentication'],
   args: {
     input: { type: new GraphQLNonNull(InputType) }

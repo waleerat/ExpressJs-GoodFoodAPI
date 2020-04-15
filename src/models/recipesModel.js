@@ -14,8 +14,11 @@ module.exports = pgPool => {
         return orderedFor(res.row, howtoIds, 'id', true); // 'id' = pk
       });
     },
-    addNewRecord(){
-      Console('get submit recipe')
+    saveRecord(){
+      console.log('get submit recipe')
+    },
+    updateRecord(){
+
     }
 
   }
