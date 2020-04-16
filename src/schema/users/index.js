@@ -28,8 +28,8 @@ const updateRecode = require('./mutations/update');
 const changePasword = require('./mutations/change_password');
 
 const RootMutationType = new GraphQLObjectType({
-  name: 'RootMutation',
-  description : description['RootMutationType'],
+  name: 'UserMutation',
+  description : description['UserMutation'],
   fields: () => ({
     newRecodeResult: newRecord,
     updateRecodeResult : updateRecode,

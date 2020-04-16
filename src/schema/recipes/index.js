@@ -12,8 +12,7 @@ const {
 const RecipeInfo = require('./type/recipe_info'); 
 
 const RootQueryType = new GraphQLObjectType({
-  name : "recipeQuery",
-
+  name : "recipeQuery", 
   fields : {
     recipe : {
       type: RecipeInfo,
@@ -37,7 +36,7 @@ const RootMutationType = new GraphQLObjectType({
   name: 'recipeMutation',
   description : description['RootMutationType'],
   fields: () => ({
-    newRecode: newRecord,
+    newRecord: newRecord,
     //updateRecodeResult : updateRecode
   })
 });

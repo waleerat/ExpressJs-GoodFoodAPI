@@ -2,21 +2,21 @@ const description = require('../../../lib/shema_description');
 const {
   GraphQLInputObjectType,
   GraphQLNonNull,
-  GraphQLList
+  GraphQLString
 } = require('graphql');
 
 const recipesModel = require('../../../models/recipesModel');
 const RecipeInfo = require('../type/recipe_info'); 
-const inputObject = require('./input_object'); 
-
-GraphQLList
+const inputObject = require('./input_object');  
 
 const InputType = new GraphQLInputObjectType({
   name: "inputFields",
   description: description['RecipeNewRecord'],
-  fields: { 
-            recipe: { type: new GraphQLList(inputObject) }
-        }
+  fields: 
+    { 
+      action: { type: new GraphQLNonNull(GraphQLString) },
+      recipe: { type: new GraphQLNonNull(inputObject) }
+    }
 });
 
 module.exports = {

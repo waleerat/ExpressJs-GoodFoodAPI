@@ -12,7 +12,7 @@ const {
 // The root query type is where in the data graph
 // we can start asking questions
 const RootQueryType = new GraphQLObjectType({
-  name : "queryAuthentication",
+  name : "authenticationQuery",
 
   fields : {
     authenInfo : {
@@ -20,7 +20,7 @@ const RootQueryType = new GraphQLObjectType({
       fields: () => ({
         authenInfo: Authentication  
       }),
-      description : 'Authenication API : '
+      description : description['authenticationQuery']
     } 
   }
 });
@@ -28,7 +28,7 @@ const RootQueryType = new GraphQLObjectType({
 
 const RootMutationType = new GraphQLObjectType({
   name: 'getAuthentication',
-  description : description['userGetAuthentication'],
+  description : description['getAuthentication'],
   fields: () => ({
     authenInfo: Authentication  //  authenInfo(input: $input) { 
   })

@@ -1,5 +1,7 @@
 const humps = require('humps');
 const _ = require('lodash');
+const striptags = require('striptags');
+
 
 module.exports = {
   nodeEnv: process.env.NODE_ENV || 'development',
@@ -14,6 +16,9 @@ module.exports = {
       }
       return singleObject ? {} : [];
     });
+  },
+  striptags: str => {
+    return striptags(str);
   },
   slug: str => {
     return str.toLowerCase().replace(/[\s\W-]+/, '-');

@@ -8,8 +8,7 @@ const {
 const InputType = new GraphQLInputObjectType({
   name: 'changePassword',
   fields: { 
-    //------------
-    
+    //-----Start-------
     title: { type: new GraphQLNonNull(GraphQLString)},
     description: { type: GraphQLString },
     ingredients: {
@@ -39,26 +38,26 @@ const InputType = new GraphQLInputObjectType({
     howto: {type: new GraphQLList(
       // Steps
       new GraphQLInputObjectType({
-        name: 'Steps',
+        name: 'steps',
         fields: {  
             steps: { type: new GraphQLList(
-              // step
+              // step fields
               new GraphQLInputObjectType({
                 name: 'step',
                 fields: {  
-                    apiKey: { type: new GraphQLNonNull(GraphQLString) },
                     title: { type: new GraphQLNonNull(GraphQLString) },
-                    description: { type: GraphQLString }
+                    description : { type: new GraphQLNonNull(GraphQLString) },
+                    remark: { type: GraphQLString }
                 }
-              })
-              // step
-            ) }
+              }) 
+              // step fields
+            ) } 
         }
       })
       // Steps 
     )},
     remark: { type: GraphQLString }
-    //------------
+    //-----End-------
   }
 }); 
 

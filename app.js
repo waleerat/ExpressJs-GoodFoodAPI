@@ -14,7 +14,7 @@ app.use((req) => {
     global.token = val.token;
     req.next();
   }else{ 
-    console.log('no token');
+    //console.log('no token');
     req.next();
   }
 

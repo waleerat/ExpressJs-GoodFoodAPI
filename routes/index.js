@@ -49,6 +49,7 @@ router.use('/recipe', (req, res) => {
   const ncSchemaUser = require('../src/schema/recipes/index');
   const loaders = {
     ingredientsByRecipeIds: new DataLoader(recipesModel.getIngredientsByRecipeId),
+    getrecipeBySlug: new DataLoader(recipesModel.getIngredientsByRecipeId),
     howtoByRecipeIds: new DataLoader(recipesModel.getHowtoByRecipeIds),
     usersByIds: new DataLoader(userModel.getUsersByIds),
   };
