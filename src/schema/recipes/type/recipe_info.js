@@ -5,7 +5,8 @@ const {
   GraphQLID,
   GraphQLString,
   GraphQLNonNull,
-  GraphQLList
+  GraphQLList,
+  GraphQLInt
 } = require('graphql');
 
  const authorInfo = require('../type/author_info');
@@ -18,51 +19,37 @@ module.exports = new GraphQLObjectType({
           slog: { type: GraphQLString },
           title: { type: GraphQLString },
           description: { type: GraphQLString },
-           ingredients: {
+          ingredients: {
             type: new GraphQLList( 
               // ingredient
               new GraphQLObjectType({
-                name: 'ingredients',
-                fields: {  
-                    ingredient: { type: new GraphQLList(
-                      // ingredient fields
-                      new GraphQLObjectType({
-                        name: 'ingredient',
-                        fields: {  
-                            title: { type: new GraphQLNonNull(GraphQLString) },
-                            amount : { type: new GraphQLNonNull(GraphQLString) },
-                            remark: { type: GraphQLString }
-                        }
-                      }) 
-                       // ingredient fields
-                    ) } 
-                }
+                name: 'ingredient',
+                fields: () => ({
+                  //slug: { type: GraphQLString },
+                  title: { type: new GraphQLNonNull(GraphQLString) },
+                  amount : { type: new GraphQLNonNull(GraphQLString) },
+                  remark: { type: GraphQLString }
+                  })
               }) 
               // ingredient
             ),
-          },
-/*
-          howto: {type: new GraphQLList(
-            // Steps
-            new GraphQLObjectType({
-              name: 'Steps',
-              fields: {  
-                  steps: { type: new GraphQLList(
-                    // step
-                    new GraphQLObjectType({
-                      name: 'step',
-                      fields: {  
-                          apiKey: { type: new GraphQLNonNull(GraphQLString) },
-                          title: { type: new GraphQLNonNull(GraphQLString) },
-                          description: { type: GraphQLString }
-                      }
-                    })
-                    // step
-                  ) }
-              }
-            })
-            // Steps 
-          )}, */
+          }, 
+      
+          howto: {
+            type: new GraphQLList( 
+              // ingredient
+              new GraphQLObjectType({
+                name: 'step',
+                fields: () => ({
+                  order: { type: new GraphQLNonNull(GraphQLInt) },
+                  title: { type: new GraphQLNonNull(GraphQLString) },
+                  description : { type: new GraphQLNonNull(GraphQLString) },
+                  remark: { type: GraphQLString }
+                  })
+              }) 
+              // ingredient
+            ),
+          }, 
           remark: { type: GraphQLString },
           createdBy: { type: new GraphQLList(authorInfo) 
           } 

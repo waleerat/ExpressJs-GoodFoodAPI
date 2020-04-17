@@ -29,15 +29,15 @@ const RootQueryType = new GraphQLObjectType({
   }
 });
 
-const newRecord = require('./mutations/add_recipe');
-//const updateRecode = require('./mutations/update');
+const modifyRecord = require('./mutations/modify_recipe');
+const deleteRecords = require('./mutations/delete_recipe');
 
 const RootMutationType = new GraphQLObjectType({
   name: 'recipeMutation',
   description : description['RootMutationType'],
   fields: () => ({
-    newRecord: newRecord,
-    //updateRecodeResult : updateRecode
+    modifyResult: modifyRecord,
+    deletedResult : deleteRecords
   })
 });
 

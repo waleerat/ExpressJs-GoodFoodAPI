@@ -22,5 +22,12 @@ module.exports = {
   },
   slug: str => {
     return str.toLowerCase().replace(/[\s\W-]+/, '-');
-  }
+  },
+  isEmptyAndReplace: (str, replace) => {
+    if(str === null || str === '') {
+       return replace; 
+    }else{
+      return str;
+    }
+  },
 };

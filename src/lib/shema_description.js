@@ -5,9 +5,10 @@ var graphQLDescription = {
   'UserMutation': '',
   'authenticationQuery': '',
   'getAuthentication': '',
-  'userUpdateRecode': '',
-  'userDeleteRecodeFields': '',
-  'userDeleteRecode': '',
+
+
+  'RecipeModifyRecord': '',
+  'recipeDeleteRecords': '',
 
   'recipeInfo': '',
   'rootRecipe': '',

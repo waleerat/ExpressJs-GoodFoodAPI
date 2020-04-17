@@ -2,64 +2,62 @@ const {
   GraphQLInputObjectType,
   GraphQLString,
   GraphQLNonNull,
-  GraphQLList
+  GraphQLList,
+  GraphQLInt
+  
 } = require('graphql');
 
+
+ 
 const InputType = new GraphQLInputObjectType({
-  name: 'changePassword',
+  name: 'recipeInputInfo',
   fields: { 
     //-----Start-------
+    //slug: { type: GraphQLString },
     title: { type: new GraphQLNonNull(GraphQLString)},
     description: { type: GraphQLString },
+
     ingredients: {
       type: new GraphQLList( 
         // ingredient
         new GraphQLInputObjectType({
-          name: 'inputIngredients',
-          fields: {  
-              ingredient: { type: new GraphQLList(
-                // ingredient fields
-                new GraphQLInputObjectType({
-                  name: 'inputIngredient',
-                  fields: {  
-                      title: { type: new GraphQLNonNull(GraphQLString) },
-                      amount : { type: new GraphQLNonNull(GraphQLString) },
-                      remark: { type: GraphQLString }
-                  }
-                }) 
-                 // ingredient fields
-              ) } 
-          }
+          name: 'ingredientInput',
+          fields: () => ({
+            //slug: { type: GraphQLString },
+            title: { type: new GraphQLNonNull(GraphQLString) },
+            amount : { type: new GraphQLNonNull(GraphQLString) },
+            remark: { type: GraphQLString }
+            })
         }) 
         // ingredient
       ),
     }, 
-    
-    howto: {type: new GraphQLList(
-      // Steps
-      new GraphQLInputObjectType({
-        name: 'steps',
-        fields: {  
-            steps: { type: new GraphQLList(
-              // step fields
-              new GraphQLInputObjectType({
-                name: 'step',
-                fields: {  
-                    title: { type: new GraphQLNonNull(GraphQLString) },
-                    description : { type: new GraphQLNonNull(GraphQLString) },
-                    remark: { type: GraphQLString }
-                }
-              }) 
-              // step fields
-            ) } 
-        }
-      })
-      // Steps 
-    )},
+
+    howto: {
+      type: new GraphQLList( 
+        // ingredient
+        new GraphQLInputObjectType({
+          name: 'stepInput',
+          fields: () => ({
+            order: { type: new GraphQLNonNull(GraphQLInt) },
+            title: { type: new GraphQLNonNull(GraphQLString) },
+            description : { type: new GraphQLNonNull(GraphQLString) },
+            remark: { type: GraphQLString }
+            })
+        }) 
+        // ingredient
+      ),
+    }, 
+ 
     remark: { type: GraphQLString }
     //-----End-------
   }
 }); 
 
 module.exports = InputType;
+
+
+function ingredients(){
+  
+}
 
