@@ -17,17 +17,33 @@ module.exports = {
       return singleObject ? {} : [];
     });
   },
-  striptags: str => {
+/*   striptags: str => {
     return striptags(str);
-  },
-  slug: str => {
+  }, */
+/*   slug: str => {
     return str.toLowerCase().replace(/[\s\W-]+/, '-');
-  },
-  isEmptyAndReplace: (str, replace) => {
-    if(str === null || str === '') {
-       return replace; 
-    }else{
-      return str;
-    }
+  }, */
+  getResponseStatusTag: (status) => {
+     var resMessage;
+     switch(status){
+      case 200 :  
+        resMessage = "Success"; 
+        break;
+      case 900 :  
+        resMessage = "Authentication failed!";
+        break;
+      case 901 :  
+        resMessage = "Your current password {oldPassword} is not correct";
+        break;
+      case 902 :  
+        resMessage = "Require Login";
+      break;  
+      default: 
+          status = "000";
+          resMessage = "Status doesn't exist.";
+          break;
+     }
+  
+     return {"status":status, "message": resMessage};
   },
 };

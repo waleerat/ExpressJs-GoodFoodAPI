@@ -1,5 +1,5 @@
 const util = require('../lib/util');
-const humps = require('humps');
+//const humps = require('humps');
 const slugify = require('slugify');
 module.exports = pgPool => {
   return {
@@ -71,7 +71,7 @@ module.exports = pgPool => {
                 if (res.rows[0]){
                   let ingredientId = res.rows[0].id; 
                   updaterowId.push = {'recipeId': ingredientId} 
-                  console.log('ingredientId = '+ ingredientId); 
+                  //console.log('ingredientId = '+ ingredientId); 
                   // #save Bundle
                     let sqlString = `
                                 INSERT INTO  ingredient_bundle (ingredient_id,recipe_id, amount, remark) VALUES ($1, $2, $3, $4)
@@ -80,7 +80,7 @@ module.exports = pgPool => {
                                 `; 
                       pgPool.query(sqlString, [ingredientId, recipeId, igd.amount, igd.remark]).then(res => {
                       if (res.rows[0]){
-                        let amount = res.rows[0].amount;
+                        //let amount = res.rows[0].amount;
                         //console.log('amount = '+ amount); 
                         //
                       }
@@ -126,7 +126,8 @@ module.exports = pgPool => {
       for (let deleteId of arrRecipeIds) {
         recipeIds.push(deleteId[1].id);
       }
-      
+
+      const moveToTrashRows = recipeIds.length;
       let sqlString  = '';
        sqlString = `UPDATE  recipes SET status='trash' WHERE id=ANY($1);`;
           pgPool.query(sqlString, [recipeIds]);  
@@ -134,6 +135,7 @@ module.exports = pgPool => {
           pgPool.query(sqlString, [recipeIds]); 
        sqlString = `UPDATE  recipe_howto SET status='trash'  WHERE recipe_id=ANY($1);`;
           pgPool.query(sqlString, [recipeIds]); 
+       return {"status": 200, "message": "Moved to trash "+moveToTrashRows+" rows"}   
     },
     deleteRecipesPernant(deleteIds){
       //console.log(recipeIds);
@@ -142,15 +144,16 @@ module.exports = pgPool => {
       for (let deleteId of arrRecipeIds) {
         recipeIds.push(deleteId[1].id);
       }
-      
+
+      const moveToTrashRows = recipeIds.length;
       let sqlString  = ''; 
        sqlString = `DELETE FROM ingredient_bundle WHERE recipe_id=ANY($1);`;
           pgPool.query(sqlString, [recipeIds]); 
        sqlString = `DELETE FROM recipe_howto WHERE recipe_id=ANY($1);`;
           pgPool.query(sqlString, [recipeIds]); 
        sqlString = `DELETE FROM recipes WHERE id=ANY($1);`;
-          pgPool.query(sqlString, [recipeIds]);    
+          pgPool.query(sqlString, [recipeIds]);
+      return {"status": 200, "message": "Deleted to trash "+moveToTrashRows+" rows"}        
     }
   }
-
 }

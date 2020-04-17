@@ -1,4 +1,5 @@
 const description = require('../../../lib/shema_description'); 
+const {getResponseStatusTag} = require('../../../lib/util');
 const {
   GraphQLInputObjectType,
   GraphQLNonNull,
@@ -7,7 +8,7 @@ const {
 } = require('graphql');
 
 const recipesModel = require('../../../models/recipesModel');
-const sqlQueryStatus = require('../type/query_status'); 
+const sqlQueryStatus = require('../../query_status_type'); 
 
 const InputType = new GraphQLInputObjectType({
   name: "DeleteRecipeIDs",
@@ -31,6 +32,10 @@ module.exports = {
     input: { type: new GraphQLNonNull(InputType) }
   },
   resolve(obj, { input }, { pgPool }) {
-    return recipesModel(pgPool).deleteRecipesPernant(input);
+    if (global.isAuthen){
+      return recipesModel(pgPool).deleteRecipesPernant(input);
+    }else{
+      return getResponseStatusTag(902);
+    } 
   }
 };

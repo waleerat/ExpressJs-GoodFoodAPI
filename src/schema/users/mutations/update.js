@@ -1,4 +1,4 @@
-const description = require('../../../lib/shema_description');  
+const description = require('../../../lib/shema_description');   
 
 const {
   GraphQLInputObjectType,
@@ -30,7 +30,8 @@ module.exports = {
     input: { type: new GraphQLNonNull(InputType) }
   },
    resolve(obj,{ input }, { pgPool }) { 
-    return userModel(pgPool).updateRecord(input); 
+      if (global.isAuthen){
+        return userModel(pgPool).updateRecord(input);
+      } 
   }
 };
-

@@ -1,4 +1,5 @@
 const description = require('../../../lib/shema_description'); 
+
 const {
   GraphQLInputObjectType,
   GraphQLNonNull
@@ -22,8 +23,10 @@ module.exports = {
   args: {
     input: { type: new GraphQLNonNull(InputType) }
   },
-  resolve(obj, { input }, { pgPool }) {
-    return recipesModel(pgPool).saveRecord(input);
+  resolve(obj, { input }, { pgPool }) { 
+    if (global.isAuthen){
+      return recipesModel(pgPool).saveRecord(input);
+    }
   }
 };
 

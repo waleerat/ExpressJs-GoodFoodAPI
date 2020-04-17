@@ -3,10 +3,11 @@ const graphql = require('graphql')
 const {
   GraphQLID,
   GraphQLObjectType,
-  GraphQLString
+  GraphQLString,
+  GraphQLList
 } = graphql;
 
-
+const sqlQueryStatus = require('../../query_status_type'); 
 module.exports = new GraphQLObjectType({
   name : 'userInfo',
   description : description['userTypeFields'],
@@ -24,6 +25,7 @@ module.exports = new GraphQLObjectType({
     image: { type : GraphQLString },
     website: { type : GraphQLString },
     facebook: { type : GraphQLString },
-    instagram: { type : GraphQLString }
+    instagram: { type : GraphQLString },
+    response: { type: new GraphQLList(sqlQueryStatus) }
   }
 })

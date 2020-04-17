@@ -1,15 +1,15 @@
-const { orderedFor } = require('../lib/util');
+const util = require('../lib/util');
 const jwtToken = require('../lib/jwt_token');
 const humps = require('humps');
 const crypto = require('crypto'); 
 
 module.exports = pgPool => {
   return {
-    getReciepesByuserId(userIds) {
-      const queryString = `select * from users where id = ANY($1)`;
-      return pgPool.query(queryString, [userIds]).then(res => {
-        return orderedFor(res.row, userIds, 'id', true); 
-      });
+    geUserInfoByToken(token) {
+      const queryString = `select * from users where token = $1`;
+      return pgPool.query(queryString, [token]).then(res => { 
+        return humps.camelizeKeys(res.rows[0]);
+      }).catch();  
     },
     getAuthenticationInfo({ username, password }) {
       const queryString = `select * from users where username = $1 and password = $2`; 
@@ -61,15 +61,14 @@ module.exports = pgPool => {
     getUsersByIds(userIds) {
       const queryString = `select * from users where id = ANY($1)`;
       return pgPool.query(queryString, [userIds]).then(res => {
-        return orderedFor(res.row, userIds, 'id', true); 
+        return util.orderedFor(res.row, userIds, 'id', true); 
       });
     }, 
 
     getSigninUserByToken() {
       const queryString = `select username,password,email,facebook,website,instagram from users where token = $1`;
       return pgPool.query(queryString, global.token).then(res => {
-        console.log(res.rows[0]);
-        
+        //console.log(res.rows[0]);
         global.userInfo = humps.camelizeKeys(res.rows[0]);
         //return humps.camelizeKeys(res.rows[0]);
       });
@@ -108,7 +107,8 @@ module.exports = pgPool => {
             `;
           
       return pgPool.query(sqlString , [global.token,firstName,lastName,image,facebook,website,instagram]).then(res => {
-        return humps.camelizeKeys(res.rows[0]);
+        const response = humps.camelizeKeys(res.rows[0]);
+        return response;
       });
     
     },
