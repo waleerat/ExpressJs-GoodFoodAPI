@@ -17,7 +17,7 @@ const InputType = new GraphQLInputObjectType({
     //slug: { type: GraphQLString },
     title: { type: new GraphQLNonNull(GraphQLString)},
     description: { type: GraphQLString },
-
+    image: { type: GraphQLString },
     ingredients: {
       type: new GraphQLList( 
         // ingredient
@@ -26,6 +26,7 @@ const InputType = new GraphQLInputObjectType({
           fields: () => ({
             //slug: { type: GraphQLString },
             title: { type: new GraphQLNonNull(GraphQLString) },
+            image: { type: GraphQLString },
             amount : { type: new GraphQLNonNull(GraphQLString) },
             remark: { type: GraphQLString }
             })
@@ -42,6 +43,7 @@ const InputType = new GraphQLInputObjectType({
           fields: () => ({
             order: { type: new GraphQLNonNull(GraphQLInt) },
             title: { type: new GraphQLNonNull(GraphQLString) },
+            image: { type: GraphQLString },
             description : { type: new GraphQLNonNull(GraphQLString) },
             remark: { type: GraphQLString }
             })

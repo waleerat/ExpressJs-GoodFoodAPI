@@ -11,8 +11,8 @@ const recipesModel = require('../../../models/recipesModel');
 const sqlQueryStatus = require('../../query_status_type'); 
 
 const InputType = new GraphQLInputObjectType({
-  name: "MoveToTrashIDs",
-  description: description['recipeMoveToTrash'],
+  name: "recipeUpdateStatus",
+  description: description['recipeUpdateStatus'],
   fields: 
     { 
       recipes: { type: new GraphQLList( 
@@ -33,7 +33,7 @@ module.exports = {
   },
   resolve(obj, { input }, { pgPool }) {
     if (global.isAuthen){
-      return recipesModel(pgPool).moveRecipesToTrash(input);
+      return recipesModel(pgPool).updateStatus(input);
     }else{
       return getResponseStatusTag(902);
     }

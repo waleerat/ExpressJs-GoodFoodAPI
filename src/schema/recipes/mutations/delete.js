@@ -33,7 +33,7 @@ module.exports = {
   },
   resolve(obj, { input }, { pgPool }) {
     if (global.isAuthen){
-      return recipesModel(pgPool).deleteRecipesPernant(input);
+      return recipesModel(pgPool).deleteRecords(input);
     }else{
       return getResponseStatusTag(902);
     } 

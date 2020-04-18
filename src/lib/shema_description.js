@@ -12,7 +12,7 @@ var graphQLDescription = {
   'recipeInfo': '',
   'recipeDelete': '',
   'RecipeModify': '',
-  'recipeMoveToTrash': '',
+  'recipeUpdateStatus': '',
 
   
   'ingredientQuery': '',
