@@ -36,7 +36,7 @@ router.use('/login', (req, res) => {
 router.use('/user', (req, res) => {
   const ncSchemaUser = require('../src/schema/users');
   const loaders = {
-    usersByIds: new DataLoader(userModel.getUsersByIds),
+    //usersByIds: new DataLoader(userModel.getUsersByIds),
   };
   graphqlHTTP({
     schema: ncSchemaUser,
@@ -48,11 +48,23 @@ router.use('/user', (req, res) => {
 router.use('/recipe', (req, res) => {
   const ncSchemaUser = require('../src/schema/recipes/index');
   const loaders = {
-    ingredientsByRecipeIds: new DataLoader(recipesModel.getIngredientsByRecipeId),
-    getrecipeBySlug: new DataLoader(recipesModel.getIngredientsByRecipeId),
-    howtoByRecipeIds: new DataLoader(recipesModel.getHowtoByRecipeIds),
-    usersByIds: new DataLoader(userModel.getUsersByIds),
+    //ingredientsByRecipeIds: new DataLoader(recipesModel.getIngredientsByRecipeId),
+    //getrecipeBySlug: new DataLoader(recipesModel.getIngredientsByRecipeId),
+    //howtoByRecipeIds: new DataLoader(recipesModel.getHowtoByRecipeIds),
+    //usersByIds: new DataLoader(userModel.getUsersByIds),
   };
+
+  router.use('/ingredient', (req, res) => {
+    const ncSchemaUser = require('../src/schema/ingredient');
+    const loaders = {
+      //usersByIds: new DataLoader(userModel.getUsersByIds),
+    };
+    graphqlHTTP({
+      schema: ncSchemaUser,
+      graphiql: true,
+      context: { pgPool, loaders }
+    })(req, res);
+  });
    
   graphqlHTTP({
     schema: ncSchemaUser,

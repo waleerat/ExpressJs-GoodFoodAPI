@@ -17,9 +17,9 @@ module.exports = {
       return singleObject ? {} : [];
     });
   },
-/*   striptags: str => {
+  striptags: str => {
     return striptags(str);
-  }, */
+  },
 /*   slug: str => {
     return str.toLowerCase().replace(/[\s\W-]+/, '-');
   }, */

@@ -1,5 +1,4 @@
 const util = require('../lib/util');
-//const humps = require('humps');
 const slugify = require('slugify');
 module.exports = pgPool => {
   return {
@@ -24,26 +23,27 @@ module.exports = pgPool => {
     },
     saveRecord(inputObject){   
     // # saveRecord
+    console.log('saveRecord  ++++ Authen User : '+global.UserId);
+      const userId = global.UserId;
       const o = inputObject.recipe;
       const recipeSlug = slugify(o.title);
       // clear html tag
       o.title = util.striptags(o.title); 
       o.description = util.striptags(o.description);
       o.remark = util.striptags(o.remark);
+console.log(o.categoryId);
 
       const arrIngredients = Object.entries(o.ingredients);
       const arrhowto = Object.entries(o.howto); 
-
-      const userId = 65; const categoryId = 1; 
       // # Add recipe
       let sqlString = `
-                INSERT INTO recipes (user_id,category_id,slug, title, description,remark)
-                    VALUES ($1, $2, $3, $4, $5, $6)
-                    ON CONFLICT (slug)
-                    DO UPDATE SET title=$4, description=$5, remark=$6
-                returning *
+                  INSERT INTO recipes (user_id,category_id,slug, title, description,image,remark)
+                  VALUES ($1, $2, $3, $4, $5, $6, $7)
+                  ON CONFLICT (slug,user_id)
+                  DO UPDATE SET title=$4, description=$5, remark=$6 where recipes.user_id = $8
+                  returning *
                 `; 
-        pgPool.query(sqlString, [userId,categoryId, recipeSlug , o.title, o.description,o.remark]).then(res => {
+        pgPool.query(sqlString, [userId,o.categoryId, recipeSlug , o.title, o.description,o.image,o.remark,userId]).then(res => {
         if (res.rows[0]){ 
           const recipeId = res.rows[0].id;
           //console.log('recipeId = '+ recipeId);  
@@ -64,11 +64,12 @@ module.exports = pgPool => {
               sqlString = `UPDATE  recipe_howto SET status='inactive' WHERE recipe_id=$1;`;
               pgPool.query(sqlString, [recipeId]); 
 
-              sqlString = `INSERT INTO ingredients (user_id,slug, title, description) VALUES ($1, $2, $3, $4)
-                              ON CONFLICT (slug) DO UPDATE SET title=$3, description=$4
-                              returning * `;
-              pgPool.query(sqlString, [userId, igdSlug, igd.title, igd.description]).then(res => {
-                if (res.rows[0]){
+              sqlString = `INSERT INTO ingredients (user_id,slug, title, description,image) VALUES ($1, $2, $3, $4,$5)
+                            ON CONFLICT (slug,user_id) DO UPDATE SET title=$3, description=$4,image=$5
+                            where ingredients.user_id=$6
+                            returning * `;
+              pgPool.query(sqlString, [userId, igdSlug, igd.title, igd.description,igd.image,userId]).then(res => {
+                if (res.rows[0]){ 
                   let ingredientId = res.rows[0].id; 
                   updaterowId.push = {'recipeId': ingredientId} 
                   //console.log('ingredientId = '+ ingredientId); 
@@ -96,10 +97,11 @@ module.exports = pgPool => {
             let s =  step[1];  // contains : title,description,amount,remark 
             s.title = util.striptags(s.title); 
             s.description = util.striptags(s.description); 
-            let sqlString = `INSERT INTO recipe_howto (user_id,recipe_id,order_step, title, description) VALUES ($1, $2, $3, $4,$5)
-                            ON CONFLICT (recipe_id,order_step) DO UPDATE SET title=$4, description=$5,status='active'
+            let sqlString = `INSERT INTO recipe_howto (user_id,recipe_id,order_step, title, description,image) VALUES ($1, $2, $3, $4,$5,$6)
+                            ON CONFLICT (recipe_id,order_step) DO UPDATE SET title=$4, description=$5,description=$6,status='active'
+                            where ingredients.user_id=$7
                             returning * `;
-            pgPool.query(sqlString, [userId, recipeId, s.order, s.title, s.description]).then(res => {
+            pgPool.query(sqlString, [userId, recipeId, s.order, s.title, s.description,s.image,userId]).then(res => {
               if (res.rows[0]){
                 //let howtoId = res.rows[0].id;
                 //console.log('howtoId = '+ howtoId);   
@@ -120,25 +122,27 @@ module.exports = pgPool => {
     // #End saveRecord
     },
     moveRecipesToTrash(deleteIds){
-      //console.log(recipeIds);
+      const userId = global.UserId;
       const arrRecipeIds= Object.entries(deleteIds.recipes);
       const  recipeIds= []; 
       for (let deleteId of arrRecipeIds) {
         recipeIds.push(deleteId[1].id);
-      }
-
+      } 
+      
       const moveToTrashRows = recipeIds.length;
       let sqlString  = '';
-       sqlString = `UPDATE  recipes SET status='trash' WHERE id=ANY($1);`;
-          pgPool.query(sqlString, [recipeIds]);  
-       sqlString = `UPDATE  ingredient_bundle SET status='trash'  WHERE recipe_id=ANY($1);`;
-          pgPool.query(sqlString, [recipeIds]); 
-       sqlString = `UPDATE  recipe_howto SET status='trash'  WHERE recipe_id=ANY($1);`;
-          pgPool.query(sqlString, [recipeIds]); 
+       sqlString = `UPDATE  recipes SET status='trash' WHERE id=ANY($1)  and user_id=$2;`;
+          pgPool.query(sqlString, [recipeIds,userId]);  
+       sqlString = `UPDATE  ingredient_bundle SET status='trash'  WHERE recipe_id=ANY($1); and recipe_id 
+       in (select recipe_id from ingredients where user_id=$2);`;
+          pgPool.query(sqlString, [recipeIds,userId]); 
+       sqlString = `UPDATE  recipe_howto SET status='trash'  WHERE recipe_id=ANY($1)  and user_id=$2;`;
+          pgPool.query(sqlString, [recipeIds,userId]); 
        return {"status": 200, "message": "Moved to trash "+moveToTrashRows+" rows"}   
     },
     deleteRecipesPernant(deleteIds){
-      //console.log(recipeIds);
+      const userId = global.UserId;
+
       const arrRecipeIds= Object.entries(deleteIds.recipes);
       const  recipeIds= []; 
       for (let deleteId of arrRecipeIds) {
@@ -147,11 +151,12 @@ module.exports = pgPool => {
 
       const moveToTrashRows = recipeIds.length;
       let sqlString  = ''; 
-       sqlString = `DELETE FROM ingredient_bundle WHERE recipe_id=ANY($1);`;
-          pgPool.query(sqlString, [recipeIds]); 
-       sqlString = `DELETE FROM recipe_howto WHERE recipe_id=ANY($1);`;
-          pgPool.query(sqlString, [recipeIds]); 
-       sqlString = `DELETE FROM recipes WHERE id=ANY($1);`;
+       sqlString = `ingredient_bundle WHERE recipe_id=ANY($1) and recipe_id 
+       in (select recipe_id from ingredients where user_id=$2);`;
+          pgPool.query(sqlString, [recipeIds,userId]); 
+       sqlString = `DELETE FROM recipe_howto WHERE recipe_id=ANY($1) and user_id=$2;`;
+          pgPool.query(sqlString, [recipeIds,userId]); 
+       sqlString = `DELETE FROM recipes WHERE id=ANY($1) and user_id=$2;`;
           pgPool.query(sqlString, [recipeIds]);
       return {"status": 200, "message": "Deleted to trash "+moveToTrashRows+" rows"}        
     }

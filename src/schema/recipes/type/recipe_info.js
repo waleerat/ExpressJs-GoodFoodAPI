@@ -13,7 +13,7 @@ const {
 
 module.exports = new GraphQLObjectType({
   name : 'recipeInfo',
-  description : description['userRecipeType'],
+  description : description['recipeInfo'],
   fields: { 
           id: { type: GraphQLID },
           slog: { type: GraphQLString },

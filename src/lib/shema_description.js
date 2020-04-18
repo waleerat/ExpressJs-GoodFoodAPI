@@ -7,13 +7,23 @@ var graphQLDescription = {
   'getAuthentication': '',
 
 
-  'RecipeModifyRecord': '',
-  'recipeDeleteRecords': '',
-
+  'recipeQuery': '',
+  'recipeMutation': '',
   'recipeInfo': '',
-  'rootRecipe': '',
-  'userRecipeType': ''
+  'recipeDelete': '',
+  'RecipeModify': '',
+  'recipeMoveToTrash': '',
+
   
+  'ingredientQuery': '',
+  'IngredientMutation': '',
+  'IngredientInfo': '',
+  'ingredientModify': '',
+  'ingredientDelete': '',
+  'ingredientMovetoTrash': '',
+  
+
+  'xxx': '',
 }; 
 
 module.exports = graphQLDescription;

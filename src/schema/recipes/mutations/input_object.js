@@ -13,6 +13,7 @@ const InputType = new GraphQLInputObjectType({
   name: 'recipeInputInfo',
   fields: { 
     //-----Start-------
+    categoryId: { type: new GraphQLNonNull(GraphQLInt)},
     //slug: { type: GraphQLString },
     title: { type: new GraphQLNonNull(GraphQLString)},
     description: { type: GraphQLString },
@@ -55,9 +56,4 @@ const InputType = new GraphQLInputObjectType({
 }); 
 
 module.exports = InputType;
-
-
-function ingredients(){
-  
-}
-
+ 

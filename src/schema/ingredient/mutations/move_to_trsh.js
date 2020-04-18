@@ -7,15 +7,15 @@ const {
   GraphQLInt
 } = require('graphql');
 
-const recipesModel = require('../../../models/recipesModel');
+const ingredientsModel = require('../../../models/ingredientsModel');
 const sqlQueryStatus = require('../../query_status_type'); 
 
 const InputType = new GraphQLInputObjectType({
-  name: "MoveRecipeIDs",
-  description: description['recipeDeleteRecords'],
+  name: "MoveToTrashIDs",
+  description: description['ingredientMovetoTrash'],
   fields: 
     { 
-      recipes: { type: new GraphQLList( 
+      ingredients: { type: new GraphQLList( 
         new GraphQLInputObjectType({
           name: 'trashIds',
           fields: () => ({
@@ -33,7 +33,7 @@ module.exports = {
   },
   resolve(obj, { input }, { pgPool }) {
     if (global.isAuthen){
-      return recipesModel(pgPool).moveRecipesToTrash(input);
+      return ingredientsModel(pgPool).moveIngredientsToTrash(input);
     }else{
       return getResponseStatusTag(902);
     }

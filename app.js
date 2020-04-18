@@ -40,6 +40,7 @@ function getuserLoginInfo(req,pgPool) {
         global.userLoginInfo = res;
         global.isAuthen = true;
       }else global.isAuthen = false; 
+      global.UserId = 65;  // Test UserId 
       req.next();
     });
   }else {

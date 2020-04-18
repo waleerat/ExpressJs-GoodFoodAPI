@@ -106,9 +106,8 @@ module.exports = pgPool => {
             returning *
             `;
           
-      return pgPool.query(sqlString , [global.token,firstName,lastName,image,facebook,website,instagram]).then(res => {
-        const response = humps.camelizeKeys(res.rows[0]);
-        return response;
+      return pgPool.query(sqlString , [global.token,firstName,lastName,image,facebook,website,instagram]).then(res => { 
+        return humps.camelizeKeys(res.rows[0]);
       });
     
     },

@@ -9,14 +9,14 @@ const {
   GraphQLNonNull
 } = require('graphql');
 
-const RecipeInfo = require('./type/recipe_info'); 
+const IngredientInfo = require('./type/ingredient_info'); 
 
 const RootQueryType = new GraphQLObjectType({
-  name : "recipeQuery", 
+  name : "ingredientQuery", 
   fields : {
-    recipe : {
-      type: RecipeInfo,
-      description : description['recipeQuery'],
+    ingredient : {
+      type: IngredientInfo,
+      description : description['ingredientQuery'],
       args: {
         key: { type: new GraphQLNonNull(GraphQLString) }
       },
@@ -34,12 +34,12 @@ const moveToTrashResult = require('./mutations/move_to_trsh');
 const deleteRecords = require('./mutations/delete');
 
 const RootMutationType = new GraphQLObjectType({
-  name: 'recipeMutation',
-  description : description['recipeMutation'],
+  name: 'IngredientMutation',
+  description : description['IngredientMutation'],
   fields: () => ({
-    modifyRecipesResult: modifyRecord,
-    moveRecipesToTrashResult : moveToTrashResult,
-    deletedRecipisPermanantResult : deleteRecords,
+    modifyRecord: modifyRecord,
+    moveToTrashResult : moveToTrashResult,
+    deleteRecords : deleteRecords,
   })
 });
 
