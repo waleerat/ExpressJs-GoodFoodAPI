@@ -29,15 +29,27 @@ module.exports = {
       case 200 :  
         resMessage = "Success"; 
         break;
+      case 300 :  
+        resMessage = "Added / Updated";
+      break;
+      case 301 :  
+        resMessage = "Update Status";
+      break;
+      case 302 :  
+        resMessage = "Deleted #number# row(s) ";
+      break;
       case 900 :  
         resMessage = "Authentication failed!";
         break;
       case 901 :  
-        resMessage = "Your current password {oldPassword} is not correct";
+        resMessage = "Your current password #oldPassword# is not correct";
         break;
       case 902 :  
         resMessage = "Require Login";
-      break;  
+      break; 
+      case 999 :  
+      resMessage = "Something went wrong!";
+      break;
       default: 
           status = "000";
           resMessage = "Status doesn't exist.";

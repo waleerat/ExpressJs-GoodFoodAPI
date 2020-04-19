@@ -3,31 +3,24 @@ const {getResponseStatusTag} = require('../../../lib/util');
 const {
   GraphQLInputObjectType,
   GraphQLNonNull,
-  GraphQLList,
-  GraphQLInt
+  GraphQLList
 } = require('graphql');
 
 const ingredientsModel = require('../../../models/ingredientsModel');
-const sqlQueryStatus = require('../../query_status_type'); 
+const responseStatus = require('../../share/response_status'); 
+const targetID = require('../../share/input_target_ids');
 
 const InputType = new GraphQLInputObjectType({
   name: "DeleteIDs",
   description: description['ingredientDelete'],
   fields: 
     { 
-      ingredients: { type: new GraphQLList( 
-        new GraphQLInputObjectType({
-          name: 'deleteIds',
-          fields: () => ({
-            id: { type: new GraphQLNonNull(GraphQLInt) }
-            })
-        }) 
-      ) }
+      ingredients: { type: new GraphQLList(targetID) }
     }
 });
 
 module.exports = {
-  type: sqlQueryStatus,
+  type: responseStatus,
   args: {
     input: { type: new GraphQLNonNull(InputType) }
   },

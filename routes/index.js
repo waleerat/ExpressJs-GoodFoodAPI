@@ -5,7 +5,7 @@ const graphqlHTTP = require('express-graphql');
 const DataLoader = require('dataloader'); 
 const pgPool = require('../src/lib/dbConnect');
 const userModel = require('../src/models/usersModel')(pgPool);  
-const recipesModel = require('../src/models/recipesModel')(pgPool); 
+//const recipesModel = require('../src/models/recipesModel')(pgPool); 
 const jwtToken = require('../src/lib/jwt_token');
  
  
@@ -23,7 +23,7 @@ router.post('/authen', (req, res) => {  // juset test
 router.use('/login', (req, res) => {
   const ncSchemalogin = require('../src/schema/users/login');
   const loaders = {
-    usersByIds: new DataLoader(userModel.getUsersByIds),
+    //usersByIds: new DataLoader(userModel.getUsersByIds),
   };
   graphqlHTTP({
     schema: ncSchemalogin,
@@ -44,20 +44,15 @@ router.use('/user', (req, res) => {
     context: { pgPool, loaders }
   })(req, res);
 });
-
+ 
 router.use('/recipe', (req, res) => {
-  const ncSchemaUser = require('../src/schema/recipes/index');
+  const ncSchemaUser = require('../src/schema/recipes');
+ 
   const loaders = {
     //ingredientsByRecipeIds: new DataLoader(recipesModel.getIngredientsByRecipeId),
     //getrecipeBySlug: new DataLoader(recipesModel.getIngredientsByRecipeId),
     //howtoByRecipeIds: new DataLoader(recipesModel.getHowtoByRecipeIds),
-    //usersByIds: new DataLoader(userModel.getUsersByIds),
-  };
-
-  router.use('/ingredient', (req, res) => {
-    const ncSchemaUser = require('../src/schema/ingredient');
-    const loaders = {
-      //usersByIds: new DataLoader(userModel.getUsersByIds),
+     usersByIds: new DataLoader(userModel.getUsersByIds),
     };
     graphqlHTTP({
       schema: ncSchemaUser,
@@ -65,20 +60,16 @@ router.use('/recipe', (req, res) => {
       context: { pgPool, loaders }
     })(req, res);
   });
-   
+    
+
+router.use('/ingredient', (req, res) => {
+  const ncSchemaUser = require('../src/schema/ingredient');
+  const loaders = {
+    };
   graphqlHTTP({
     schema: ncSchemaUser,
-    graphiql: true, 
+    graphiql: true,
     context: { pgPool, loaders }
-  })(req, res);
-});
-
-
-router.use('/simple', (req, res) => {
-  const ncSchemaUser = require('../src/schema/sample-shema');
-  graphqlHTTP({
-    schema: ncSchemaUser,
-    graphiql: true
   })(req, res);
 });
 

@@ -7,7 +7,7 @@ const {
   GraphQLList
 } = graphql;
 
-const sqlQueryStatus = require('../../query_status_type'); 
+const responseStatus = require('../../share/response_status'); 
 module.exports = new GraphQLObjectType({
   name : 'userInfo',
   description : description['userTypeFields'],
@@ -26,6 +26,6 @@ module.exports = new GraphQLObjectType({
     website: { type : GraphQLString },
     facebook: { type : GraphQLString },
     instagram: { type : GraphQLString },
-    response: { type: new GraphQLList(sqlQueryStatus) }
+    response: { type: new GraphQLList(responseStatus) }
   }
 })

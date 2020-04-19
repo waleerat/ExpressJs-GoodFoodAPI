@@ -1,5 +1,3 @@
-
-
 const description = require('../../lib/shema_description'); 
 
 const {
@@ -30,7 +28,7 @@ const RootQueryType = new GraphQLObjectType({
 });
 
 const modifyRecord = require('./mutations/modify');
-const moveToTrashResult = require('./mutations/move_to_trsh');
+const updateStatusResult = require('./mutations/update_status');
 const deleteRecords = require('./mutations/delete');
 
 const RootMutationType = new GraphQLObjectType({
@@ -38,7 +36,7 @@ const RootMutationType = new GraphQLObjectType({
   description : description['IngredientMutation'],
   fields: () => ({
     modifyRecord: modifyRecord,
-    moveToTrashResult : moveToTrashResult,
+    updateStatusResult : updateStatusResult,
     deleteRecords : deleteRecords,
   })
 });

@@ -7,13 +7,13 @@ const {
 
 
 module.exports = new GraphQLObjectType({
-  name : 'authorInfo',
+  name : 'createdBy',
   fields: {
-    id: { type: GraphQLID },
+    userId: { type: GraphQLID },
     username: { type : GraphQLString},
     fullName: {
       type: GraphQLString,
-      resolve: obj => `${obj.firstName} ${obj.lastName}`
+      //resolve: obj => `${obj.firstName} ${obj.lastName}`
     },
     image: { type : GraphQLString },
     website: { type : GraphQLString },

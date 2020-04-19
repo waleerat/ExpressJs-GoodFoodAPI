@@ -4,30 +4,26 @@ const {
   GraphQLInputObjectType,
   GraphQLNonNull,
   GraphQLList,
-  GraphQLInt
+  GraphQLInt,
+  GraphQLString
 } = require('graphql');
 
 const recipesModel = require('../../../models/recipesModel');
-const sqlQueryStatus = require('../../query_status_type'); 
+const responseStatus = require('../../share/response_status'); 
+const targetID = require('../../share/input_target_ids');
 
 const InputType = new GraphQLInputObjectType({
-  name: "recipeUpdateStatus",
+  name: "UpdateIDs",
   description: description['recipeUpdateStatus'],
   fields: 
     { 
-      recipes: { type: new GraphQLList( 
-        new GraphQLInputObjectType({
-          name: 'trashIds',
-          fields: () => ({
-            id: { type: new GraphQLNonNull(GraphQLInt) }
-            })
-        }) 
-      ) }
+      newStatus: { type: new GraphQLNonNull(GraphQLString) },
+      recipes: { type: new GraphQLList(targetID) }
     }
 });
 
 module.exports = {
-  type: sqlQueryStatus,
+  type: responseStatus,
   args: {
     input: { type: new GraphQLNonNull(InputType) }
   },

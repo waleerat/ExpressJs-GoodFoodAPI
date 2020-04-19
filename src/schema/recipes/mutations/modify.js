@@ -1,5 +1,5 @@
 const description = require('../../../lib/shema_description');
-const {getResponseStatusTag} = require('../../../lib/util'); 
+//const {getResponseStatusTag} = require('../../../lib/util'); 
 
 const {
   GraphQLInputObjectType,
@@ -8,6 +8,7 @@ const {
 
 const recipesModel = require('../../../models/recipesModel');
 const RecipeInfo = require('../type/recipe_info'); 
+//const responseStatus = require('../../share/response_status'); 
 const inputObject = require('./input_object');  
 
 const InputType = new GraphQLInputObjectType({
@@ -25,11 +26,12 @@ module.exports = {
     input: { type: new GraphQLNonNull(InputType) }
   },
   resolve(obj, { input }, { pgPool }) { 
-    if (global.isAuthen){
+    /* if (global.isAuthen){
       return recipesModel(pgPool).saveRecord(input);
     }else{
-      //return getResponseStatusTag(902);
-    }
+      return getResponseStatusTag(902);
+    } */
+    return recipesModel(pgPool).saveRecord(input);
   }
 };
 

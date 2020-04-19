@@ -7,7 +7,7 @@ const {
   GraphQLList
 } = require('graphql');
 
- const authorInfo = require('../type/author_info');
+ const authorInfo = require('../../share/author_info');
 
 module.exports = new GraphQLObjectType({
   name : 'ingredientInfo',

@@ -20,7 +20,7 @@ var graphQLDescription = {
   'IngredientInfo': '',
   'ingredientModify': '',
   'ingredientDelete': '',
-  'ingredientMovetoTrash': '',
+  'ingredienUpdateStatus': '',
   
 
   'xxx': '',

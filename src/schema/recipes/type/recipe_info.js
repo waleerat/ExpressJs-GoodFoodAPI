@@ -9,14 +9,16 @@ const {
   GraphQLInt
 } = require('graphql');
 
- const authorInfo = require('../type/author_info');
+ const authorInfo = require('../../share/author_info');
 
 module.exports = new GraphQLObjectType({
   name : 'recipeInfo',
   description : description['recipeInfo'],
   fields: { 
-          id: { type: GraphQLID },
-          slog: { type: GraphQLString },
+          id: { type: new GraphQLNonNull(GraphQLID)  },
+          userId: { type: new GraphQLNonNull(GraphQLID) },
+          categoryId: { type: new GraphQLNonNull(GraphQLID) },
+          slug: { type: GraphQLString },
           title: { type: GraphQLString },
           description: { type: GraphQLString },
           ingredients: {
@@ -25,9 +27,10 @@ module.exports = new GraphQLObjectType({
               new GraphQLObjectType({
                 name: 'ingredient',
                 fields: () => ({
-                  //slug: { type: GraphQLString },
-                  title: { type: new GraphQLNonNull(GraphQLString) },
-                  amount : { type: new GraphQLNonNull(GraphQLString) },
+                  id: { type: new GraphQLNonNull(GraphQLID)  },
+                  slug: { type: GraphQLString },
+                  title: { type: GraphQLString },
+                  amount : { type: GraphQLString },
                   remark: { type: GraphQLString }
                   })
               }) 
@@ -41,9 +44,10 @@ module.exports = new GraphQLObjectType({
               new GraphQLObjectType({
                 name: 'step',
                 fields: () => ({
-                  order: { type: new GraphQLNonNull(GraphQLInt) },
-                  title: { type: new GraphQLNonNull(GraphQLString) },
-                  description : { type: new GraphQLNonNull(GraphQLString) },
+                  id: { type: new GraphQLNonNull(GraphQLID)  },
+                  order: { type: GraphQLInt },
+                  title: { type: GraphQLString },
+                  //description : { GraphQLString },
                   remark: { type: GraphQLString }
                   })
               }) 
@@ -51,7 +55,12 @@ module.exports = new GraphQLObjectType({
             ),
           }, 
           remark: { type: GraphQLString },
-          createdBy: { type: new GraphQLList(authorInfo) 
-          } 
+          createdBy: {
+            type: new GraphQLList(authorInfo)/*  ,
+            resolve(obj, args, { loaders }) {
+              console.log('++++ Obj userid ++++ : '.obj);
+              return loaders.usersByIds.load(obj.userId);
+            }  */
+          }
   }
 })
