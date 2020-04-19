@@ -1,76 +1,90 @@
 const util = require('../lib/util');
 const humps = require('humps');
 const slugify = require('slugify');
+
 module.exports = pgPool => {
   return {
 /*     isRecipeExistBySlug(slug){
-      const queryString = `select * from recipes where slug = $1`;
+      let queryString = `select * from recipes where slug = $1`;
       return pgPool.query(queryString, [slug]).then(res => {
         return  (res.rows)?  true :  false;
       });
     }, */
     getRecipesByIds({ RecipeIds }) {
-      const queryString = `select * from ingredients where id = ANY($1)`;
+      let queryString = `select * from ingredients where id = ANY($1)`;
       return pgPool.query(queryString, [RecipeIds]).then(res => {
         return util.orderedFor(res.row, RecipeIds, 'id', true); // 'id' = pk
       });
     }, 
  
     getHowtoByRecipeIds({ howtoIds }) {
-      const queryString = `select * from recipe_howto where id = ANY($1)`;
+      let queryString = `select * from recipe_howto where id = ANY($1)`;
       return pgPool.query(queryString, [howtoIds]).then(res => {
         return util.orderedFor(res.row, howtoIds, 'id', true); // 'id' = pk
       });
     },
     updateStatus(Ids){
-      const newStatus= Ids.newStatus;
-      const arrRecipeIds= Object.entries(Ids.recipes);
-      const  recipeIds= []; 
+      let newStatus= Ids.newStatus;
+      let arrRecipeIds= Object.entries(Ids.recipes);
+      let  recipeIds= []; 
       for (let deleteId of arrRecipeIds) {
         recipeIds.push(deleteId[1].id);
       } 
-      //const UpdatedStatusRows = recipeIds.length;
-      let sqlString  = '';
-       sqlString = `UPDATE  recipes SET status=$1 WHERE id=ANY($2)  and user_id=$3;`;
+      //let UpdatedStatusRows = recipeIds.length;
+          let sqlString  = '';let rowCount = 0;
+          let res = sqlString = `UPDATE  recipes SET status=$1 WHERE id=ANY($2)  and user_id=$3;`;
           pgPool.query(sqlString, [newStatus,recipeIds,global.UserId]);  
-       sqlString = `UPDATE  ingredient_bundle SET status=$1  WHERE recipe_id=ANY($2) and recipe_id 
-       in (select recipe_id from ingredients where user_id=$3);`;
+          
+          sqlString = `UPDATE  ingredient_bundle SET status=$1  WHERE recipe_id=ANY($2) and recipe_id 
+          in (select recipe_id from ingredients where user_id=$3);`;
           pgPool.query(sqlString, [newStatus,recipeIds,global.UserId]); 
-       sqlString = `UPDATE  recipe_howto SET status=$1  WHERE recipe_id=ANY($2) and user_id=$3;`;
+          
+          sqlString = `UPDATE  recipe_howto SET status=$1  WHERE recipe_id=ANY($2) and user_id=$3;`;
           pgPool.query(sqlString, [newStatus,recipeIds,global.UserId]); 
-
-      return util.getResponseStatusTag(301); 
+ 
+          if (res.rows){ rowCount = res.rowCount; }
+          let response = util.getResponseStatusTag(301);
+          response.message = response.message.replace('#number#',rowCount);
+          response.message = response.message.replace('#number2#',recipeIds.length);
+          return response; 
     },
     deleteRecords(Ids){
-      const arrRecipeIds= Object.entries(Ids.recipes);
-      const  recipeIds= []; 
+      let arrRecipeIds= Object.entries(Ids.recipes);
+      let  recipeIds= []; 
       for (let deleteId of arrRecipeIds) {
         recipeIds.push(deleteId[1].id);
       }
 
-     // const deletedRows = recipeIds.length;
-      let sqlString  = '';   
+     // let deletedRows = recipeIds.length;
+      let sqlString  = ''; let rowCount = 0;
        sqlString = `DELETE FROM ingredient_bundle WHERE recipe_id=ANY($1) and recipe_id 
        in (select recipe_id from ingredients where user_id=$2);`;
-          pgPool.query(sqlString, [recipeIds,global.UserId]); 
-       sqlString = `DELETE FROM recipe_howto WHERE recipe_id=ANY($1) and user_id=$2;`;
-          pgPool.query(sqlString, [recipeIds,global.UserId]); 
-          sqlString = `DELETE FROM recipes WHERE id=ANY($1) and user_id=$2;`;
-          pgPool.query(sqlString, [recipeIds,global.UserId]);
+        let res = pgPool.query(sqlString, [recipeIds,global.UserId]); 
+        
+        sqlString = `DELETE FROM recipe_howto WHERE recipe_id=ANY($1) and user_id=$2;`;
+        pgPool.query(sqlString, [recipeIds,global.UserId]); 
+       
+        sqlString = `DELETE FROM recipes WHERE id=ANY($1) and user_id=$2;`;
+        pgPool.query(sqlString, [recipeIds,global.UserId]);
+
+        if (res.rows){ rowCount = res.rowCount; }
+        let response = util.getResponseStatusTag(302);
+        response.message = response.message.replace('#number#',rowCount);
+        response.message = response.message.replace('#number2#',recipeIds.length);
+        return response; 
           
-      return util.getResponseStatusTag(302);       
     },
     async saveRecord(inputObject){   
       // # saveRecord 
-      const o = inputObject.recipe;
-      const recipeSlug = slugify(o.title);
+      let o = inputObject.recipe;
+      let recipeSlug = slugify(o.title);
       // clear html tag
       o.title = util.striptags(o.title); 
       o.description = util.striptags(o.description);
       o.remark = util.striptags(o.remark);
 
-      const arrIngredients = Object.entries(o.ingredients);
-      const arrhowto = Object.entries(o.howto); 
+      let arrIngredients = Object.entries(o.ingredients);
+      let arrhowto = Object.entries(o.howto); 
       // # Add recipe
       let sqlString = `
                   INSERT INTO recipes (user_id,category_id,slug, title, description,image,remark)
@@ -79,11 +93,13 @@ module.exports = pgPool => {
                   DO UPDATE SET title=$4, description=$5, image=$6,remark=$7 where recipes.user_id = $8
                   returning *
                 `; 
-          const recipe = await pgPool.query(sqlString, [global.UserId,o.categoryId, recipeSlug , o.title, o.description,o.image,o.remark,global.UserId])
+          let recipe = await pgPool.query(sqlString, [global.UserId,o.categoryId, recipeSlug , o.title, o.description,o.image,o.remark,global.UserId])
           .then(res => { 
-            return humps.camelizeKeys(res.rows[0]);
+            res.rows[0] = humps.camelizeKeys(res.rows[0]);
+            return res;
           }); 
-           const recipeId = recipe.id; 
+            
+           let recipeId = recipe.rows[0].id; 
           // Update current ingredients and howto to status inactive
           sqlString = `UPDATE  ingredient_bundle SET status='inactive' WHERE recipe_id=$1 and recipe_id 
                       in (select recipe_id from ingredients where user_id=$2);`;
@@ -110,12 +126,10 @@ module.exports = pgPool => {
             sqlString = `delete from  recipe_howto where status='inactive' and recipe_id = $1 and user_id=$2;`;
             pgPool.query(sqlString,[recipeId,global.UserId]);  
       // #End Add recipe
-     
-      var root = recipe;
-      root.ingredients = resIngredientArr;
-      root.howto = resStepArr;
-      //console.log(root);
-      
+        let root = {};  
+        root = recipe.rows[0]; 
+        root.ingredients = resIngredientArr;
+        root.howto = resStepArr;  
       return root;
     }, 
      saveIngredients(recipeId,jsonIngredient){ 
@@ -128,14 +142,14 @@ module.exports = pgPool => {
         igd.amount = util.striptags(igd.amount); 
         igd.remark = util.striptags(igd.remark);  
 
-        const sqlString = `INSERT INTO ingredients (user_id,slug, title, description,image) VALUES ($1, $2, $3, $4,$5)
+        let sqlString = `INSERT INTO ingredients (user_id,slug, title, description,image) VALUES ($1, $2, $3, $4,$5)
                       ON CONFLICT (slug,user_id) DO UPDATE SET title=$3, description=$4,image=$5
                       where ingredients.user_id=$6
                       returning * `;
      
          return  pgPool.query(sqlString, [global.UserId, igdSlug, igd.title, igd.description,igd.image,global.UserId])
                 .then(res => {
-                    const ingredient =  humps.camelizeKeys(res.rows[0]); 
+                    let ingredient =  humps.camelizeKeys(res.rows[0]); 
                     let ingredientId = ingredient.id; 
                     ingredient.amount = igd.amount;
                     // #save Bundle

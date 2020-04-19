@@ -14,7 +14,8 @@ module.exports = new GraphQLObjectType({
   description : description['IngredientInfo'],
   fields: { 
           id: { type: GraphQLID },
-          slog: { type: GraphQLString },
+          userId: { type: GraphQLID },
+          slug: { type: GraphQLString },
           title: { type: GraphQLString },
           description: { type: GraphQLString },
           images : { type: GraphQLString },

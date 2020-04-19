@@ -65,6 +65,7 @@ router.use('/recipe', (req, res) => {
 router.use('/ingredient', (req, res) => {
   const ncSchemaUser = require('../src/schema/ingredient');
   const loaders = {
+    usersByIds: new DataLoader(userModel.getUsersByIds),
     };
   graphqlHTTP({
     schema: ncSchemaUser,

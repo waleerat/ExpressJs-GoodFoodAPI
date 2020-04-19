@@ -33,10 +33,10 @@ module.exports = {
         resMessage = "Added / Updated";
       break;
       case 301 :  
-        resMessage = "Update Status";
+        resMessage = "Updated Status #number# row(s) from  #number2#";
       break;
       case 302 :  
-        resMessage = "Deleted #number# row(s) ";
+        resMessage = "Deleted #number# row(s) from  #number2#";
       break;
       case 900 :  
         resMessage = "Authentication failed!";

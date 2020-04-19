@@ -37,7 +37,7 @@ const RootMutationType = new GraphQLObjectType({
   fields: () => ({
     modifyRecord: modifyRecord,
     updateStatusResult : updateStatusResult,
-    deleteRecords : deleteRecords,
+    deleteResult : deleteRecords,
   })
 });
 

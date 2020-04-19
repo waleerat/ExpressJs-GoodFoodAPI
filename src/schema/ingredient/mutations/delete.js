@@ -26,7 +26,7 @@ module.exports = {
   },
   resolve(obj, { input }, { pgPool }) {
     if (global.isAuthen){
-      return ingredientsModel(pgPool).deleteIngredientsPernant(input);
+      return ingredientsModel(pgPool).deleteRecords(input);
     }else{
       return getResponseStatusTag(902);
     } 

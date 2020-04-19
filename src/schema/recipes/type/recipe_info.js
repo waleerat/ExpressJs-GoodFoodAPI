@@ -1,23 +1,24 @@
 const description = require('../../../lib/shema_description'); 
+//const usersModel = require('../../../models/usersModel');
 
 const {
   GraphQLObjectType,
   GraphQLID,
   GraphQLString,
-  GraphQLNonNull,
+  //GraphQLNonNull,
   GraphQLList,
   GraphQLInt
 } = require('graphql');
 
  const authorInfo = require('../../share/author_info');
-
-module.exports = new GraphQLObjectType({
+ //const responseStatus = require('../../share/response_status'); 
+module.exports = new GraphQLObjectType( {
   name : 'recipeInfo',
   description : description['recipeInfo'],
   fields: { 
-          id: { type: new GraphQLNonNull(GraphQLID)  },
-          userId: { type: new GraphQLNonNull(GraphQLID) },
-          categoryId: { type: new GraphQLNonNull(GraphQLID) },
+          id: { type: GraphQLID  },
+          userId: { type: GraphQLID },
+          categoryId: { type: GraphQLID },
           slug: { type: GraphQLString },
           title: { type: GraphQLString },
           description: { type: GraphQLString },
@@ -27,9 +28,10 @@ module.exports = new GraphQLObjectType({
               new GraphQLObjectType({
                 name: 'ingredient',
                 fields: () => ({
-                  id: { type: new GraphQLNonNull(GraphQLID)  },
+                  id: { type: GraphQLID  },
                   slug: { type: GraphQLString },
                   title: { type: GraphQLString },
+                  description : { type: GraphQLString },
                   amount : { type: GraphQLString },
                   remark: { type: GraphQLString }
                   })
@@ -44,10 +46,10 @@ module.exports = new GraphQLObjectType({
               new GraphQLObjectType({
                 name: 'step',
                 fields: () => ({
-                  id: { type: new GraphQLNonNull(GraphQLID)  },
+                  id: { type: GraphQLID  },
                   order: { type: GraphQLInt },
                   title: { type: GraphQLString },
-                  //description : { GraphQLString },
+                  description : { type: GraphQLString },
                   remark: { type: GraphQLString }
                   })
               }) 
@@ -56,11 +58,21 @@ module.exports = new GraphQLObjectType({
           }, 
           remark: { type: GraphQLString },
           createdBy: {
-            type: new GraphQLList(authorInfo)/*  ,
-            resolve(obj, args, { loaders }) {
-              console.log('++++ Obj userid ++++ : '.obj);
-              return loaders.usersByIds.load(obj.userId);
-            }  */
+            type: new GraphQLList(authorInfo)/* , 
+             resolve(obj, args, { loaders }) {
+              //return loaders.usersByIds.load(obj.userId);
+              return loaders.usersByIds.load([65]); 
+            }   */
           }
   }
 })
+
+/* ,
+         responseStatus: { type: new GraphQLList(responseStatus) } */
+/*resolve(obj, args, { pgPool })  { 
+               console.log('resolve function');
+              let re = usersModel(pgPool).getUsersById(65);
+              console.log(re);
+              return re;
+            } */
+            

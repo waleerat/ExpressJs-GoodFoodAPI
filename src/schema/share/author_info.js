@@ -9,7 +9,7 @@ const {
 module.exports = new GraphQLObjectType({
   name : 'createdBy',
   fields: {
-    userId: { type: GraphQLID },
+    id: { type: GraphQLID },
     username: { type : GraphQLString},
     fullName: {
       type: GraphQLString,
