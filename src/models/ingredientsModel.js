@@ -1,6 +1,6 @@
 const util = require('../lib/util');
+const validation = require('../lib/validation');
 const humps = require('humps');
-const slugify = require('slugify');
 
 module.exports = pgPool => {
   return {
@@ -10,6 +10,32 @@ module.exports = pgPool => {
         return util.orderedFor(res.row, ingredient_id, 'id', true); // 'id' = pk
       });
     },
+
+    async saveRecord(inputObject){ 
+      //# save ingredient 
+      let responseArr = []
+      let userInfoArr = [];
+      let responseStatusTag = {}
+      let returnRoot = {};
+
+      let r =  inputObject.ingredient;  // contains : title,description,amount,remark
+      let savedIngredientsInfo = await this.saveIngredients(r);
+      //console.log(savedIngredientsInfo);
+      
+      if (typeof savedIngredientsInfo.id != 'undefined') { 
+        responseStatusTag = util.getResponseStatusTag(200);  
+      }else{
+        responseStatusTag = savedIngredientsInfo; // if not success function will return response status
+      } 
+       // return value
+      returnRoot = savedIngredientsInfo;
+      userInfoArr.push(global.userLoginInfo); 
+      returnRoot.createdBy=userInfoArr;
+     
+      responseArr.push(responseStatusTag); 
+      returnRoot.responseStatus=responseArr;
+      return returnRoot;
+    }, 
 
     updateStatus(Ids){
       let newStatus= Ids.newStatus;
@@ -50,29 +76,30 @@ module.exports = pgPool => {
         }
       }) ; 
     },
-
-    saveRecord(inputObject){
-      let userId = global.UserId;
-      //# save ingredient 
-      let igd =  inputObject.ingredient;  // contains : title,description,amount,remark
-      let igdSlug = slugify(igd.title);
-      //clear html tag
-      igd.title = util.striptags(igd.title); 
-      igd.description = util.striptags(igd.description); 
-      igd.amount = util.striptags(igd.amount); 
-      igd.remark = util.striptags(igd.remark);  
-  //console.log(igd.title);
-  
-      let sqlString = `INSERT INTO ingredients (user_id,slug, title, description,image) VALUES ($1, $2, $3, $4,$5)
-      ON CONFLICT (slug,user_id) DO UPDATE SET title=$3, description=$4,image=$5
-      where ingredients.user_id=$6
-      returning * `;  
-      return pgPool.query(sqlString, [userId, igdSlug, igd.title, igd.description,igd.image,userId]).then(res => {
-        if (res.rows[0]){  
-          return humps.camelizeKeys(res.rows[0]);
-        }
-      })
-      //# save ingredient  
+    saveIngredients(i){
+      let isvalidate = {};
+      
+      isvalidate = validation.maxLengthValue(i.title,'title');  // #1 category: check length
+      if (isvalidate.status == 200){
+        i.slug = validation.slugTag(i.title,i.slug); // #2 category: check slug format
+        i.description = util.striptags(i.description);
+        isvalidate = validation.maxLengthValue(i.slug,'slug'); // #3 category :check length of slug 
+         if (isvalidate.status == 200){ // #4 check length of recipe Title 
+          let sqlString = `INSERT INTO ingredients (user_id,slug, title, description,image) VALUES ($1, $2, $3, $4,$5)
+          ON CONFLICT (slug,user_id) DO UPDATE SET title=$3, description=$4,image=$5
+          where ingredients.user_id=$6
+          returning * `; 
+          return  pgPool.query(sqlString, [global.UserId, i.slug, i.title, i.description,i.image,global.UserId])
+              .then(res => {
+                  let ingredient =  humps.camelizeKeys(res.rows[0]); 
+                  return ingredient; 
+                }); 
+          }else{ 
+            return isvalidate; // category: solg length more than 50
+          }
+      }else{ 
+        return isvalidate; // category: title length more than 90
+      }
     }
   }
 }

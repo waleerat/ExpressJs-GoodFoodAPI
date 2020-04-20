@@ -74,4 +74,16 @@ router.use('/ingredient', (req, res) => {
   })(req, res);
 });
 
+router.use('/category', (req, res) => {
+  const ncSchemaUser = require('../src/schema/categories');
+  const loaders = {
+    usersByIds: new DataLoader(userModel.getUsersByIds),
+    };
+  graphqlHTTP({
+    schema: ncSchemaUser,
+    graphiql: true,
+    context: { pgPool, loaders }
+  })(req, res);
+});
+
 module.exports = router;

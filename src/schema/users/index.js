@@ -11,11 +11,10 @@ const userInfo = require('./type/user_info');
 
 const RootQueryType = new GraphQLObjectType({
   name : "UserQuery",
-  description : description['UserQuery'],
+  description : description['userInfo'],
   fields : {
     user : {
       type: userInfo,
-      description : description['userInfo'],
       args: {
         key: { type: new GraphQLNonNull(GraphQLString) }
       }
@@ -23,7 +22,7 @@ const RootQueryType = new GraphQLObjectType({
   }
 });
 
-const newRecord = require('./mutations/add');
+const signup = require('./mutations/signup');
 const updateRecode = require('./mutations/update');
 const changePasword = require('./mutations/change_password');
 
@@ -31,7 +30,7 @@ const RootMutationType = new GraphQLObjectType({
   name: 'UserMutation',
   description : description['UserMutation'],
   fields: () => ({
-    newRecodeResult: newRecord,
+    signupResult: signup,
     updateRecodeResult : updateRecode,
     changePasswordresult : changePasword
   })

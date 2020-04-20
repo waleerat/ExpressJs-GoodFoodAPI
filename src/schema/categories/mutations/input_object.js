@@ -10,8 +10,8 @@ const {
 const InputType = new GraphQLInputObjectType({
   name: 'ingredientInputInfo',
   fields: { 
+    slug:{ type: GraphQLString },
     title: { type: new GraphQLNonNull(GraphQLString)},
-    slug: { type: GraphQLString },
     description: { type: GraphQLString },
     image: { type: GraphQLString }, 
     remark: { type: GraphQLString }

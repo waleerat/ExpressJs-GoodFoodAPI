@@ -13,18 +13,31 @@ const InputType = new GraphQLInputObjectType({
   name: 'recipeInputInfo',
   fields: { 
     //-----Start-------
-    categoryId: { type: new GraphQLNonNull(GraphQLInt)},
-    //slug: { type: GraphQLString },
+    slug: { type: GraphQLString },
     title: { type: new GraphQLNonNull(GraphQLString)},
     description: { type: GraphQLString },
     image: { type: GraphQLString },
+    category: { type: new GraphQLList(
+      // ingredient
+      new GraphQLInputObjectType({
+        name: 'categoryType',
+        fields: () => ({
+          slug: { type: GraphQLString },
+          title: { type: new GraphQLNonNull(GraphQLString) },
+          image: { type: GraphQLString },
+          description: { type: GraphQLString },
+          })
+      }) 
+      // ingredient
+    )},
+
     ingredients: {
       type: new GraphQLList( 
         // ingredient
         new GraphQLInputObjectType({
-          name: 'ingredientInput',
+          name: 'ingredientType',
           fields: () => ({
-            //slug: { type: GraphQLString },
+            slug: { type: GraphQLString },
             title: { type: new GraphQLNonNull(GraphQLString) },
             image: { type: GraphQLString },
             amount : { type: new GraphQLNonNull(GraphQLString) },
@@ -39,7 +52,7 @@ const InputType = new GraphQLInputObjectType({
       type: new GraphQLList( 
         // ingredient
         new GraphQLInputObjectType({
-          name: 'stepInput',
+          name: 'howtoType',
           fields: () => ({
             order: { type: new GraphQLNonNull(GraphQLInt) },
             title: { type: new GraphQLNonNull(GraphQLString) },

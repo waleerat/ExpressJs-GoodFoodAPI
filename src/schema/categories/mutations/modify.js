@@ -5,27 +5,27 @@ const {
   GraphQLNonNull
 } = require('graphql');
 
-const ingredientsModel = require('../../../models/ingredientsModel');
-const IngredientInfo = require('../type/ingredient_info'); 
+const categoriesModel = require('../../../models/categoriesModel');
+const CategoryInfo = require('../type/category_info'); 
 const inputObject = require('./input_object.js');  
 
 const InputType = new GraphQLInputObjectType({
   name: "inputFields",
-  description: description['IngredientModify'],
+  description: description['CategoriesModify'],
   fields: 
     { 
-      ingredient: { type: new GraphQLNonNull(inputObject) }
+      category: { type: new GraphQLNonNull(inputObject) }
     }
 }); 
 
 module.exports = {
-  type: IngredientInfo,
+  type: CategoryInfo,
   args: {
     input: { type: new GraphQLNonNull(InputType) }
   },
   resolve(obj, { input }, { pgPool }) { 
     //if (global.isAuthen){
-      return ingredientsModel(pgPool).saveRecord(input);
+      return categoriesModel(pgPool).saveRecord(input);
     //}
   }
 };

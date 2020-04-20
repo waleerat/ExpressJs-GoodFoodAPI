@@ -12,20 +12,25 @@ module.exports = new GraphQLObjectType({
   name : 'userInfo',
   description : description['userTypeFields'],
   fields: {
-    id: { type: GraphQLID },
-    firstName: { type : GraphQLString },
-    lastName: { type : GraphQLString },
-    username: { type : GraphQLString},
-    email: { type : GraphQLString},
-    fullName: {
-      type: GraphQLString,
-      resolve: obj => `${obj.firstName} ${obj.lastName}`
-    },
-    //token: { type : GraphQLString },
-    image: { type : GraphQLString },
-    website: { type : GraphQLString },
-    facebook: { type : GraphQLString },
-    instagram: { type : GraphQLString },
-    response: { type: new GraphQLList(responseStatus) }
+   id: { type: GraphQLID },
+   username: { type : GraphQLString },
+   password: { type : GraphQLString },
+   email: { type : GraphQLString },
+   firstName: { type : GraphQLString },
+   lastName: { type : GraphQLString },
+   fullName: {
+    type: GraphQLString,
+    resolve: obj => `${obj.firstName} ${obj.lastName}`
+  },
+   image: { type : GraphQLString },
+   website: { type : GraphQLString },
+   facebook: { type : GraphQLString },
+   instagram: { type : GraphQLString },
+   status: { type : GraphQLString },
+   token: { type : GraphQLString },
+   createDate: { type : GraphQLString },
+   updateDate: { type : GraphQLString },
+     
+    responseStatus: { type: new GraphQLList(responseStatus)} 
   }
 })

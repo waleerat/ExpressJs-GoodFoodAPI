@@ -36,11 +36,12 @@ function getuserLoginInfo(req,pgPool) {
     global.token = val.token;  
     const userModel = require('./src/models/usersModel')(pgPool);   
     userModel.geUserInfoByToken(global.token).then(function(res) {
-      if (res){
+       
+      if (typeof res.id != 'undefined') {
         global.userLoginInfo = res;
+        global.UserId = global.userLoginInfo.id;
         global.isAuthen = true;
       }else global.isAuthen = false; 
-      global.UserId = 65;  // Test UserId 
       req.next();
     });
   }else {

@@ -6,7 +6,7 @@ const {
 
 const userModel = require('../../../models/usersModel');
 const description = require('../../../lib/shema_description'); 
-const authenInfo = require('../type/authen_info');
+const userInfo = require('../type/user_info');
 
 const InputType = new GraphQLInputObjectType({
   name: 'requestLogin',
@@ -18,7 +18,7 @@ const InputType = new GraphQLInputObjectType({
 });
 
 module.exports = {
-  type: authenInfo,
+  type: userInfo,
   description : description['userGetAuthentication'],
   args: {
     input: { type: new GraphQLNonNull(InputType) }

@@ -10,8 +10,8 @@ const {
  const authorInfo = require('../../share/author_info');
  const responseStatusTag = require('../../share/response_status');
 module.exports = new GraphQLObjectType({
-  name : 'ingredientInfo',
-  description : description['IngredientInfo'],
+  name : 'categoryInfo',
+  description : description['CategoryInfo'],
   fields: { 
     id: { type: GraphQLID },
     userId: { type: GraphQLID },

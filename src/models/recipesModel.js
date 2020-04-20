@@ -1,4 +1,8 @@
+/* eslint-disable no-unused-vars */
 const util = require('../lib/util');
+const validation = require('../lib/validation');
+const categoriesModel = require('../models/categoriesModel');
+const ingredientsModel = require('../models/ingredientsModel');
 const humps = require('humps');
 const slugify = require('slugify');
 
@@ -43,10 +47,10 @@ module.exports = pgPool => {
           pgPool.query(sqlString, [newStatus,recipeIds,global.UserId]); 
  
           if (res.rows){ rowCount = res.rowCount; }
-          let response = util.getResponseStatusTag(301);
-          response.message = response.message.replace('#number#',rowCount);
-          response.message = response.message.replace('#number2#',recipeIds.length);
-          return response; 
+          let responseStatusTag = util.getResponseStatusTag(301);
+          responseStatusTag.message = responseStatusTag.message.replace('#number#',rowCount);
+          responseStatusTag.message = responseStatusTag.message.replace('#number2#',recipeIds.length);
+          return responseStatusTag; 
     },
     deleteRecords(Ids){
       let arrRecipeIds= Object.entries(Ids.recipes);
@@ -68,120 +72,159 @@ module.exports = pgPool => {
         pgPool.query(sqlString, [recipeIds,global.UserId]);
 
         if (res.rows){ rowCount = res.rowCount; }
-        let response = util.getResponseStatusTag(302);
-        response.message = response.message.replace('#number#',rowCount);
-        response.message = response.message.replace('#number2#',recipeIds.length);
-        return response; 
+        let responseStatusTag = util.getResponseStatusTag(302);
+        responseStatusTag.message = responseStatusTag.message.replace('#number#',rowCount);
+        responseStatusTag.message = responseStatusTag.message.replace('#number2#',recipeIds.length);
+        return responseStatusTag; 
           
     },
-    async saveRecord(inputObject){   
-      // # saveRecord 
-      let o = inputObject.recipe;
-      let recipeSlug = slugify(o.title);
-      // clear html tag
-      o.title = util.striptags(o.title); 
-      o.description = util.striptags(o.description);
-      o.remark = util.striptags(o.remark);
+    async saveRecord(inputObject){
+      //console.log(Ids);
+      let r = inputObject.recipe; //recipe
+      let c = r.category[0]; // category
+      let b = {}; // ingredient bundle
+      let arrIngredients = Object.entries(r.ingredients);
+      let arrhowto = Object.entries(r.howto);  
+      
+      let returnRoot = {};
+      let resIngredientArr = []; 
+      let resCategoryArr = []; 
+      let resHowtoArr = [];
+      let responseArr = [];
+      let userInfoArr = [];
+      let responseStatusTag = {};  
+      
+      let savedBundleInfo = {};
+  
+      let saveCategoryInfo = await categoriesModel(pgPool).saveCategory(c); // save category
+      if (typeof saveCategoryInfo.id != 'undefined') {
+        r.categoryId = saveCategoryInfo.id; 
+        resCategoryArr.push(saveCategoryInfo);
+        //console.log('saved saveCategoryInfo Id : '+r.categoryId);  
+        let saveRecipeInfo = await this.saveRecipe(r);
+        
+        if (typeof saveRecipeInfo.id != 'undefined') { 
+          r.id = saveRecipeInfo.id;
+          r.recipeId = saveRecipeInfo.id;
+          //console.log('saved saveRecipeInfo Id : '+r.recipeId);  
+          //# save ingredient  
+          for (let i of arrIngredients) { 
+            let savedIngredientInfo = await ingredientsModel(pgPool).saveIngredients(i[1]); // save recipe
+            if (typeof savedIngredientInfo.id != 'undefined') {
+              // Update current ingredients and howto to status inactive
+              this.changeStatusToInactive(r.recipeId); 
 
-      let arrIngredients = Object.entries(o.ingredients);
-      let arrhowto = Object.entries(o.howto); 
-      // # Add recipe
-      let sqlString = `
-                  INSERT INTO recipes (user_id,category_id,slug, title, description,image,remark)
-                  VALUES ($1, $2, $3, $4, $5, $6, $7)
-                  ON CONFLICT (slug,user_id)
-                  DO UPDATE SET title=$4, description=$5, image=$6,remark=$7 where recipes.user_id = $8
-                  returning *
-                `; 
-          let recipe = await pgPool.query(sqlString, [global.UserId,o.categoryId, recipeSlug , o.title, o.description,o.image,o.remark,global.UserId])
-          .then(res => { 
-            res.rows[0] = humps.camelizeKeys(res.rows[0]);
-            return res;
-          }); 
-            
-           let recipeId = recipe.rows[0].id; 
-          // Update current ingredients and howto to status inactive
-          sqlString = `UPDATE  ingredient_bundle SET status='inactive' WHERE recipe_id=$1 and recipe_id 
-                      in (select recipe_id from ingredients where user_id=$2);`;
-          pgPool.query(sqlString, [recipeId,global.UserId]); 
-          sqlString = `UPDATE  recipe_howto SET status='inactive' WHERE recipe_id=$1  and user_id=$2;`;
-          pgPool.query(sqlString, [recipeId,global.UserId]);
-           
-            //# save ingredient list
-            let resIngredientArr = [];
-            let resStepArr = [];
-            for (let ingredient of arrIngredients) {
-              let resIngredient = await this.saveIngredients(recipeId,ingredient);
-              resIngredientArr.push(resIngredient);
-            }  
-            // #save How to
-           for (let step of arrhowto) {  
-               let resStep = await this.saveHowtoSteps(recipeId,step);
-               resStepArr.push(resStep);
-           } 
+              //console.log('saved savedIngredientInfo Id : '+savedIngredientInfo.id); 
+               //# save ingredient bundle
+               b.recipeId = r.recipeId;
+               b.ingredientId =  savedIngredientInfo.id  
+               b.amount = i[1].amount;
+              // #save Bundle
+              savedBundleInfo = await this.saveIngredientBundle(b);
+              savedIngredientInfo.amount = b.amount;
+              resIngredientArr.push(savedIngredientInfo);  
+              //console.log(' savedBundleInfo recipeId : '+savedBundleInfo.recipeId+ '  ingredientId : '+savedBundleInfo.ingredientId);
+            }
+
+          }
+          // #save How to
+          for (let howto of arrhowto) { 
+            let s = howto[1]; 
+            s.recipeId = r.recipeId
+            let savedHowtoStepsInfo = await this.saveHowtoSteps(s);
+            //console.log(' savedHowtoStepsInfo recipeId : '+savedHowtoStepsInfo.recipeId);
+            resHowtoArr.push(savedHowtoStepsInfo);
+         } 
              // Delete exist  ingredient_bundle Recored if status=inactive
-            sqlString = `delete from  ingredient_bundle where status='inactive' and recipe_id = $1 and recipe_id 
-            in (select recipe_id from ingredients where user_id=$2);`;
-            pgPool.query(sqlString,[recipeId,global.UserId]);  
-            sqlString = `delete from  recipe_howto where status='inactive' and recipe_id = $1 and user_id=$2;`;
-            pgPool.query(sqlString,[recipeId,global.UserId]);  
-      // #End Add recipe
-        let root = {};  
-        root = recipe.rows[0]; 
-        root.ingredients = resIngredientArr;
-        root.howto = resStepArr;  
-      return root;
-    }, 
-     saveIngredients(recipeId,jsonIngredient){ 
-        //# save ingredient list
-        let igd =  jsonIngredient[1];
-        let igdSlug = slugify(igd.title);
-        //clear html tag
-        igd.title = util.striptags(igd.title); 
-        igd.description = util.striptags(igd.description); 
-        igd.amount = util.striptags(igd.amount); 
-        igd.remark = util.striptags(igd.remark);  
+            this.DeleteExiteRecipeBundle(r.recipeId);  
+            returnRoot =r; 
+            returnRoot.category = resCategoryArr;
+            returnRoot.ingredients = resIngredientArr;
+            returnRoot.howto = resHowtoArr; 
+            responseStatusTag = util.getResponseStatusTag(200);  
+        }else{
+          responseStatusTag = util.getResponseStatusTag(921);  // recipe: can't add/modify
+        }
 
-        let sqlString = `INSERT INTO ingredients (user_id,slug, title, description,image) VALUES ($1, $2, $3, $4,$5)
-                      ON CONFLICT (slug,user_id) DO UPDATE SET title=$3, description=$4,image=$5
-                      where ingredients.user_id=$6
-                      returning * `;
-     
-         return  pgPool.query(sqlString, [global.UserId, igdSlug, igd.title, igd.description,igd.image,global.UserId])
-                .then(res => {
-                    let ingredient =  humps.camelizeKeys(res.rows[0]); 
-                    let ingredientId = ingredient.id; 
-                    ingredient.amount = igd.amount;
-                    // #save Bundle
-                    this.saveIngredientBundle(ingredientId, recipeId, igd);
-                    return ingredient; 
-                  }); 
+      }else{
+        responseStatusTag = util.getResponseStatusTag(920);  // category: can't add/modify
+      } 
+      
+      //get authorb
+      userInfoArr.push(global.userLoginInfo); 
+      returnRoot.createdBy=userInfoArr;
+      // return value
+      responseArr.push(responseStatusTag); 
+      returnRoot.responseStatus=responseArr;
+     return returnRoot;
     },
-    saveIngredientBundle(ingredientId, recipeId, JsonIgd){
+    saveRecipe(r){
+      let isvalidate = {};
+      isvalidate = validation.maxLengthValue(r.title,'title');  // #1 category: check length
+      if (isvalidate.status == 200){
+        r.slug = validation.slugTag(r.title,r.slug); // #2 category: check slug format
+        r.description = util.striptags(r.description);
+        isvalidate = validation.maxLengthValue(r.slug,'slug'); // #3 category :check length of slug 
+         if (isvalidate.status == 200){ // #4 check length of recipe Title
+          let sqlString = `
+          INSERT INTO recipes (user_id,category_id,slug, title, description,image,remark)
+          VALUES ($1, $2, $3, $4, $5, $6, $7)
+          ON CONFLICT (slug,user_id)
+          DO UPDATE SET title=$4, description=$5, image=$6,remark=$7 where recipes.user_id = $8
+          returning *
+        `; 
+          return pgPool.query(sqlString, [global.UserId,r.categoryId, r.slug , r.title, r.description,r.image,r.remark,global.UserId])
+          .then(res => {  
+            return humps.camelizeKeys(res.rows[0]);
+          });      
+          }else{ 
+            return isvalidate; // category: solg length more than 50
+          }
+      }else{ 
+        return isvalidate; // category: title length more than 90
+      }
+    },
+    saveIngredientBundle(b){
        // #save Bundle
         let sqlString = `
-        INSERT INTO  ingredient_bundle (ingredient_id,recipe_id, amount, remark) VALUES ($1, $2, $3, $4)
-        ON CONFLICT (ingredient_id,recipe_id) DO UPDATE SET  amount=$3,  remark=$4,status='active'
+        INSERT INTO  ingredient_bundle (ingredient_id,recipe_id, amount) VALUES ($1, $2, $3)
+        ON CONFLICT (ingredient_id,recipe_id) DO UPDATE SET  amount=$3,status='active'
         returning *
         `; 
-        return pgPool.query(sqlString, [ingredientId, recipeId, JsonIgd.amount, JsonIgd.remark])
+        return pgPool.query(sqlString, [b.ingredientId, b.recipeId, b.amount])
               .then(res => {
                 return humps.camelizeKeys(res.rows[0]); 
               }); 
     },
-    saveHowtoSteps(recipeId,JsonStep){
-       // #save How to
-      let s =  JsonStep[1];  // contains : title,description,amount,remark 
+    saveHowtoSteps(s){
+       // #save How to 
       s.title = util.striptags(s.title); 
-      s.description = util.striptags(s.description); 
+      s.description = util.striptags(s.description);
       let sqlString = `INSERT INTO recipe_howto (user_id,recipe_id,order_step, title, description,image) VALUES ($1, $2, $3, $4,$5,$6)
                       ON CONFLICT (recipe_id,order_step) DO UPDATE SET title=$4, description=$5,image=$6,status='active'
                       where recipe_howto.user_id=$7
                       returning * `;
-      return pgPool.query(sqlString, [global.UserId, recipeId, s.order, s.title, s.description,s.image,global.UserId])
+          return pgPool.query(sqlString, [global.UserId, s.recipeId, s.order, s.title, s.description,s.image,global.UserId])
                   .then(res => {
                     return humps.camelizeKeys(res.rows[0]); 
                   });
-    } 
+    },
+    changeStatusToInactive(recipeId){
+      let sqlString;
+      sqlString = `UPDATE  ingredient_bundle SET status='inactive' WHERE recipe_id=$1 and recipe_id 
+      in (select recipe_id from ingredients where user_id=$2);`;
+
+      pgPool.query(sqlString, [recipeId,global.UserId]); 
+      sqlString = `UPDATE  recipe_howto SET status='inactive' WHERE recipe_id=$1  and user_id=$2;`;
+      pgPool.query(sqlString, [recipeId,global.UserId]);
+    },
+    DeleteExiteRecipeBundle(recipeId){
+      let sqlString;
+      sqlString = `delete from  ingredient_bundle where status='inactive' and recipe_id = $1 and recipe_id 
+      in (select recipe_id from ingredients where user_id=$2);`;
+      pgPool.query(sqlString,[recipeId,global.UserId]);  
+      sqlString = `delete from  recipe_howto where status='inactive' and recipe_id = $1 and user_id=$2;`;
+      pgPool.query(sqlString,[recipeId,global.UserId]); 
+    }
   }
 }

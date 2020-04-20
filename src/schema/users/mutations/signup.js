@@ -7,9 +7,8 @@ const {
 
 const userModel = require('../../../models/usersModel');
 const userInfo = require('../type/user_info');
-
 const InputType = new GraphQLInputObjectType({
-  name: 'NewRecord',
+  name: 'inputFields',
   description : description['userNewRecodeFields'],
   fields: {
     username: { type: new GraphQLNonNull(GraphQLString) }, 
@@ -25,6 +24,6 @@ module.exports = {
     input: { type: new GraphQLNonNull(InputType) }
   },
   resolve(obj, { input }, { pgPool }) {
-    return userModel(pgPool).addNewRecord(input);
+    return userModel(pgPool).saveRecord(input);
   }
 };
