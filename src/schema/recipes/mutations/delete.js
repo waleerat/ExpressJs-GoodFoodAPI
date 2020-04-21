@@ -3,8 +3,7 @@ const {getResponseStatusTag} = require('../../../lib/util');
 const {
   GraphQLInputObjectType,
   GraphQLNonNull,
-  GraphQLList,
-  GraphQLInt
+  GraphQLList
 } = require('graphql');
 
 const recipesModel = require('../../../models/recipesModel');

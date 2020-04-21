@@ -4,10 +4,10 @@ const humps = require('humps');
 
 module.exports = pgPool => {
   return {
-    getIngredientsByIds({ ingredient_id }) {
+    getLoaderIngredientsByIds({ ingredientIds }) {
       let queryString = `select * from ingredients where id = ANY($1)`;
-      return pgPool.query(queryString, [ingredient_id]).then(res => {
-        return util.orderedFor(res.row, ingredient_id, 'id', true); // 'id' = pk
+      return pgPool.query(queryString, [ingredientIds]).then(res => {
+        return util.orderedFor(res.row, ingredientIds, 'id', true); // 'id' = pk
       });
     },
 
@@ -29,11 +29,8 @@ module.exports = pgPool => {
       } 
        // return value
       returnRoot = savedIngredientsInfo;
-      userInfoArr.push(global.userLoginInfo); 
-      returnRoot.createdBy=userInfoArr;
-     
-      responseArr.push(responseStatusTag); 
-      returnRoot.responseStatus=responseArr;
+      returnRoot.createdBy=global.userLoginInfo; 
+      returnRoot.responseStatus=responseStatusTag;
       return returnRoot;
     }, 
 

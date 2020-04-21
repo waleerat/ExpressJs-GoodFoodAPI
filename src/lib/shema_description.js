@@ -12,6 +12,7 @@ var graphQLDescription = {
   'recipeInfo': '',
   'recipeDelete': '',
   'RecipeModify': '',
+  'HowtoInfo': '',
   'recipeUpdateStatus': '',
 
   
@@ -23,7 +24,7 @@ var graphQLDescription = {
   'ingredienUpdateStatus': '',
   
 
-  'xxx': '',
+  'CategoryInfo': '',
 }; 
 
 module.exports = graphQLDescription;

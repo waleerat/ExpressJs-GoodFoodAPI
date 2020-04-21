@@ -8,7 +8,7 @@ const {
 } = require('graphql');
 
 const userModel = require('../../../models/usersModel');
-const responseStatus = require('../type/response_status');
+const responseStatus = require('../../share/response_status');
 
 const InputType = new GraphQLInputObjectType({
   name: 'changePassword',

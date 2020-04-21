@@ -9,17 +9,17 @@ module.exports = pgPool => {
     getUsersByIds(userIds) {
       const queryString = `select * from users where id = ANY($1)`;
       return pgPool.query(queryString, [userIds]).then(res => { 
-        return util.orderedFor(res.row, userIds, 'id', true); 
+        return util.orderedFor(res.rows, userIds, 'id', true); 
       });
     }, 
 
-    getUsersById(userId) {
+/*     getUsersById(userId) {
       const queryString = `select * from users where id =$1`; 
       return  pgPool.query(queryString, [userId]).then(res => { 
         return  humps.camelizeKeys(res.rows[0]);
       });
 
-    },
+    }, */
 
     geUserInfoByToken(token) {
       const queryString = `select * from users where token = $1`;
@@ -27,14 +27,14 @@ module.exports = pgPool => {
         return humps.camelizeKeys(res.rows[0]);
       }).catch();  
     },
-    getSigninUserByToken() {
+/*     getSigninUserByToken() {
       const queryString = `select username,password,email,facebook,website,instagram from users where token = $1`;
       return pgPool.query(queryString, global.token).then(res => {
         //console.log(res.rows[0]);
         global.userInfo = humps.camelizeKeys(res.rows[0]);
         //return humps.camelizeKeys(res.rows[0]);
       });
-    }, 
+    },  */
     getAuthenticationInfo({ username, password }) {
       let returnRoot = {}
       let responseArr = [];

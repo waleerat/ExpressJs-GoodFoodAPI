@@ -4,13 +4,13 @@ const {
   GraphQLObjectType,
   GraphQLID,
   GraphQLString,
-  //GraphQLNonNull,
+  GraphQLNonNull,
   GraphQLList,
   GraphQLInt
 } = require('graphql');
 
  const authorInfo = require('../../share/author_info');
- const responseStatus = require('../../share/response_status'); 
+ const responseStatusTag = require('../../share/response_status'); 
 module.exports = new GraphQLObjectType( {
   name : 'recipeInfo',
   description : description['recipeInfo'],
@@ -22,7 +22,7 @@ module.exports = new GraphQLObjectType( {
           description: { type: GraphQLString },
           image: { type: GraphQLString },
           category: {
-            type: new GraphQLList( 
+            type: new GraphQLNonNull( 
               // ingredient
               new GraphQLObjectType({
                 name: 'category',
@@ -63,7 +63,7 @@ module.exports = new GraphQLObjectType( {
                 name: 'step',
                 fields: () => ({
                   id: { type: GraphQLID  },
-                  order: { type: GraphQLInt },
+                  orderStep: { type: GraphQLInt },
                   title: { type: GraphQLString },
                   description : { type: GraphQLString },
                   image: { type: GraphQLString },
@@ -74,7 +74,7 @@ module.exports = new GraphQLObjectType( {
             ),
           }, 
           remark: { type: GraphQLString },
-          createdBy: {type: new GraphQLList(authorInfo) },
-          responseStatus: { type: new GraphQLList(responseStatus)} 
+          createdBy: {type: new GraphQLNonNull(authorInfo) },
+          responseStatus: { type: new GraphQLNonNull(responseStatusTag)} 
   }
 });

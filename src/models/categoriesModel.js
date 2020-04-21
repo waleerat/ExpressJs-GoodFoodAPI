@@ -5,9 +5,7 @@ const humps = require('humps');
 module.exports = pgPool => {
   return { 
     async saveRecord(inputObject){ 
-      //# save category 
-      let responseArr = []
-      let userInfoArr = [];
+      //# save category  
       let responseStatusTag = {}
       let returnRoot = {};
 
@@ -21,12 +19,9 @@ module.exports = pgPool => {
         responseStatusTag = savedIngredientsInfo; // if not success function will return response status
       } 
        // return value
-      returnRoot = savedIngredientsInfo;
-      userInfoArr.push(global.userLoginInfo); 
-      returnRoot.createdBy=userInfoArr;
-     
-      responseArr.push(responseStatusTag); 
-      returnRoot.responseStatus=responseArr;
+      returnRoot = savedIngredientsInfo; 
+      returnRoot.createdBy=global.userLoginInfo; 
+      returnRoot.responseStatus=responseStatusTag;
       return returnRoot;
     },
     updateStatus(Ids){

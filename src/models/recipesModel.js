@@ -8,25 +8,7 @@ const slugify = require('slugify');
 
 module.exports = pgPool => {
   return {
-/*     isRecipeExistBySlug(slug){
-      let queryString = `select * from recipes where slug = $1`;
-      return pgPool.query(queryString, [slug]).then(res => {
-        return  (res.rows)?  true :  false;
-      });
-    }, */
-    getRecipesByIds({ RecipeIds }) {
-      let queryString = `select * from ingredients where id = ANY($1)`;
-      return pgPool.query(queryString, [RecipeIds]).then(res => {
-        return util.orderedFor(res.row, RecipeIds, 'id', true); // 'id' = pk
-      });
-    }, 
- 
-    getHowtoByRecipeIds({ howtoIds }) {
-      let queryString = `select * from recipe_howto where id = ANY($1)`;
-      return pgPool.query(queryString, [howtoIds]).then(res => {
-        return util.orderedFor(res.row, howtoIds, 'id', true); // 'id' = pk
-      });
-    },
+
     updateStatus(Ids){
       let newStatus= Ids.newStatus;
       let arrRecipeIds= Object.entries(Ids.recipes);
@@ -98,8 +80,7 @@ module.exports = pgPool => {
   
       let saveCategoryInfo = await categoriesModel(pgPool).saveCategory(c); // save category
       if (typeof saveCategoryInfo.id != 'undefined') {
-        r.categoryId = saveCategoryInfo.id; 
-        resCategoryArr.push(saveCategoryInfo);
+        r.categoryId = saveCategoryInfo.id;  
         //console.log('saved saveCategoryInfo Id : '+r.categoryId);  
         let saveRecipeInfo = await this.saveRecipe(r);
         
@@ -138,7 +119,7 @@ module.exports = pgPool => {
              // Delete exist  ingredient_bundle Recored if status=inactive
             this.DeleteExiteRecipeBundle(r.recipeId);  
             returnRoot =r; 
-            returnRoot.category = resCategoryArr;
+            returnRoot.category = saveCategoryInfo;
             returnRoot.ingredients = resIngredientArr;
             returnRoot.howto = resHowtoArr; 
             responseStatusTag = util.getResponseStatusTag(200);  
@@ -148,14 +129,10 @@ module.exports = pgPool => {
 
       }else{
         responseStatusTag = util.getResponseStatusTag(920);  // category: can't add/modify
-      } 
-      
-      //get authorb
-      userInfoArr.push(global.userLoginInfo); 
-      returnRoot.createdBy=userInfoArr;
-      // return value
-      responseArr.push(responseStatusTag); 
-      returnRoot.responseStatus=responseArr;
+      }  
+     
+      returnRoot.createdBy=global.userLoginInfo;
+      returnRoot.responseStatus=responseStatusTag;
      return returnRoot;
     },
     saveRecipe(r){
