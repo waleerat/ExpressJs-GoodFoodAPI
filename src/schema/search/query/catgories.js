@@ -8,15 +8,17 @@ const {
 const description = require('../../../lib/shema_description'); 
 const searchModel = require('../../../models/searchModel');
 const recipeInfo = require('../type/categories_type'); 
+const searchOption = require('../type/category_search_option_type');
 
 const InputType = new GraphQLInputObjectType({
   name: "searchCategories",
   description: description['SearchCategories'],
   fields: 
     { 
-      categoryId: { type: GraphQLID  },
-      username: { type: GraphQLString  },
-      categorySlug: { type: GraphQLString  }
+      page: { type: GraphQLID  },
+      limit: { type: GraphQLID  },
+      searchOption: { type: new GraphQLNonNull(searchOption) },
+      searchKey: { type: GraphQLString  }
     }
 });
 

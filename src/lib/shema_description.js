@@ -35,6 +35,10 @@ var graphQLDescription = {
   'SearchRecipes': '',
   'SearchIngredients': '',
   'SearchUsers': '',
+  'RecipeSearchOption': '',
+  'CategorySearchOption': '',
+  'IngredientSearchOption': '',
+  
 }; 
 
 

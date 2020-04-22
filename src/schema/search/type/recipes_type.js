@@ -13,6 +13,7 @@ module.exports = new GraphQLObjectType({
     const searchKey = require('../../share/search_key');
     return {
       rowCount : { type: GraphQLID },
+      totalPage: { type: GraphQLID  },
       searchKey : { type: new GraphQLNonNull(searchKey),
         resolve(obj) {
           return obj.searchKey;

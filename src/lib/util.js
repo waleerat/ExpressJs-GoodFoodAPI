@@ -19,6 +19,16 @@ module.exports = {
   striptags: str => {
     return striptags(str);
   },
+  getPageLimitText: (page,limit) => {
+    let resPage = 0;
+    let resLimit = process.env.RECORDS_PAER_PAGE;
+    if (limit)  resLimit = limit;
+    if (page){
+      if (page == 0) resPage = 1; else resPage = page;
+    }  
+    let offset = resPage*resLimit;
+    return { "limit": resLimit,"offset":offset};
+  },
   getResponseStatusTag: (status) => {
     let message = "Status doesn't exist.";
     switch(status){
