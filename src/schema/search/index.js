@@ -5,14 +5,14 @@ const {
 } = require('graphql');
 
 const viewRecipes = require('./query/recipes');
-const viewCatgories = require('./query/catgories');
+//const viewCatgories = require('./query/catgories');
 // The root query type is where in the data graph
 // we can start asking questions
 const RootQueryType = new GraphQLObjectType({
   name: 'GoodFoodQuery', 
   fields: () => ({
     viewRecipes: viewRecipes,
-    viewCatgories: viewCatgories
+    //viewCatgories: viewCatgories
   })
 });
 

@@ -1,18 +1,24 @@
-const description = require('../../../lib/shema_description'); 
+// Import type helpers from graphql-js
 const {
   GraphQLInputObjectType,
-  GraphQLNonNull,
-  //GraphQLString,
-  GraphQLID
+  GraphQLString,
+  GraphQLID,
+  GraphQLNonNull
 } = require('graphql');
 
-const recipeInfo = require('../type/recipes_info_type');
+const description = require('../../../lib/shema_description'); 
+const searchModel = require('../../../models/searchModel');
+const recipeInfo = require('../type/recipes_type'); 
+
 const InputType = new GraphQLInputObjectType({
   name: "searchRecipes",
   description: description['searchRecipes'],
   fields: 
     { 
-      id: { type: GraphQLID  }
+      RecipeId: { type: GraphQLID  },
+      recipeTitle: { type: GraphQLString  },
+      categoryTitle: { type: GraphQLString  },
+      IngredientTitle: { type: GraphQLString  }
     }
 });
 
@@ -22,7 +28,7 @@ module.exports = {
   args: {
     key: { type: new GraphQLNonNull(InputType) }
   },
-  resolve: (obj, args, { loaders }) => {
-    return loaders.recipeByIds.load(args.key.id); 
+  resolve: (obj, args, { pgPool }) => {
+    return searchModel(pgPool).searchRecipes(args.key);
   }
 };
