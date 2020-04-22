@@ -7,24 +7,35 @@ var graphQLDescription = {
   'getAuthentication': '',
 
 
-  'recipeQuery': '',
-  'recipeMutation': '',
-  'recipeInfo': '',
-  'recipeDelete': '',
+  'RecipeQuery': '',
+  'RecipeMutation': '',
+  'RecipeInfo': '',
+  'RecipeDelete': '',
   'RecipeModify': '',
   'HowtoInfo': '',
-  'recipeUpdateStatus': '',
+  'RecipeUpdateStatus': '',
 
   
   'ingredientQuery': '',
   'IngredientMutation': '',
   'IngredientInfo': '',
-  'ingredientModify': '',
+  'IngredientModify': '',
   'ingredientDelete': '',
   'ingredienUpdateStatus': '',
   
 
   'CategoryInfo': '',
+  'CategoryMutation': '',
+  'categoryDelete': '',
+  'CategoriesModify': '',
+  'categoryUpdateStatus': '',
+
+  'GoodFoodQuery': '',
+  'SearchCategories': '',
+  'SearchRecipes': '',
+  'SearchIngredients': '',
+  'SearchUsers': '',
 }; 
+
 
 module.exports = graphQLDescription;

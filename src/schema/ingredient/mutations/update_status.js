@@ -1,5 +1,3 @@
-const description = require('../../../lib/shema_description'); 
-const {getResponseStatusTag} = require('../../../lib/util');
 const {
   GraphQLInputObjectType,
   GraphQLNonNull,
@@ -7,6 +5,8 @@ const {
   GraphQLString
 } = require('graphql');
 
+const description = require('../../../lib/shema_description'); 
+const {getResponseStatusTag} = require('../../../lib/util');
 const ingredientsModel = require('../../../models/ingredientsModel');
 const responseStatus = require('../../share/response_status'); 
 const targetID = require('../../share/input_target_ids');
@@ -29,7 +29,7 @@ module.exports = {
   resolve(obj, { input }, { pgPool }) {
     if (global.isAuthen){
       return ingredientsModel(pgPool).updateStatus(input);
-    }else{
+    } else {
       return getResponseStatusTag(902);
     }
   }

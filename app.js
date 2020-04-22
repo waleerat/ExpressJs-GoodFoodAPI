@@ -1,33 +1,32 @@
 const express = require('express');
 const app = express();
-
 const pgPool = require('./src/lib/dbConnect');
 
 if (process.env.NODE_ENV === 'development') {
   require('dotenv').config({ path: 'development.env' })
 } 
 
+//#1 get user authentication
 app.use((req) => {
   getuserLoginInfo(req,pgPool); 
 }); 
 
-
-
 app.get('/', (req, res) => {
   res.send('welcome to my route API');
 }); 
+
+// all APIs are in foutes
 var index = require('./routes/index');
 app.use('/api', index); 
 
 
-// #000 Port section
+// Default port is 8000 / development.env
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
   console.log(`Running on port ${port}`);
 });
-// #000 Port section End
 
-// Check Token value
+//#1 Check Token value
 const jwtToken = require('./src/lib/jwt_token'); 
 function getuserLoginInfo(req,pgPool) {
   const tokenAccess = jwtToken.getTokenAccess(req);

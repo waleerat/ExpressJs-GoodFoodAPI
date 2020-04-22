@@ -19,9 +19,6 @@ module.exports = {
   striptags: str => {
     return striptags(str);
   },
-/*   slug: str => {
-    return str.toLowerCase().replace(/[\s\W-]+/, '-');
-  }, */
   getResponseStatusTag: (status) => {
     let message = "Status doesn't exist.";
     switch(status){

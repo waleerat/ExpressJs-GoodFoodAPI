@@ -32,8 +32,8 @@ const updateStatusResult = require('./mutations/update_status');
 const deleteRecords = require('./mutations/delete');
 
 const RootMutationType = new GraphQLObjectType({
-  name: 'IngredientMutation',
-  description : description['IngredientMutation'],
+  name: 'categoryMutation',
+  description : description['CategoryMutation'],
   fields: () => ({
     modifyRecord: modifyRecord,
     updateStatusResult : updateStatusResult,

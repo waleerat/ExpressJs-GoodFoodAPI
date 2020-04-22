@@ -1,4 +1,4 @@
-const description = require('../../lib/shema_description'); 
+
 
 const {
   GraphQLSchema,
@@ -7,6 +7,7 @@ const {
   GraphQLNonNull
 } = require('graphql');
 
+const description = require('../../lib/shema_description'); 
 const IngredientInfo = require('./type/ingredient_info'); 
 
 const RootQueryType = new GraphQLObjectType({
@@ -19,9 +20,7 @@ const RootQueryType = new GraphQLObjectType({
         key: { type: new GraphQLNonNull(GraphQLString) }
       },
       resolve: () => {
-        return {
-          
-        } 
+        return {} 
       }
     } 
   }
@@ -32,7 +31,7 @@ const updateStatusResult = require('./mutations/update_status');
 const deleteRecords = require('./mutations/delete');
 
 const RootMutationType = new GraphQLObjectType({
-  name: 'IngredientMutation',
+  name: 'ingredientMutation',
   description : description['IngredientMutation'],
   fields: () => ({
     modifyRecord: modifyRecord,
@@ -40,7 +39,6 @@ const RootMutationType = new GraphQLObjectType({
     deleteResult : deleteRecords,
   })
 });
-
 
 const ncSchema = new GraphQLSchema({
   query : RootQueryType,

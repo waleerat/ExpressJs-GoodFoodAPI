@@ -1,23 +1,24 @@
-// Import type helpers from graphql-js
 const {
   GraphQLSchema,
   GraphQLObjectType 
 } = require('graphql');
 
+const description = require('../../lib/shema_description'); 
 const viewRecipes = require('./query/recipes');
-//const viewCatgories = require('./query/catgories');
-// The root query type is where in the data graph
-// we can start asking questions
+const viewCatgories = require('./query/catgories');
+const viewIngredients = require('./query/ingredients');
+
 const RootQueryType = new GraphQLObjectType({
-  name: 'GoodFoodQuery', 
+  name: 'GoodFoodQuery',
+  description: description['GoodFoodQuery'], 
   fields: () => ({
     viewRecipes: viewRecipes,
-    //viewCatgories: viewCatgories
+    viewCatgories: viewCatgories,
+    viewIngredients: viewIngredients
   })
 });
 
 const ncSchema = new GraphQLSchema({
-  query : RootQueryType,
-  //mutation : RootMutationType
+  query : RootQueryType
 });
 module.exports = ncSchema;

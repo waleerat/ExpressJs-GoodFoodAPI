@@ -10,21 +10,16 @@ module.exports = pgPool => {
         return util.orderedFor(res.row, ingredientIds, 'id', true); // 'id' = pk
       });
     },
-
     async saveRecord(inputObject){ 
-      //# save ingredient 
-      let responseArr = []
-      let userInfoArr = [];
       let responseStatusTag = {}
       let returnRoot = {};
-
       let r =  inputObject.ingredient;  // contains : title,description,amount,remark
       let savedIngredientsInfo = await this.saveIngredients(r);
       //console.log(savedIngredientsInfo);
       
       if (typeof savedIngredientsInfo.id != 'undefined') { 
         responseStatusTag = util.getResponseStatusTag(200);  
-      }else{
+      } else {
         responseStatusTag = savedIngredientsInfo; // if not success function will return response status
       } 
        // return value
@@ -33,7 +28,6 @@ module.exports = pgPool => {
       returnRoot.responseStatus=responseStatusTag;
       return returnRoot;
     }, 
-
     updateStatus(Ids){
       let newStatus= Ids.newStatus;
       let arrIngredientsIds= Object.entries(Ids.ingredients);
@@ -53,7 +47,6 @@ module.exports = pgPool => {
         }
       }) ;  
     },
-
     deleteRecords(Ids){
       let arrRecipeIds= Object.entries(Ids.ingredients);
       let  ingredientIds= []; 
@@ -61,7 +54,6 @@ module.exports = pgPool => {
         ingredientIds.push(deleteId[1].id);
       } 
      // let deletedRows = ingredientIds.length;
-   
       let sqlString  = `DELETE FROM ingredients   WHERE id=ANY($1) and user_id=$2
       and id not in (select ingredient_id from ingredient_bundle where ingredient_id=ANY($3))`;
        return pgPool.query(sqlString, [ingredientIds,global.UserId,ingredientIds]).then(res => {
@@ -75,7 +67,6 @@ module.exports = pgPool => {
     },
     saveIngredients(i){
       let isvalidate = {};
-      
       isvalidate = validation.maxLengthValue(i.title,'title');  // #1 category: check length
       if (isvalidate.status == 200){
         i.slug = validation.slugTag(i.title,i.slug); // #2 category: check slug format
@@ -87,15 +78,15 @@ module.exports = pgPool => {
           where ingredients.user_id=$6
           returning * `; 
           return  pgPool.query(sqlString, [global.UserId, i.slug, i.title, i.description,i.image,global.UserId])
-              .then(res => {
-                  let ingredient =  humps.camelizeKeys(res.rows[0]); 
-                  return ingredient; 
-                }); 
-          }else{ 
-            return isvalidate; // category: solg length more than 50
+                  .then(res => {
+                      let ingredient =  humps.camelizeKeys(res.rows[0]); 
+                      return ingredient; 
+                    }); 
+          } else { 
+            return isvalidate; 
           }
-      }else{ 
-        return isvalidate; // category: title length more than 90
+      } else { 
+        return isvalidate; 
       }
     }
   }

@@ -6,7 +6,7 @@ module.exports = {
   return new Promise(resolve => {
     resolve(jwt.sign(payload , process.env.JWT_KEY))
   })
- /*  var signOptions = {
+ /*  var signOptions = {  // ** Note: not sure how it works
     issuer:  process.env.ISSUER,
     subject:  process.env.SUBJECT,
     audience:  process.env.AUDIENCE,
@@ -31,10 +31,10 @@ verify: (token) => {
 },
 setTokenAccess: (user) => {
   const playload = { 
-            'username' : user['username'],
-            'token' : user['token']
-          }; 
-          return playload;
+    'username' : user['username'],
+    'token' : user['token']
+  }; 
+  return playload;
 },
 getTokenAccess: (req) => {
   if (req.headers.authorization && req.headers.authorization.includes('Bearer')) {
@@ -42,7 +42,6 @@ getTokenAccess: (req) => {
   }else return false;
 },
  decode: (token) => {
-    return jwt.decode(token, {complete: true});
-    //returns null if token is invalid
+  return jwt.decode(token, {complete: true});
  }
 }

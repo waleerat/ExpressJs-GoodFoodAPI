@@ -7,16 +7,16 @@ const {
 
 const description = require('../../../lib/shema_description'); 
 const searchModel = require('../../../models/searchModel');
-const recipeInfo = require('../type/categories_type'); 
+const recipeInfo = require('../type/ingredients_type'); 
 
 const InputType = new GraphQLInputObjectType({
-  name: "searchCategories",
-  description: description['SearchCategories'],
+  name: "searchIngredients",
+  description: description['SearchIngredients'],
   fields: 
     { 
-      categoryId: { type: GraphQLID  },
+      ingredientId: { type: GraphQLID  },
       username: { type: GraphQLString  },
-      categorySlug: { type: GraphQLString  }
+      ingredientSlug: { type: GraphQLString  }
     }
 });
 
@@ -27,6 +27,6 @@ module.exports = {
     key: { type: new GraphQLNonNull(InputType) }
   },
   resolve: (obj, args, { pgPool }) => {
-    return searchModel(pgPool).searchCategories(args.key);
+    return searchModel(pgPool).searchIngredients(args.key);
   }
 };

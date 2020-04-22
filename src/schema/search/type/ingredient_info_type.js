@@ -1,11 +1,13 @@
-const description = require('../../../lib/shema_description'); 
-
 const {
   GraphQLObjectType,
   GraphQLID,
-  GraphQLString
+  GraphQLString,
+  GraphQLNonNull
 } = require('graphql');
- 
+
+const description = require('../../../lib/shema_description'); 
+const authorInfo = require('../../share/author_info');
+
 module.exports = new GraphQLObjectType({
   name : 'ingredientInfo',
   description : description['IngredientInfo'],
@@ -18,5 +20,10 @@ module.exports = new GraphQLObjectType({
     description: { type: GraphQLString },
     image : { type: GraphQLString },
     remark: { type: GraphQLString },
+    createdBy: {type: new GraphQLNonNull(authorInfo),
+      resolve(obj, args, { loaders }) { 
+        return loaders.usersByIds.load(obj.userId);
+      }
+    },
   }
 })

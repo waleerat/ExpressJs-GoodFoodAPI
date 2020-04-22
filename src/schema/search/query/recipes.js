@@ -1,4 +1,3 @@
-// Import type helpers from graphql-js
 const {
   GraphQLInputObjectType,
   GraphQLString,
@@ -12,13 +11,14 @@ const recipeInfo = require('../type/recipes_type');
 
 const InputType = new GraphQLInputObjectType({
   name: "searchRecipes",
-  description: description['searchRecipes'],
+  description: description['SearchRecipes'],
   fields: 
     { 
-      RecipeId: { type: GraphQLID  },
-      recipeTitle: { type: GraphQLString  },
-      categoryTitle: { type: GraphQLString  },
-      IngredientTitle: { type: GraphQLString  }
+      recipeId: { type: GraphQLID  },
+      username: { type: GraphQLString  },
+      recipeSlug: { type: GraphQLString  },
+      categorySlug: { type: GraphQLString  },
+      IngredientSlug: { type: GraphQLString  }
     }
 });
 

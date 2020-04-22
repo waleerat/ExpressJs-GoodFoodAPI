@@ -6,10 +6,10 @@ const {
 } = require('graphql');
 
 module.exports = new GraphQLObjectType({
-  name: 'recipesInfo', 
+  name: 'ingredientsInfo', 
 
   fields: () => {
-    const recipesInfo = require('./recipes_info_type');
+    const recipesInfo = require('./ingredient_info_type');
     const searchKey = require('../../share/search_key');
     return {
       rowCount : { type: GraphQLID },

@@ -4,21 +4,16 @@ const {
   GraphQLNonNull,
   GraphQLList,
   GraphQLInt
-  
 } = require('graphql');
-
-
  
 const InputType = new GraphQLInputObjectType({
   name: 'recipeInputInfo',
   fields: { 
-    //-----Start-------
     slug: { type: GraphQLString },
     title: { type: new GraphQLNonNull(GraphQLString)},
     description: { type: GraphQLString },
     image: { type: GraphQLString },
     category: { type: new GraphQLList(
-      // ingredient
       new GraphQLInputObjectType({
         name: 'categoryType',
         fields: () => ({
@@ -27,13 +22,10 @@ const InputType = new GraphQLInputObjectType({
           image: { type: GraphQLString },
           description: { type: GraphQLString },
           })
-      }) 
-      // ingredient
+      })
     )},
-
     ingredients: {
       type: new GraphQLList( 
-        // ingredient
         new GraphQLInputObjectType({
           name: 'ingredientType',
           fields: () => ({
@@ -44,13 +36,10 @@ const InputType = new GraphQLInputObjectType({
             remark: { type: GraphQLString }
             })
         }) 
-        // ingredient
       ),
     }, 
-
     howto: {
       type: new GraphQLList( 
-        // ingredient
         new GraphQLInputObjectType({
           name: 'howtoType',
           fields: () => ({
@@ -61,12 +50,9 @@ const InputType = new GraphQLInputObjectType({
             remark: { type: GraphQLString }
             })
         }) 
-        // ingredient
       ),
     }, 
- 
     remark: { type: GraphQLString }
-    //-----End-------
   }
 }); 
 

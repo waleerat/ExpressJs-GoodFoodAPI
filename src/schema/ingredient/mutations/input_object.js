@@ -5,8 +5,6 @@ const {
   
 } = require('graphql');
 
- 
- 
 const InputType = new GraphQLInputObjectType({
   name: 'ingredientInputInfo',
   fields: { 

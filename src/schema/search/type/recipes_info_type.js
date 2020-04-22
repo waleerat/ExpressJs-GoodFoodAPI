@@ -24,8 +24,7 @@ module.exports = new GraphQLObjectType({
     remark: { type: GraphQLString },
     category: { type: new GraphQLNonNull(catgoryInfo),
       resolve(obj, args, { loaders }) {
-        if (obj.categoryId) return loaders.categoryByIds.load(obj.categoryId);
-        else return {id:obj.categoryId};
+        return loaders.categoryByIds.load(obj.categoryId);
       }
      }, 
      ingredients: { type: new GraphQLList(ingredientInfo),
@@ -43,6 +42,5 @@ module.exports = new GraphQLObjectType({
         return loaders.usersByIds.load(obj.userId);
       }
     },
-   
   })
 });

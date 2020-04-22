@@ -9,10 +9,9 @@ module.exports = pgPool => {
       let responseStatusTag = {}
       let returnRoot = {};
 
-      let c =  inputObject.category;  // contains : title,description,amount,remark
+      let c =  inputObject.category;
       let savedIngredientsInfo = await this.saveCategory(c);
-      //console.log(savedIngredientsInfo);
-      
+      //console.log(savedIngredientsInfo);      
       if (typeof savedIngredientsInfo.id != 'undefined') { 
         responseStatusTag = util.getResponseStatusTag(200);  
       }else{
@@ -69,8 +68,7 @@ module.exports = pgPool => {
       let isvalidate = {};
       isvalidate = validation.maxLengthValue(c.title,'title');  // #1 category: check length
       if (isvalidate.status == 200){
-        c.slug = validation.slugTag(c.title,c.slug); // #2 category: check slug format
-        
+        c.slug = validation.slugTag(c.title,c.slug); // #2 category: check slug format        
         c.description = util.striptags(c.description);
         isvalidate = validation.maxLengthValue(c.slug,'slug'); // #3 category :check length of slug 
          if (isvalidate.status == 200){ // #4 check length of recipe Title 
@@ -86,10 +84,10 @@ module.exports = pgPool => {
             .then(res => { 
                return humps.camelizeKeys(res.rows[0]);  
             });  
-          }else{ 
+          } else{ 
             return isvalidate; // category: solg length more than 50
           }
-      }else{ 
+      } else{ 
         return isvalidate; // category: title length more than 90
       }  
     },

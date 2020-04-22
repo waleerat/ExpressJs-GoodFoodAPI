@@ -1,12 +1,12 @@
-const description = require('../../../lib/shema_description'); 
-
 const {
   GraphQLObjectType,
   GraphQLID,
   GraphQLString,
   GraphQLInt
 } = require('graphql');
- 
+
+const description = require('../../../lib/shema_description');
+
 module.exports = new GraphQLObjectType({
   name : 'howtoInfo',
   description : description['HowtoInfo'],

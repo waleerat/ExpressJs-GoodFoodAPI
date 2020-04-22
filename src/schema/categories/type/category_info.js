@@ -1,5 +1,3 @@
-const description = require('../../../lib/shema_description'); 
-
 const {
   GraphQLObjectType,
   GraphQLID,
@@ -7,8 +5,10 @@ const {
   GraphQLNonNull
 } = require('graphql');
 
- const authorInfo = require('../../share/author_info');
- const responseStatusTag = require('../../share/response_status'); 
+const description = require('../../../lib/shema_description'); 
+const authorInfo = require('../../share/author_info');
+const responseStatusTag = require('../../share/response_status'); 
+
 module.exports = new GraphQLObjectType({
   name : 'categoryInfo',
   description : description['CategoryInfo'],

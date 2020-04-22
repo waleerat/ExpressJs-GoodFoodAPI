@@ -2,11 +2,8 @@ const {
   GraphQLInputObjectType,
   GraphQLString,
   GraphQLNonNull 
-  
 } = require('graphql');
 
- 
- 
 const InputType = new GraphQLInputObjectType({
   name: 'ingredientInputInfo',
   fields: { 
@@ -19,4 +16,3 @@ const InputType = new GraphQLInputObjectType({
 }); 
 
 module.exports = InputType;
- 

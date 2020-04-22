@@ -6,7 +6,7 @@ const DataLoader = require('dataloader');
 const pgPool = require('../src/lib/dbConnect');
 const searchModel = require('../src/models/searchModel')(pgPool);
  
-router.post('/', (req, res) => {  // juset test  
+router.post('/', (req, res) => {   
   res.send('my  API route');
 });  
 
@@ -19,7 +19,6 @@ router.use('/login', (req, res) => {
     context: { pgPool, loaders }
   })(req, res);
 }); 
-
 
 router.use('/user', (req, res) => {
   const ncSchemaUser = require('../src/schema/users');
@@ -39,8 +38,7 @@ router.use('/recipe', (req, res) => {
       graphiql: true,
       context: { pgPool, loaders }
     })(req, res);
-  });
-    
+  });  
 
 router.use('/ingredient', (req, res) => {
   const ncSchemaUser = require('../src/schema/ingredient');

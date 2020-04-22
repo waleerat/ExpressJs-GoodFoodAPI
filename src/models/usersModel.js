@@ -11,31 +11,14 @@ module.exports = pgPool => {
       return pgPool.query(queryString, [userIds]).then(res => { 
         return util.orderedFor(res.rows, userIds, 'id', true); 
       });
-    }, 
-
-/*     getUsersById(userId) {
-      const queryString = `select * from users where id =$1`; 
-      return  pgPool.query(queryString, [userId]).then(res => { 
-        return  humps.camelizeKeys(res.rows[0]);
-      });
-
-    }, */
-
+    },
     geUserInfoByToken(token) {
       const queryString = `select * from users where token = $1`;
       return pgPool.query(queryString, [token]).then(res => { 
         return humps.camelizeKeys(res.rows[0]);
       }).catch();  
     },
-/*     getSigninUserByToken() {
-      const queryString = `select username,password,email,facebook,website,instagram from users where token = $1`;
-      return pgPool.query(queryString, global.token).then(res => {
-        //console.log(res.rows[0]);
-        global.userInfo = humps.camelizeKeys(res.rows[0]);
-        //return humps.camelizeKeys(res.rows[0]);
-      });
-    },  */
-    getAuthenticationInfo({ username, password }) {
+    /* getAuthenticationInfo({ username, password }) {
       let returnRoot = {}
       let responseArr = [];
       let responseStatusTag = {};
@@ -43,8 +26,7 @@ module.exports = pgPool => {
       const queryString = `select * from users where username = $1 and password = $2`; 
       return pgPool.query(queryString, [username,password]).then(res => { 
         if (res.rows[0]){ 
-          console.log(res.rows[0]);
-          
+          //console.log(res.rows[0]);
           const authenInfo = humps.camelizeKeys(res.rows[0]);
           const playload = jwtToken.setTokenAccess(res.rows[0]); 
           
@@ -62,14 +44,12 @@ module.exports = pgPool => {
         
         return returnRoot; 
       }); 
-    },
+    }, */
     changePassword({ oldpassword, newpassword }) {
-      const sqlString = `
-            update users set 
-            password =$3
-            where password = $2 and token = $1
-            returning *
-            `; 
+      const sqlString = `update users set password =$3
+        where password = $2 and token = $1
+        returning *
+        `; 
       return pgPool.query(sqlString , [global.token,oldpassword, newpassword]).then(res => {
         if (res.rows[0]){ 
           const playload = jwtToken.setTokenAccess(res.rows[0]);  
@@ -77,7 +57,7 @@ module.exports = pgPool => {
           responseStatusTag.token = jwtToken.signToken(playload),
           responseStatusTag = util.getResponseStatusTag(200); 
           return responseStatusTag
-        }else{ 
+        } else { 
           let responseStatusTag = util.getResponseStatusTag(901);
           responseStatusTag.message = responseStatusTag.message.replace('#oldPassword#',oldpassword);  
           return  responseStatusTag;
@@ -87,21 +67,16 @@ module.exports = pgPool => {
     async saveRecord(i){ 
       let savedUserinfo = {};
       let returnRoot = {}
-      let responseArr = [];
       let responseStatusTag = {};
 
       i.token = crypto.createHash('md5').update(i.username).digest("hex"); 
-
       let isEmailFormat = validation.emailFormat(i.email);
-      
       if (isEmailFormat){
          savedUserinfo = await this.saveUser(i); 
         //console.log(savedUserinfo); 
         if (savedUserinfo) { 
-          console.log('savedUserinfo');
-        
           returnRoot = savedUserinfo;
-          console.log(returnRoot);
+          //console.log(returnRoot);
           responseStatusTag = util.getResponseStatusTag(200);  
         }else{
           responseStatusTag = util.getResponseStatusTag(903);  
@@ -110,34 +85,28 @@ module.exports = pgPool => {
         responseStatusTag = util.getResponseStatusTag(913);  
       } 
        // return value 
-      responseArr.push(responseStatusTag); 
-      returnRoot.responseStatus=responseArr;
+      returnRoot.responseStatus=responseStatusTag;
       return returnRoot;
     }, 
     saveUser(i){
-      let sqlString = `
-      INSERT INTO  users (username, password, email, token) VALUES ($1, $2, $3,$4)
-                ON CONFLICT (token) DO NOTHING
-                returning *
-    `;  
+      let sqlString = `INSERT INTO  users (username, password, email, token) VALUES ($1, $2, $3,$4)
+        ON CONFLICT (token) DO NOTHING
+        returning *`;  
       return pgPool.query(sqlString, [i.username, i.password, i.email,i.token])
-      .then(res => {  
-        if (res.rows[0]){
-          const user = humps.camelizeKeys(res.rows[0]);
-          const playload = jwtToken.setTokenAccess(res.rows[0]); 
-                            user.token = jwtToken.signToken(playload); 
-          return user;
-        }
-      });
+        .then(res => {  
+          if (res.rows[0]){
+            const user = humps.camelizeKeys(res.rows[0]);
+            const playload = jwtToken.setTokenAccess(res.rows[0]); 
+            user.token = jwtToken.signToken(playload); 
+            return user;
+          }
+        });
     }, 
 
     updateRecord({firstName,lastName,image,facebook,website,instagram}){  
-      const sqlString = `
-            update users set 
-            first_name =$2, last_name =$3, image  =$4, facebook =$5, website =$6, instagram =$7
+      const sqlString = `update users set first_name =$2, last_name =$3, image  =$4, facebook =$5, website =$6, instagram =$7
             where token = $1
-            returning *
-            `;
+            returning *`;
           
       return pgPool.query(sqlString , [global.token,firstName,lastName,image,facebook,website,instagram]).then(res => { 
         let returnRoot = {};
@@ -146,24 +115,21 @@ module.exports = pgPool => {
         if (res.rows[0]){  
           returnRoot = humps.camelizeKeys(res.rows[0]);
           responseStatusTag = util.getResponseStatusTag(200);
-        }else{ 
+        } else { 
           responseStatusTag = util.getResponseStatusTag(904); 
         } 
         responseArr.push(responseStatusTag); 
         returnRoot.responseStatus=responseArr;
         return returnRoot
       });
-    
     },
-
     deleteRecord(tokens){
       const sqlString = ` delete from users where token = ANY($1)
-            returning *
-            `; 
+        returning *
+        `; 
       return pgPool.query(sqlString ,[tokens]).then(res => {
         return humps.camelizeKeys(res.rows[0]);
       });
-
     }
   } 
 }

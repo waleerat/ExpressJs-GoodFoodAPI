@@ -4,7 +4,7 @@ const {
   GraphQLID,
   GraphQLObjectType,
   GraphQLString,
-  GraphQLList
+  GraphQLNonNull
 } = graphql;
 
 const responseStatus = require('../../share/response_status'); 
@@ -31,6 +31,6 @@ module.exports = new GraphQLObjectType({
    createDate: { type : GraphQLString },
    updateDate: { type : GraphQLString },
      
-    responseStatus: { type: new GraphQLList(responseStatus)} 
+    responseStatus: { type: new GraphQLNonNull(responseStatus)} 
   }
 })
