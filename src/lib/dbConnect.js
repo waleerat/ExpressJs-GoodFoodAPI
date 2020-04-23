@@ -1,6 +1,11 @@
 const { Pool } = require('pg')
-const connectionString = 'postgres://postgres:deknoi3004@localhost:3004/GoodFood'
 
+if (process.env.NODE_ENV === 'development') {
+  require('dotenv').config({ path: 'development.env' })
+}
+
+let connectionString = 'postgres://postgres:' + process.env.DB_PASSWORD + '@' + process.env.DB_HOST + '/' + process.env.DB_NAME;
+ 
 const pgPool = new Pool({
   connectionString: connectionString,
 }) 

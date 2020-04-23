@@ -97,7 +97,7 @@ module.exports = pgPool => {
                b.ingredientId =  savedIngredientInfo.id  
                b.amount = i[1].amount;
               // #save Bundle
-              savedBundleInfo = await this.saveIngredientBundle(b);
+              let savedBundleInfo = await this.saveIngredientBundle(b);
               savedIngredientInfo.amount = b.amount;
               resIngredientArr.push(savedIngredientInfo);  
               //console.log(' savedBundleInfo recipeId : '+savedBundleInfo.recipeId+ '  ingredientId : '+savedBundleInfo.ingredientId);
