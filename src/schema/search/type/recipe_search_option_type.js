@@ -12,6 +12,7 @@ module.exports = new GraphQLEnumType({
     username: { value: 'username' },
     recipeSlug: { value: 'recipeSlug' },
     categorySlug: { value: 'categorySlug' },
-    ingredientSlug: { value: 'ingredientSlug' }
+    ingredientSlug: { value: 'ingredientSlug' },
+    all: { value: 'all' }
   }
 });

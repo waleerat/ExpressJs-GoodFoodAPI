@@ -28,19 +28,18 @@ app.listen(port, () => {
 
 //#1 Check Token value
 const jwtToken = require('./src/lib/jwt_token'); 
-function getuserLoginInfo(req,pgPool) {
+async function getuserLoginInfo(req,pgPool) {
   const tokenAccess = jwtToken.getTokenAccess(req);
   if (tokenAccess){
     const val = jwtToken.verify(tokenAccess); 
     global.token = val.token;  
     const userModel = require('./src/models/usersModel')(pgPool);   
-    userModel.geUserInfoByToken(global.token).then(function(res) {
-       
-      if (typeof res.id != 'undefined') {
+     return await userModel.geUserInfoByToken(global.token).then(function(res) {
+       if (res) {
         global.userLoginInfo = res;
         global.UserId = global.userLoginInfo.id;
         global.isAuthen = true;
-      }else global.isAuthen = false;  
+      }else global.isAuthen = false;    
       req.next();
     });
   }else {

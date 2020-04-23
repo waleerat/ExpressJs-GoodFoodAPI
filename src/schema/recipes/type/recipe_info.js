@@ -33,7 +33,7 @@ module.exports = new GraphQLObjectType( {
             image: { type: GraphQLString }
           }
         }) 
-      ),
+      )
     }, 
     ingredients: {
       type: new GraphQLList( 

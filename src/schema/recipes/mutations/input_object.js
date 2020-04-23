@@ -44,7 +44,6 @@ const InputType = new GraphQLInputObjectType({
           name: 'howtoType',
           fields: () => ({
             order: { type: new GraphQLNonNull(GraphQLInt) },
-            title: { type: new GraphQLNonNull(GraphQLString) },
             image: { type: GraphQLString },
             description : { type: new GraphQLNonNull(GraphQLString) },
             remark: { type: GraphQLString }

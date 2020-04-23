@@ -8,9 +8,10 @@ const {
 
 const userModel = require('../../../models/usersModel');
 const UserType = require('../type/user_info');
+const util = require('../../../lib/util'); 
 
 const InputType = new GraphQLInputObjectType({
-  name: 'updateRecode',
+  name: 'inputKeys',
   description : description['userUpdateRecodeFields'],
   fields: {
     firstName: { type: GraphQLString },  
@@ -30,8 +31,10 @@ module.exports = {
     input: { type: new GraphQLNonNull(InputType) }
   },
    resolve(obj,{ input }, { pgPool }) { 
-      if (global.isAuthen){
+      if (global.isAuthen){ 
         return userModel(pgPool).updateRecord(input);
-      } 
+      } else {
+        return util.returnResponseStatusTag(902);
+      }
   }
 };

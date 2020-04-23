@@ -9,7 +9,7 @@ const description = require('../../../lib/shema_description');
 const userInfo = require('../type/user_info');
 
 const InputType = new GraphQLInputObjectType({
-  name: 'requestLogin',
+  name: 'authenKeys',
   description : description['userUpdateRecodeFields'],
   fields: {
     username: { type: new GraphQLNonNull(GraphQLString) },

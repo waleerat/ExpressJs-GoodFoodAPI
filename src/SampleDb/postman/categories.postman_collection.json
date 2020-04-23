@@ -1,19 +1,19 @@
 {
 	"info": {
 		"_postman_id": "1963fb2a-94a8-4277-84bf-d0be03768422",
-		"name": "categories",
+		"name": "Categories",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
 		{
-			"name": "Update Status Categories",
+			"name": "Update Status - Categories",
 			"request": {
 				"auth": {
 					"type": "bearer",
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IndhbGVlcmF0MiIsInRva2VuIjoiNWQ1MjA2MTFiZWM0YjRmNjIzMTY0ZTZlNmU5MzBlZGUiLCJpYXQiOjE1ODcxNTgxNzF9.zYAsdhU3MdcNRjAg78VY9Qf_3hy_lK06t_YMd2sOonM",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImVtaWxpYSIsInRva2VuIjoiYWFmY2M2MTViNjdhNWEyZTM2MGZkZDdiMzkwMDYwZWUiLCJpYXQiOjE1ODc2Mjk0NDZ9._rNp81hs3ygNgm87Y7uuUOlf6UOMn1ljO8nYeH_t4-Y",
 							"type": "string"
 						}
 					]
@@ -23,8 +23,8 @@
 				"body": {
 					"mode": "graphql",
 					"graphql": {
-						"query": "mutation updateStatusRecords($input: UpdateIDs!) {\r\n  updateStatusResult(input: $input) {\r\n \tstatus\r\n    message\r\n  }\r\n} ",
-						"variables": "{\r\n  \"input\": {\r\n    \"newStatus\": \"trash\",\r\n    \"categories\": [\r\n      {\r\n        \"id\": 65\r\n      },\r\n      {\r\n        \"id\": 66\r\n      },\r\n      {\r\n        \"id\": 67\r\n      }\r\n    ]\r\n  }\r\n}"
+						"query": "mutation updateCategoriesStatus($input: UpdateIDs!) {\r\n  updateResult(input: $input) {\r\n \tstatus\r\n    message\r\n  }\r\n} ",
+						"variables": "{\r\n  \"input\": {\r\n    \"newStatus\": \"trash\",\r\n    \"categories\": [\r\n      {\r\n        \"id\": 1\r\n      },\r\n      {\r\n        \"id\": 66\r\n      }\r\n    ]\r\n  }\r\n}"
 					}
 				},
 				"url": {
@@ -43,14 +43,14 @@
 			"response": []
 		},
 		{
-			"name": "Modify - Category",
+			"name": "Add/Modify - Category",
 			"request": {
 				"auth": {
 					"type": "bearer",
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IndhbGVlcmF0MiIsInRva2VuIjoiNWQ1MjA2MTFiZWM0YjRmNjIzMTY0ZTZlNmU5MzBlZGUiLCJpYXQiOjE1ODcxNTgxNzF9.zYAsdhU3MdcNRjAg78VY9Qf_3hy_lK06t_YMd2sOonM",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImVtaWxpYSIsInRva2VuIjoiYWFmY2M2MTViNjdhNWEyZTM2MGZkZDdiMzkwMDYwZWUiLCJpYXQiOjE1ODc2Mjk0NDZ9._rNp81hs3ygNgm87Y7uuUOlf6UOMn1ljO8nYeH_t4-Y",
 							"type": "string"
 						}
 					]
@@ -60,8 +60,8 @@
 				"body": {
 					"mode": "graphql",
 					"graphql": {
-						"query": "mutation modifyRecipe($input: inputFields!) {\r\n  modifyRecord(input: $input) {\r\n \tid\r\n  slug\r\n  title\r\n  description\r\n  image\r\n  remark\r\n\r\n  createdBy{\r\n    username\r\n    fullName\r\n    image\r\n    website\r\n    instagram\r\n    facebook\r\n  }\r\n \r\n  }\r\n} ",
-						"variables": "{\r\n  \"input\": {\r\n    \"category\": {\r\n    \r\n      \"title\": \"Yes i can do#5-i\",\r\n      \"description\": \"222222222tion\",\r\n      \"image\": \"https://www.bbcgoodfood.com/sites/default/files/recipe-collections/collection-image/2013/05/chorizo-mozarella-gnocchi-bake-cropped.jpg\",\r\n      \"remark\": \"recipe Remark\"\r\n    }\r\n  }\r\n}"
+						"query": "mutation modifyRecipe($input: inputFields!) {\r\n  modifyRecord(input: $input) {\r\n  id\r\n  slug\r\n  title\r\n  description\r\n  image\r\n  remark\r\n  responseStatus{\r\n    status\r\n    message\r\n  }\r\n  }\r\n} ",
+						"variables": "{\r\n  \"input\": {\r\n    \"category\": {\r\n      \"slug\": \"starters\",\r\n      \"title\": \"starters\",\r\n      \"description\": \"Kick off your meal in style with our chic selection of starters.\",\r\n      \"image\": \"https://www.bbcgoodfood.com/sites/default/files/recipe-collections/collection-image/2013/05/smoked-salmon-prawn-salad.jpg\",\r\n      \"remark\": \"Dishes are sure to impress\"\r\n    }\r\n  }\r\n}"
 					}
 				},
 				"url": {
@@ -80,14 +80,14 @@
 			"response": []
 		},
 		{
-			"name": "Delete categories",
+			"name": "Delete - Categories",
 			"request": {
 				"auth": {
 					"type": "bearer",
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IndhbGVlcmF0MiIsInRva2VuIjoiNWQ1MjA2MTFiZWM0YjRmNjIzMTY0ZTZlNmU5MzBlZGUiLCJpYXQiOjE1ODcxNTgxNzF9.zYAsdhU3MdcNRjAg78VY9Qf_3hy_lK06t_YMd2sOonM",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImVtaWxpYSIsInRva2VuIjoiYWFmY2M2MTViNjdhNWEyZTM2MGZkZDdiMzkwMDYwZWUiLCJpYXQiOjE1ODc2Mjk0NDZ9._rNp81hs3ygNgm87Y7uuUOlf6UOMn1ljO8nYeH_t4-Y",
 							"type": "string"
 						}
 					]
@@ -98,7 +98,7 @@
 					"mode": "graphql",
 					"graphql": {
 						"query": "mutation DeleteRecords($input: DeleteIDs!) {\r\n  deleteResult(input: $input) {\r\n \tstatus\r\n    message\r\n  }\r\n} ",
-						"variables": "{\r\n  \"input\": {\r\n    \"categories\": [\r\n      {\r\n        \"id\": 73\r\n      },\r\n      {\r\n        \"id\": 85\r\n      },\r\n      {\r\n        \"id\": 293\r\n      }\r\n    ]\r\n  }\r\n}"
+						"variables": "{\r\n  \"input\": {\r\n    \"categories\": [\r\n      { \"id\": 2 },\r\n      { \"id\": 85 }\r\n    ]\r\n  }\r\n}"
 					}
 				},
 				"url": {

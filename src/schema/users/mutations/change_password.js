@@ -8,7 +8,7 @@ const {
 } = require('graphql');
 
 const userModel = require('../../../models/usersModel');
-const responseStatus = require('../../share/response_status');
+const userInfo = require('../type/user_info');
 
 const InputType = new GraphQLInputObjectType({
   name: 'changePassword',
@@ -20,12 +20,14 @@ const InputType = new GraphQLInputObjectType({
 }); 
 
 module.exports = {
-  type: responseStatus,
+  type: userInfo,
   description : description['userUpdateRecode'],
   args: {
     input: { type: new GraphQLNonNull(InputType) }
   },
    resolve(obj,{ input }, { pgPool }) {  
+     console.log(global.isAuthen);
+     
     if (global.isAuthen){
       return userModel(pgPool).changePassword(input); 
     }else{

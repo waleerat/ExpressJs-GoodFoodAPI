@@ -6,7 +6,6 @@ const {
 } = require('graphql');
 
 const description = require('../../../lib/shema_description'); 
-const authorInfo = require('../../share/author_info');
 const responseStatusTag = require('../../share/response_status'); 
 
 module.exports = new GraphQLObjectType({
@@ -19,9 +18,7 @@ module.exports = new GraphQLObjectType({
     title: { type: GraphQLString },
     description: { type: GraphQLString },
     image : { type: GraphQLString },
-    remark: { type: GraphQLString },
-    createdBy: { type: new GraphQLNonNull(authorInfo),
+    remark: { type: GraphQLString }, 
     responseStatus: { type: new GraphQLNonNull(responseStatusTag) }
-    } 
   }
 })

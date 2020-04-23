@@ -9,7 +9,6 @@ const description = require('../../../lib/shema_description');
 const searchModel = require('../../../models/searchModel');
 const recipeInfo = require('../type/recipes_type'); 
 const searchOption = require('../type/recipe_search_option_type');
- 
 
 const InputType = new GraphQLInputObjectType({
   name: "searchRecipes",

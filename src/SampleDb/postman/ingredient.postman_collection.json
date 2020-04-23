@@ -1,19 +1,19 @@
 {
 	"info": {
 		"_postman_id": "d218a797-1d89-4281-b217-38a1d920b895",
-		"name": "ingredient",
+		"name": "Ingredient",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
 		{
-			"name": "Modify - Ingredient",
+			"name": "Add/Modify - Ingredient",
 			"request": {
 				"auth": {
 					"type": "bearer",
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IndhbGVlcmF0MiIsInRva2VuIjoiNWQ1MjA2MTFiZWM0YjRmNjIzMTY0ZTZlNmU5MzBlZGUiLCJpYXQiOjE1ODcxNTgxNzF9.zYAsdhU3MdcNRjAg78VY9Qf_3hy_lK06t_YMd2sOonM",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImVtaWxpYSIsInRva2VuIjoiYWFmY2M2MTViNjdhNWEyZTM2MGZkZDdiMzkwMDYwZWUiLCJpYXQiOjE1ODc2Mjk0NDZ9._rNp81hs3ygNgm87Y7uuUOlf6UOMn1ljO8nYeH_t4-Y",
 							"type": "string"
 						}
 					]
@@ -23,8 +23,8 @@
 				"body": {
 					"mode": "graphql",
 					"graphql": {
-						"query": "mutation modifyRecipe($input: inputFields!) {\r\n  modifyRecord(input: $input) {\r\n \tid\r\n  slug\r\n  title\r\n  description\r\n  image\r\n  remark\r\n  createdBy{\r\n    username\r\n    fullName\r\n    image\r\n    website\r\n    instagram\r\n    facebook\r\n  }\r\n  }\r\n} ",
-						"variables": "{\r\n  \"input\": {\r\n    \"ingredient\": {\r\n      \"title\": \"Yes i can do#5-image22232324\",\r\n      \"description\": \"222222222recipe descrtiption\",\r\n      \"image\": \"www.bbcgoodfood.com/sites/default/\",\r\n      \"remark\": \"recipe Remark\"\r\n    }\r\n  }\r\n}"
+						"query": "mutation modifyRecipe($input: inputFields!) {\r\n  modifyRecord(input: $input) {\r\n \tid\r\n  slug\r\n  title\r\n  description\r\n  image\r\n  remark\r\n  responseStatus{\r\n    status\r\n    message\r\n  }\r\n  }\r\n} ",
+						"variables": "{\r\n  \"input\": {\r\n    \"ingredient\": {\r\n      \"title\": \"tomato2\",\r\n      \"description\": \"The tomato is the edible, often red, berry of the plant Solanum lycopersicum, commonly known as a tomato plant. The species originated in western South America and Central America. \",\r\n      \"image\": \"https://www.almanac.com/sites/default/files/styles/primary_image_in_article/public/image_nodes/tomatoes_helios4eos_gettyimages-edit.jpeg?itok=4KrW14a4\",\r\n      \"remark\": \"\"\r\n    }\r\n  }\r\n}"
 					}
 				},
 				"url": {
@@ -50,7 +50,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IndhbGVlcmF0MiIsInRva2VuIjoiNWQ1MjA2MTFiZWM0YjRmNjIzMTY0ZTZlNmU5MzBlZGUiLCJpYXQiOjE1ODcxNTgxNzF9.zYAsdhU3MdcNRjAg78VY9Qf_3hy_lK06t_YMd2sOonM",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImVtaWxpYSIsInRva2VuIjoiYWFmY2M2MTViNjdhNWEyZTM2MGZkZDdiMzkwMDYwZWUiLCJpYXQiOjE1ODc2Mjk0NDZ9._rNp81hs3ygNgm87Y7uuUOlf6UOMn1ljO8nYeH_t4-Y",
 							"type": "string"
 						}
 					]
@@ -60,8 +60,8 @@
 				"body": {
 					"mode": "graphql",
 					"graphql": {
-						"query": "mutation updateStatusRecords($input: UpdateIDs!) {\r\n  updateStatusResult(input: $input) {\r\n \tstatus\r\n    message\r\n  }\r\n} ",
-						"variables": "{\r\n  \"input\": {\r\n    \"newStatus\": \"inactive\",\r\n    \"ingredients\": [\r\n      {\r\n        \"id\": 220\r\n      },\r\n      {\r\n        \"id\": 296\r\n      },\r\n      {\r\n        \"id\": 293\r\n      }\r\n    ]\r\n  }\r\n}"
+						"query": "mutation updateStatus($input: UpdateIDs!) {\r\n  updateResult(input: $input) {\r\n \tstatus\r\n    message\r\n  }\r\n} ",
+						"variables": "{\r\n  \"input\": {\r\n    \"newStatus\": \"inactive\",\r\n    \"ingredients\": [\r\n      { \"id\": 1 },\r\n      { \"id\": 296 }\r\n    ]\r\n  }\r\n}"
 					}
 				},
 				"url": {
@@ -87,7 +87,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IndhbGVlcmF0MiIsInRva2VuIjoiNWQ1MjA2MTFiZWM0YjRmNjIzMTY0ZTZlNmU5MzBlZGUiLCJpYXQiOjE1ODcxNTgxNzF9.zYAsdhU3MdcNRjAg78VY9Qf_3hy_lK06t_YMd2sOonM",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImVtaWxpYSIsInRva2VuIjoiYWFmY2M2MTViNjdhNWEyZTM2MGZkZDdiMzkwMDYwZWUiLCJpYXQiOjE1ODc2Mjk0NDZ9._rNp81hs3ygNgm87Y7uuUOlf6UOMn1ljO8nYeH_t4-Y",
 							"type": "string"
 						}
 					]
@@ -97,8 +97,8 @@
 				"body": {
 					"mode": "graphql",
 					"graphql": {
-						"query": "mutation DeleteRecords($input: DeleteIDs!) {\r\n  deleteResult(input: $input) {\r\n \tstatus\r\n    message\r\n  }\r\n} ",
-						"variables": "{\r\n  \"input\": {\r\n    \"ingredients\": [\r\n      {\r\n        \"id\": 220\r\n      },\r\n      {\r\n        \"id\": 296\r\n      },\r\n      {\r\n        \"id\": 293\r\n      }\r\n    ]\r\n  }\r\n}"
+						"query": "mutation DeleteRecords($input: DeleteIDs!) {\r\n  deleteResult(input: $input) {\r\n \tstatus\r\n    message\r\n  }\r\n}",
+						"variables": "{\r\n  \"input\": {\r\n    \"ingredients\": [\r\n      { \"id\": 2 },\r\n      { \"id\": 296 }\r\n    ]\r\n  }\r\n}"
 					}
 				},
 				"url": {

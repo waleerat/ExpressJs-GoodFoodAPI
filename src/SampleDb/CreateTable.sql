@@ -15,7 +15,7 @@ CREATE TABLE "users" (
   "facebook" varchar(255),
   "instagram" varchar(255),
   "approved" enum_appoved NOT NULL  DEFAULT 'approved',
-  "api_key" varchar(255) UNIQUE NOT NULL,
+  "token" varchar(255) UNIQUE NOT NULL,
   "create_date" timestamp NOT NULL DEFAULT (current_timestamp),
   "update_date" timestamp NOT NULL DEFAULT (current_timestamp)
 );
@@ -66,7 +66,6 @@ CREATE TABLE "recipe_howto" (
   "user_id" integer NOT NULL,
   "recipe_id" integer NOT NULL,
   "order_step" integer NOT NULL,
-  "title" varchar(90),
   "description" text,
   "remark" varchar(255),
   "image" varchar(255),
@@ -77,9 +76,9 @@ CREATE TABLE "recipe_howto" (
 );
 
 
---drop table if exists recipe_bundle;
+--drop table if exists ingredient;
 
-CREATE TABLE "recipe_bundle" (
+CREATE TABLE "ingredient" (
   "ingredient_id" integer NOT NULL,
   "recipe_id" integer NOT NULL,
   "amount" varchar(50) NOT NULL,
@@ -97,9 +96,9 @@ CREATE TABLE "authen_token" (
 
 ALTER TABLE "recipes" ADD FOREIGN KEY ("user_id") REFERENCES "users" ("id");
 
-ALTER TABLE "recipe_bundle" ADD FOREIGN KEY ("recipe_id") REFERENCES "recipes" ("id");
+ALTER TABLE "ingredient" ADD FOREIGN KEY ("recipe_id") REFERENCES "recipes" ("id");
 
-ALTER TABLE "recipe_bundle" ADD FOREIGN KEY ("ingredient_id") REFERENCES "ingredients" ("id");
+ALTER TABLE "ingredient" ADD FOREIGN KEY ("ingredient_id") REFERENCES "ingredients" ("id");
 
 ALTER TABLE "recipe_howto" ADD FOREIGN KEY ("recipe_id") REFERENCES "recipes" ("id");
 
@@ -129,3 +128,7 @@ CREATE UNIQUE INDEX ingredient_userid_and_slug_unique
 CREATE UNIQUE INDEX recipe_howto_order_step_key
     ON recipe_howto USING btree
     (recipe_id ASC NULLS LAST, order_step ASC NULLS LAST);
+
+  CREATE UNIQUE INDEX recipe_id_and_ingredient_id_unique
+    ON public.ingredient_bundle USING btree
+    (ingredient_id ASC NULLS LAST, recipe_id ASC NULLS LAST);

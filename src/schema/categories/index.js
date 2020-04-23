@@ -1,28 +1,17 @@
-const description = require('../../lib/shema_description'); 
-
 const {
   GraphQLSchema,
-  GraphQLObjectType,
-  GraphQLString,
-  GraphQLNonNull
+  GraphQLObjectType
 } = require('graphql');
 
-const IngredientInfo = require('./type/category_info'); 
+const description = require('../../lib/shema_description'); 
+const categoryInfo = require('./type/category_info'); 
 
 const RootQueryType = new GraphQLObjectType({
   name : "CategoryQuery", 
   fields : {
     category : {
-      type: IngredientInfo,
-      description : description['categoryQuery'],
-      args: {
-        key: { type: new GraphQLNonNull(GraphQLString) }
-      },
-      resolve: () => {
-        return {
-          
-        } 
-      }
+      type: categoryInfo,
+      description : description['categoryQuery']
     } 
   }
 });
@@ -36,7 +25,7 @@ const RootMutationType = new GraphQLObjectType({
   description : description['CategoryMutation'],
   fields: () => ({
     modifyRecord: modifyRecord,
-    updateStatusResult : updateStatusResult,
+    updateResult : updateStatusResult,
     deleteResult : deleteRecords,
   })
 });

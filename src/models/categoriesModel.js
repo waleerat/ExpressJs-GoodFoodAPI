@@ -10,16 +10,16 @@ module.exports = pgPool => {
       let returnRoot = {};
 
       let c =  inputObject.category;
-      let savedIngredientsInfo = await this.saveCategory(c);
-      //console.log(savedIngredientsInfo);      
-      if (typeof savedIngredientsInfo.id != 'undefined') { 
+      
+      let saveCategoryInfo = await this.saveCategory(c);
+      //console.log(saveCategoryInfo);      
+      if (typeof saveCategoryInfo.id != 'undefined') { 
         responseStatusTag = util.getResponseStatusTag(200);  
       }else{
-        responseStatusTag = savedIngredientsInfo; // if not success function will return response status
+        responseStatusTag = saveCategoryInfo; // if not success function will return response status
       } 
        // return value
-      returnRoot = savedIngredientsInfo; 
-      returnRoot.createdBy=global.userLoginInfo; 
+      returnRoot = saveCategoryInfo;
       returnRoot.responseStatus=responseStatusTag;
       return returnRoot;
     },

@@ -103,8 +103,8 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "query ($key: searchIngredients!) {\r\n  viewIngredients(key:$key){\r\n    rowCount \r\n    searchKey{\r\n        type\r\n        key\r\n    }\r\n    rows{ \r\n    \tid \r\n    \tslug\r\n    \ttitle\r\n    \tdescription\r\n    \tremark\r\n    \tcreatedBy{ \r\n            username\r\n            fullName\r\n            image\r\n            website\r\n            instagram\r\n            facebook\r\n        }\r\n    }\r\n  }\r\n}",
-								"variables": "{\r\n  \"key\": {\r\n    \"  \": \"waleerat2\"\r\n  }\r\n}"
+								"query": "query ($key: searchIngredients!) {\r\n  viewIngredients(key:$key){\r\n    rowCount \r\n    totalPage\r\n    searchKey{\r\n      page\r\n      limit\r\n      searchKey\r\n      searchOption\r\n    }\r\n    rows{ \r\n    \tid \r\n    \tslug\r\n    \ttitle\r\n    \tdescription\r\n    \tremark\r\n    \tcreatedBy{ \r\n            username\r\n            fullName\r\n            image\r\n            website\r\n            instagram\r\n            facebook\r\n        }\r\n    }\r\n  }\r\n}",
+								"variables": "{\r\n  \"key\": {\r\n    \"page\": 1,\r\n    \"limit\": 4,\r\n    \"searchOption\": \"username\",\r\n    \"searchKey\": \"emilia\"\r\n  }\r\n}"
 							}
 						},
 						"url": {
@@ -163,8 +163,8 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "query ($key: searchRecipes!) {\r\n  viewRecipes(key:$key){\r\n    rowCount \r\n    totalPage\r\n    searchKey{\r\n      page\r\n      limit\r\n      searchKey\r\n      searchOption\r\n    }\r\n    rows{ \r\n    \tid \r\n    \tslug\r\n    \ttitle \r\n    }\r\n  }\r\n}",
-								"variables": "{\r\n  \"key\": {\r\n    \"page\": 1,\r\n    \"limit\": 4,\r\n    \"searchOption\": \"username\",\r\n    \"searchKey\": \"waleerat2\"\r\n  }\r\n}"
+								"query": "query ($key: searchRecipes!) {\r\n  viewRecipes(key:$key){\r\n    rowCount \r\n    totalPage\r\n    searchKey{\r\n      page\r\n      limit\r\n      searchOption\r\n      searchKey\r\n    }\r\n    rows{ \r\n    \tid \r\n    \tslug\r\n    \ttitle\r\n    \tdescription\r\n    \tremark\r\n    \tcategory{\r\n    \t\tid\r\n    \t\tslug\r\n    \t\ttitle\r\n    \t\tdescription\r\n    \t}\r\n        ingredients{\r\n          title\r\n          amount\r\n          remark\r\n        }\r\n        howto{\r\n          orderStep\r\n          title\r\n          description\r\n        } \r\n        createdBy{ \r\n            username\r\n            fullName\r\n            image\r\n            website\r\n            instagram\r\n            facebook\r\n        }\r\n    }\r\n  }\r\n}",
+								"variables": "{\r\n  \"key\": {\r\n    \"page\": 1,\r\n    \"limit\": 4,\r\n    \"searchOption\": \"username\",\r\n    \"searchKey\": \"emilia\"\r\n  }\r\n}"
 							}
 						},
 						"url": {
@@ -190,8 +190,8 @@
 						"body": {
 							"mode": "graphql",
 							"graphql": {
-								"query": "query ($key: searchRecipes!) {\r\n  viewRecipes(key:$key){\r\n    rowCount \r\n    searchKey{\r\n        type\r\n        key\r\n    }\r\n    rows{ \r\n    \tid \r\n    \tslug\r\n    \ttitle\r\n    \tdescription\r\n    \tremark\r\n    \tcategory{\r\n    \t\tid\r\n    \t\tslug\r\n    \t\ttitle\r\n    \t\tdescription\r\n    \t}\r\n        ingredients{\r\n          title\r\n          amount\r\n          remark\r\n        }\r\n        howto{\r\n          orderStep\r\n          title\r\n          description\r\n        } \r\n        createdBy{ \r\n            username\r\n            fullName\r\n            image\r\n            website\r\n            instagram\r\n            facebook\r\n        }\r\n    }\r\n  }\r\n}",
-								"variables": "{\r\n  \"key\": {\r\n    \"recipeId\": 126\r\n  }\r\n}\r\n\r\n "
+								"query": "query ($key: searchRecipes!) {\r\n  viewRecipes(key:$key){\r\n    rowCount \r\n    totalPage\r\n    searchKey{\r\n      page\r\n      limit\r\n      searchKey\r\n      searchOption\r\n    }\r\n    rows{ \r\n    \tid \r\n    \tslug\r\n    \ttitle\r\n    \tdescription\r\n    \tremark\r\n    \tcategory{\r\n    \t\tid\r\n    \t\tslug\r\n    \t\ttitle\r\n    \t\tdescription\r\n    \t}\r\n        ingredients{\r\n          title\r\n          amount\r\n          remark\r\n        }\r\n        howto{\r\n          orderStep\r\n          title\r\n          description\r\n        } \r\n        createdBy{ \r\n            username\r\n            fullName\r\n            image\r\n            website\r\n            instagram\r\n            facebook\r\n        }\r\n    }\r\n  }\r\n}",
+								"variables": "{\r\n  \"key\": {\r\n    \"page\": 1,\r\n    \"limit\": 4,\r\n    \"searchOption\": \"recipeId\",\r\n    \"searchKey\": \"1\"\r\n  }\r\n}"
 							}
 						},
 						"url": {

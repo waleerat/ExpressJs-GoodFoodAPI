@@ -6,85 +6,6 @@
 	},
 	"item": [
 		{
-			"name": "Test folder",
-			"item": [
-				{
-					"name": "Check authen Token",
-					"event": [
-						{
-							"listen": "prerequest",
-							"script": {
-								"id": "15327bc3-6e52-4c88-8442-ef1983005a76",
-								"exec": [
-									""
-								],
-								"type": "text/javascript"
-							}
-						},
-						{
-							"listen": "test",
-							"script": {
-								"id": "c28f17fb-dd4b-400b-a222-470bc367abe7",
-								"exec": [
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IndhbGVlcmF0MTAiLCJ0b2tlbiI6IjRhZmVhNzA3OWViYjczMWQ1YmRlZGE5OGNhYzBiOTIyIiwiaWF0IjoxNTg2ODEzODU4fQ.dO-t3pylaCi0y3PBmLkl0VHqqvTOXRQ3xOCwsHHWt6k",
-									"type": "string"
-								}
-							]
-						},
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "formdata",
-							"formdata": [
-								{
-									"key": "username",
-									"value": "admin",
-									"type": "text"
-								},
-								{
-									"key": "password",
-									"value": "password",
-									"type": "text"
-								}
-							]
-						},
-						"url": {
-							"raw": "http://localhost:8000/api/authen",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8000",
-							"path": [
-								"api",
-								"authen"
-							]
-						}
-					},
-					"response": []
-				}
-			],
-			"protocolProfileBehavior": {}
-		},
-		{
 			"name": "Update user",
 			"event": [
 				{
@@ -104,7 +25,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IndhbGVlcmF0MTAiLCJ0b2tlbiI6IjRhZmVhNzA3OWViYjczMWQ1YmRlZGE5OGNhYzBiOTIyIiwiaWF0IjoxNTg2ODEzODU4fQ.dO-t3pylaCi0y3PBmLkl0VHqqvTOXRQ3xOCwsHHWt6k",
+							"value": "",
 							"type": "string"
 						}
 					]
@@ -121,8 +42,8 @@
 				"body": {
 					"mode": "graphql",
 					"graphql": {
-						"query": "mutation UserUpdate($input: updateRecode!) {\r\n  updateRecodeResult(input: $input) {\r\n    firstName\r\n    lastName\r\n    image\r\n    website\r\n    facebook\r\n    instagram\r\n     responseStatus{\r\n      status\r\n      message\r\n    }\r\n  }\r\n}   ",
-						"variables": "{\r\n  \"input\": {\r\n    \"firstName\": \"waleerat-update4\",\r\n    \"lastName\": \"Gottlieb\",\r\n    \"image\": \"URL\",\r\n    \"facebook\": \"URL\",\r\n    \"instagram\": \"URL\",\r\n    \"website\": \"URL\"\r\n  }\r\n}"
+						"query": "mutation UserUpdate($input: inputKeys!) {\r\n  updateRecodeResult(input: $input) {\r\n    firstName\r\n    lastName\r\n    image\r\n    website\r\n    facebook\r\n    instagram\r\n     responseStatus{\r\n      status\r\n      message\r\n    }\r\n  }\r\n}   ",
+						"variables": "{\r\n  \"input\": {\r\n    \"firstName\": \"Emilia\",\r\n    \"lastName\": \"Gottlieb\",\r\n    \"image\": \"https://media-exp1.licdn.com/dms/image/C4D03AQGcVzKCW2n7RA/profile-displayphoto-shrink_200_200/0?e=1593043200&v=beta&t=IE7kD-90gZVb1FmbAmrdqS9Jj6lliZJgRhF3aGbayf0\",\r\n    \"facebook\": \"https://www.facebook.com/waleerat.sangwanloy\",\r\n    \"instagram\": \"\",\r\n    \"website\": \"http://wgoweb.com/\"\r\n  }\r\n}"
 					},
 					"options": {
 						"raw": {
@@ -148,27 +69,17 @@
 		{
 			"name": "Login",
 			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "",
-							"type": "string"
-						}
-					]
-				},
 				"method": "POST",
 				"header": [],
 				"body": {
 					"mode": "graphql",
 					"graphql": {
-						"query": "mutation authenInfo($input: requestLogin!) {\r\n  authenInfo(input: $input) {\r\n    token\r\n    responseStatus{\r\n      status\r\n      message\r\n    }  \r\n  }\r\n}   \r\n",
-						"variables": "{\r\n  \"input\": {\r\n    \"username\": \"username21\",\r\n    \"password\": \"password\"\r\n  }\r\n}"
+						"query": "query authen($input: authenKeys!) {\r\n  authenInfo(input: $input) {\r\n    username\r\n    token\r\n    responseStatus{\r\n      status\r\n      message\r\n    }  \r\n  }\r\n}   \r\n",
+						"variables": "{\r\n  \"input\": {\r\n    \"username\": \"emilia\",\r\n    \"password\": \"emilia3004\"\r\n  }\r\n}"
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8000/api/login",
+					"raw": "http://localhost:8000/api/user",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -176,7 +87,7 @@
 					"port": "8000",
 					"path": [
 						"api",
-						"login"
+						"user"
 					],
 					"query": [
 						{
@@ -202,7 +113,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IndhbGVlcmF0MTAiLCJ0b2tlbiI6IjRhZmVhNzA3OWViYjczMWQ1YmRlZGE5OGNhYzBiOTIyIiwiaWF0IjoxNTg2ODEzODU4fQ.dO-t3pylaCi0y3PBmLkl0VHqqvTOXRQ3xOCwsHHWt6k",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImVtaWxpYSIsInRva2VuIjoiYWFmY2M2MTViNjdhNWEyZTM2MGZkZDdiMzkwMDYwZWUiLCJpYXQiOjE1ODc2Mjk0NDZ9._rNp81hs3ygNgm87Y7uuUOlf6UOMn1ljO8nYeH_t4-Y",
 							"type": "string"
 						}
 					]
@@ -212,8 +123,8 @@
 				"body": {
 					"mode": "graphql",
 					"graphql": {
-						"query": "mutation changePassword($input: changePassword!) {\r\n  changePasswordresult(input: $input) {\r\n \tstatus\r\n    message\r\n  }\r\n}   \r\n",
-						"variables": "{\r\n  \"input\": {\r\n   \"oldpassword\": \"waleerat10\",\r\n    \"newpassword\": \"waleerat11\"\r\n  }\r\n}"
+						"query": "mutation changePassword($input: changePassword!) {\r\n  changePasswordresult(input: $input) {\r\n    responseStatus{\r\n      status\r\n      message\r\n    }  \r\n  }\r\n}   \r\n",
+						"variables": "{\r\n  \"input\": {\r\n   \"oldpassword\": \"emilia3004\",\r\n    \"newpassword\": \"emilia3005\"\r\n  }\r\n}"
 					}
 				},
 				"url": {
@@ -239,8 +150,8 @@
 				"body": {
 					"mode": "graphql",
 					"graphql": {
-						"query": "mutation modifyRecipe($input: inputFields!) {\r\n  signupResult(input: $input) { \r\n    token\r\n    responseStatus{\r\n      status\r\n      message\r\n    }\r\n  }\r\n} ",
-						"variables": "{\r\n  \"input\": {\r\n    \"username\": \"username27\",\r\n    \"password\": \"password\",\r\n    \"email\": \"w@g.com\"\r\n  }\r\n}"
+						"query": "mutation signup($input: inputFields!) {\r\n  signupResult(input: $input) { \r\n    token\r\n    responseStatus{\r\n      status\r\n      message\r\n    }\r\n  }\r\n} ",
+						"variables": "{\r\n  \"input\": {\r\n    \"username\": \"emilia\",\r\n    \"password\": \"emilia3004\",\r\n    \"email\": \"emilia@test.com\"\r\n  }\r\n}"
 					}
 				},
 				"url": {

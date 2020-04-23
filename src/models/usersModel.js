@@ -18,50 +18,46 @@ module.exports = pgPool => {
         return humps.camelizeKeys(res.rows[0]);
       }).catch();  
     },
-    /* getAuthenticationInfo({ username, password }) {
-      let returnRoot = {}
-      let responseArr = [];
-      let responseStatusTag = {};
-
+    getAuthenticationInfo({ username, password }) { 
       const queryString = `select * from users where username = $1 and password = $2`; 
       return pgPool.query(queryString, [username,password]).then(res => { 
-        if (res.rows[0]){ 
-          //console.log(res.rows[0]);
-          const authenInfo = humps.camelizeKeys(res.rows[0]);
+        let returnRoot = {}
+        let responseStatusTag = {};
+        if (res.rows[0]){
+          const user = humps.camelizeKeys(res.rows[0]);
           const playload = jwtToken.setTokenAccess(res.rows[0]); 
+          user.token = jwtToken.signToken(playload); 
+          returnRoot = user;
+          responseStatusTag = util.getResponseStatusTag(200);
           
-          authenInfo.token = jwtToken.signToken(playload);  
-          returnRoot = authenInfo;
-          responseStatusTag = util.getResponseStatusTag(200); 
-          responseArr.push(responseStatusTag); 
-          returnRoot.responseStatus=responseArr; 
-        }else{   
-          responseStatusTag = util.getResponseStatusTag(900); 
-          responseArr.push(responseStatusTag); 
-          returnRoot.responseStatus=responseArr; 
+        } else {
+          responseStatusTag = util.getResponseStatusTag(900);  
         }
-        console.log(returnRoot);
-        
-        return returnRoot; 
-      }); 
-    }, */
+        returnRoot.responseStatus = responseStatusTag; 
+       // console.log(returnRoot);
+        return returnRoot;
+      });
+      
+    },
     changePassword({ oldpassword, newpassword }) {
       const sqlString = `update users set password =$3
         where password = $2 and token = $1
-        returning *
+        returning username
         `; 
       return pgPool.query(sqlString , [global.token,oldpassword, newpassword]).then(res => {
+        let returnRoot = {}
+        let responseStatusTag = {};
         if (res.rows[0]){ 
-          const playload = jwtToken.setTokenAccess(res.rows[0]);  
-          let responseStatusTag={}
-          responseStatusTag.token = jwtToken.signToken(playload),
+          const user = humps.camelizeKeys(res.rows[0]);
+          returnRoot = user;
           responseStatusTag = util.getResponseStatusTag(200); 
-          return responseStatusTag
         } else { 
-          let responseStatusTag = util.getResponseStatusTag(901);
-          responseStatusTag.message = responseStatusTag.message.replace('#oldPassword#',oldpassword);  
-          return  responseStatusTag;
-        }  
+          responseStatusTag = util.getResponseStatusTag(901); 
+        } 
+        responseStatusTag.message = responseStatusTag.message.replace('#oldPassword#',oldpassword); 
+        returnRoot.responseStatus = responseStatusTag; 
+       // console.log(returnRoot);
+        return returnRoot;
       });
     }, 
     async saveRecord(i){ 
@@ -75,17 +71,17 @@ module.exports = pgPool => {
          savedUserinfo = await this.saveUser(i); 
         //console.log(savedUserinfo); 
         if (savedUserinfo) { 
-          returnRoot = savedUserinfo;
+          returnRoot = savedUserinfo; 
           //console.log(returnRoot);
-          responseStatusTag = util.getResponseStatusTag(200);  
+          responseStatusTag = util.returnResponseStatusTag(200);  
         }else{
-          responseStatusTag = util.getResponseStatusTag(903);  
+          responseStatusTag = util.returnResponseStatusTag(903);  
         } 
       }else{
-        responseStatusTag = util.getResponseStatusTag(913);  
+        responseStatusTag = util.returnResponseStatusTag(913);  
       } 
        // return value 
-      returnRoot.responseStatus=responseStatusTag;
+      returnRoot=responseStatusTag;
       return returnRoot;
     }, 
     saveUser(i){
@@ -110,16 +106,15 @@ module.exports = pgPool => {
           
       return pgPool.query(sqlString , [global.token,firstName,lastName,image,facebook,website,instagram]).then(res => { 
         let returnRoot = {};
-        let responseArr = [];
         let responseStatusTag = {}; 
         if (res.rows[0]){  
           returnRoot = humps.camelizeKeys(res.rows[0]);
-          responseStatusTag = util.getResponseStatusTag(200);
+          responseStatusTag = util.returnResponseStatusTag(200);
         } else { 
-          responseStatusTag = util.getResponseStatusTag(904); 
+          responseStatusTag = util.returnResponseStatusTag(904); 
         } 
-        responseArr.push(responseStatusTag); 
-        returnRoot.responseStatus=responseArr;
+        
+        returnRoot.responseStatus=responseStatusTag;
         return returnRoot
       });
     },

@@ -4,7 +4,7 @@ const {
 } = require('graphql');
 
 const description = require('../../../lib/shema_description');
-const {getResponseStatusTag} = require('../../../lib/util'); 
+const util = require('../../../lib/util'); 
 const categoriesModel = require('../../../models/categoriesModel');
 const CategoryInfo = require('../type/category_info'); 
 const inputObject = require('./input_object.js');  
@@ -27,7 +27,7 @@ module.exports = {
     if (global.isAuthen){
       return categoriesModel(pgPool).saveRecord(input);
     } else {
-      return getResponseStatusTag(902);
+      return util.returnResponseStatusTag(902);
     }
   }
 };

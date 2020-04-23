@@ -18,8 +18,8 @@ module.exports = {
     return response;
   },
   slugTag: (title,slug) =>{
-    title= util.striptags(title);
-    slug= util.striptags(slug);
+    title= util.striptags(title.toLowerCase());
+    slug= util.striptags(slug.toLowerCase());
     
     if (slug == ''){
       return slugify(title); 

@@ -3,13 +3,14 @@ const graphql = require('graphql');
 const {
   GraphQLSchema,
   GraphQLObjectType,
-  GraphQLString,
-  GraphQLNonNull
+  //GraphQLString,
+  //GraphQLNonNull
 } = graphql;
 
-const userInfo = require('./type/user_info');
+//const userInfo = require('./type/user_info');
+const signinInfo = require('./query/signin');
 
-const RootQueryType = new GraphQLObjectType({
+/* const RootQueryType = new GraphQLObjectType({
   name : "UserQuery",
   description : description['userInfo'],
   fields : {
@@ -20,6 +21,15 @@ const RootQueryType = new GraphQLObjectType({
       }
     } 
   }
+}); */
+
+const RootQueryType = new GraphQLObjectType({
+  name: 'userQuery',
+  description: description['UserQuery'], 
+  fields: () => ({
+    //user: userInfo,
+    authenInfo: signinInfo
+  })
 });
 
 const signup = require('./mutations/signup');

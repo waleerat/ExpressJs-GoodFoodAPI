@@ -29,8 +29,7 @@ module.exports = new GraphQLObjectType({
    status: { type : GraphQLString },
    token: { type : GraphQLString },
    createDate: { type : GraphQLString },
-   updateDate: { type : GraphQLString },
-     
-    responseStatus: { type: new GraphQLNonNull(responseStatus)} 
+   updateDate: { type : GraphQLString }, 
+   responseStatus: { type: new GraphQLNonNull(responseStatus)} 
   }
 })

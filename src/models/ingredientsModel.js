@@ -19,12 +19,11 @@ module.exports = pgPool => {
       
       if (typeof savedIngredientsInfo.id != 'undefined') { 
         responseStatusTag = util.getResponseStatusTag(200);  
-      } else {
+      }else{
         responseStatusTag = savedIngredientsInfo; // if not success function will return response status
       } 
        // return value
       returnRoot = savedIngredientsInfo;
-      returnRoot.createdBy=global.userLoginInfo; 
       returnRoot.responseStatus=responseStatusTag;
       return returnRoot;
     }, 
