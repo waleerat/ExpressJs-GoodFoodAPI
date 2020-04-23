@@ -1,0 +1,121 @@
+{
+	"info": {
+		"_postman_id": "1963fb2a-94a8-4277-84bf-d0be03768422",
+		"name": "categories",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Update Status Categories",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IndhbGVlcmF0MiIsInRva2VuIjoiNWQ1MjA2MTFiZWM0YjRmNjIzMTY0ZTZlNmU5MzBlZGUiLCJpYXQiOjE1ODcxNTgxNzF9.zYAsdhU3MdcNRjAg78VY9Qf_3hy_lK06t_YMd2sOonM",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "mutation updateStatusRecords($input: UpdateIDs!) {\r\n  updateStatusResult(input: $input) {\r\n \tstatus\r\n    message\r\n  }\r\n} ",
+						"variables": "{\r\n  \"input\": {\r\n    \"newStatus\": \"trash\",\r\n    \"categories\": [\r\n      {\r\n        \"id\": 65\r\n      },\r\n      {\r\n        \"id\": 66\r\n      },\r\n      {\r\n        \"id\": 67\r\n      }\r\n    ]\r\n  }\r\n}"
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8000/api/category",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"category"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Modify - Category",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IndhbGVlcmF0MiIsInRva2VuIjoiNWQ1MjA2MTFiZWM0YjRmNjIzMTY0ZTZlNmU5MzBlZGUiLCJpYXQiOjE1ODcxNTgxNzF9.zYAsdhU3MdcNRjAg78VY9Qf_3hy_lK06t_YMd2sOonM",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "mutation modifyRecipe($input: inputFields!) {\r\n  modifyRecord(input: $input) {\r\n \tid\r\n  slug\r\n  title\r\n  description\r\n  image\r\n  remark\r\n\r\n  createdBy{\r\n    username\r\n    fullName\r\n    image\r\n    website\r\n    instagram\r\n    facebook\r\n  }\r\n \r\n  }\r\n} ",
+						"variables": "{\r\n  \"input\": {\r\n    \"category\": {\r\n    \r\n      \"title\": \"Yes i can do#5-i\",\r\n      \"description\": \"222222222tion\",\r\n      \"image\": \"https://www.bbcgoodfood.com/sites/default/files/recipe-collections/collection-image/2013/05/chorizo-mozarella-gnocchi-bake-cropped.jpg\",\r\n      \"remark\": \"recipe Remark\"\r\n    }\r\n  }\r\n}"
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8000/api/category",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"category"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete categories",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IndhbGVlcmF0MiIsInRva2VuIjoiNWQ1MjA2MTFiZWM0YjRmNjIzMTY0ZTZlNmU5MzBlZGUiLCJpYXQiOjE1ODcxNTgxNzF9.zYAsdhU3MdcNRjAg78VY9Qf_3hy_lK06t_YMd2sOonM",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "mutation DeleteRecords($input: DeleteIDs!) {\r\n  deleteResult(input: $input) {\r\n \tstatus\r\n    message\r\n  }\r\n} ",
+						"variables": "{\r\n  \"input\": {\r\n    \"categories\": [\r\n      {\r\n        \"id\": 73\r\n      },\r\n      {\r\n        \"id\": 85\r\n      },\r\n      {\r\n        \"id\": 293\r\n      }\r\n    ]\r\n  }\r\n}"
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8000/api/category",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"category"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}

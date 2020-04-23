@@ -1,0 +1,263 @@
+{
+	"info": {
+		"_postman_id": "6ce3e388-c871-49a2-bdfb-476d318ebc78",
+		"name": "User",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Test folder",
+			"item": [
+				{
+					"name": "Check authen Token",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "15327bc3-6e52-4c88-8442-ef1983005a76",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "c28f17fb-dd4b-400b-a222-470bc367abe7",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IndhbGVlcmF0MTAiLCJ0b2tlbiI6IjRhZmVhNzA3OWViYjczMWQ1YmRlZGE5OGNhYzBiOTIyIiwiaWF0IjoxNTg2ODEzODU4fQ.dO-t3pylaCi0y3PBmLkl0VHqqvTOXRQ3xOCwsHHWt6k",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "username",
+									"value": "admin",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "password",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:8000/api/authen",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"authen"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Update user",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "851f73ff-e58e-458d-a2df-62eea5210ec9",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IndhbGVlcmF0MTAiLCJ0b2tlbiI6IjRhZmVhNzA3OWViYjczMWQ1YmRlZGE5OGNhYzBiOTIyIiwiaWF0IjoxNTg2ODEzODU4fQ.dO-t3pylaCi0y3PBmLkl0VHqqvTOXRQ3xOCwsHHWt6k",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "mutation UserUpdate($input: updateRecode!) {\r\n  updateRecodeResult(input: $input) {\r\n    firstName\r\n    lastName\r\n    image\r\n    website\r\n    facebook\r\n    instagram\r\n     responseStatus{\r\n      status\r\n      message\r\n    }\r\n  }\r\n}   ",
+						"variables": "{\r\n  \"input\": {\r\n    \"firstName\": \"waleerat-update4\",\r\n    \"lastName\": \"Gottlieb\",\r\n    \"image\": \"URL\",\r\n    \"facebook\": \"URL\",\r\n    \"instagram\": \"URL\",\r\n    \"website\": \"URL\"\r\n  }\r\n}"
+					},
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8000/api/user",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"user"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "mutation authenInfo($input: requestLogin!) {\r\n  authenInfo(input: $input) {\r\n    token\r\n    responseStatus{\r\n      status\r\n      message\r\n    }  \r\n  }\r\n}   \r\n",
+						"variables": "{\r\n  \"input\": {\r\n    \"username\": \"username21\",\r\n    \"password\": \"password\"\r\n  }\r\n}"
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8000/api/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"login"
+					],
+					"query": [
+						{
+							"key": "username",
+							"value": "john",
+							"disabled": true
+						},
+						{
+							"key": "password",
+							"value": "password123admin",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Change Password",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IndhbGVlcmF0MTAiLCJ0b2tlbiI6IjRhZmVhNzA3OWViYjczMWQ1YmRlZGE5OGNhYzBiOTIyIiwiaWF0IjoxNTg2ODEzODU4fQ.dO-t3pylaCi0y3PBmLkl0VHqqvTOXRQ3xOCwsHHWt6k",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "mutation changePassword($input: changePassword!) {\r\n  changePasswordresult(input: $input) {\r\n \tstatus\r\n    message\r\n  }\r\n}   \r\n",
+						"variables": "{\r\n  \"input\": {\r\n   \"oldpassword\": \"waleerat10\",\r\n    \"newpassword\": \"waleerat11\"\r\n  }\r\n}"
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8000/api/user",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"user"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Signup",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "mutation modifyRecipe($input: inputFields!) {\r\n  signupResult(input: $input) { \r\n    token\r\n    responseStatus{\r\n      status\r\n      message\r\n    }\r\n  }\r\n} ",
+						"variables": "{\r\n  \"input\": {\r\n    \"username\": \"username27\",\r\n    \"password\": \"password\",\r\n    \"email\": \"w@g.com\"\r\n  }\r\n}"
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8000/api/user",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"user"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}

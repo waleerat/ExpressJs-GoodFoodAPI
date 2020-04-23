@@ -1,0 +1,121 @@
+{
+	"info": {
+		"_postman_id": "d218a797-1d89-4281-b217-38a1d920b895",
+		"name": "ingredient",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Modify - Ingredient",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IndhbGVlcmF0MiIsInRva2VuIjoiNWQ1MjA2MTFiZWM0YjRmNjIzMTY0ZTZlNmU5MzBlZGUiLCJpYXQiOjE1ODcxNTgxNzF9.zYAsdhU3MdcNRjAg78VY9Qf_3hy_lK06t_YMd2sOonM",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "mutation modifyRecipe($input: inputFields!) {\r\n  modifyRecord(input: $input) {\r\n \tid\r\n  slug\r\n  title\r\n  description\r\n  image\r\n  remark\r\n  createdBy{\r\n    username\r\n    fullName\r\n    image\r\n    website\r\n    instagram\r\n    facebook\r\n  }\r\n  }\r\n} ",
+						"variables": "{\r\n  \"input\": {\r\n    \"ingredient\": {\r\n      \"title\": \"Yes i can do#5-image22232324\",\r\n      \"description\": \"222222222recipe descrtiption\",\r\n      \"image\": \"www.bbcgoodfood.com/sites/default/\",\r\n      \"remark\": \"recipe Remark\"\r\n    }\r\n  }\r\n}"
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8000/api/ingredient",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"ingredient"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Status Ingredient(s)",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IndhbGVlcmF0MiIsInRva2VuIjoiNWQ1MjA2MTFiZWM0YjRmNjIzMTY0ZTZlNmU5MzBlZGUiLCJpYXQiOjE1ODcxNTgxNzF9.zYAsdhU3MdcNRjAg78VY9Qf_3hy_lK06t_YMd2sOonM",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "mutation updateStatusRecords($input: UpdateIDs!) {\r\n  updateStatusResult(input: $input) {\r\n \tstatus\r\n    message\r\n  }\r\n} ",
+						"variables": "{\r\n  \"input\": {\r\n    \"newStatus\": \"inactive\",\r\n    \"ingredients\": [\r\n      {\r\n        \"id\": 220\r\n      },\r\n      {\r\n        \"id\": 296\r\n      },\r\n      {\r\n        \"id\": 293\r\n      }\r\n    ]\r\n  }\r\n}"
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8000/api/ingredient",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"ingredient"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Ingredient(s)",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IndhbGVlcmF0MiIsInRva2VuIjoiNWQ1MjA2MTFiZWM0YjRmNjIzMTY0ZTZlNmU5MzBlZGUiLCJpYXQiOjE1ODcxNTgxNzF9.zYAsdhU3MdcNRjAg78VY9Qf_3hy_lK06t_YMd2sOonM",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "mutation DeleteRecords($input: DeleteIDs!) {\r\n  deleteResult(input: $input) {\r\n \tstatus\r\n    message\r\n  }\r\n} ",
+						"variables": "{\r\n  \"input\": {\r\n    \"ingredients\": [\r\n      {\r\n        \"id\": 220\r\n      },\r\n      {\r\n        \"id\": 296\r\n      },\r\n      {\r\n        \"id\": 293\r\n      }\r\n    ]\r\n  }\r\n}"
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8000/api/ingredient",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"ingredient"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}

@@ -1,0 +1,298 @@
+{
+	"info": {
+		"_postman_id": "3dfbc2b3-0328-4f37-a0f7-9df87fd9517b",
+		"name": "Search",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "categories",
+			"item": [
+				{
+					"name": "categories - username",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query ($key: searchCategories!) {\r\n  viewCatgories(key:$key){\r\n    rowCount \r\n    searchKey{\r\n        type\r\n        key\r\n    }\r\n    rows{ \r\n    \tid \r\n    \tslug\r\n    \ttitle\r\n    \tdescription\r\n    \tremark\r\n    \tcreatedBy{ \r\n            username\r\n            fullName\r\n            image\r\n            website\r\n            instagram\r\n            facebook\r\n        }\r\n    }\r\n  }\r\n}",
+								"variables": "{\r\n  \"key\": {\r\n    \"username\": \"waleerat2\"\r\n  }\r\n}"
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/api/search",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"search"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "categories - categorySlug",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query ($key: searchCategories!) {\r\n  viewCatgories(key:$key){\r\n    rowCount \r\n    searchKey{\r\n        type\r\n        key\r\n    }\r\n    rows{ \r\n    \tid \r\n    \tslug\r\n    \ttitle\r\n    \tdescription\r\n    \tremark\r\n    \tcreatedBy{ \r\n            username\r\n            fullName\r\n            image\r\n            website\r\n            instagram\r\n            facebook\r\n        }\r\n    }\r\n  }\r\n}",
+								"variables": "{\r\n  \"key\": {\r\n    \"categorySlug\": \"starters\"\r\n  }\r\n}"
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/api/search",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"search"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "categories -categoryId",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query ($key: searchCategories!) {\r\n  viewCatgories(key:$key){\r\n    rowCount \r\n    searchKey{\r\n        type\r\n        key\r\n    }\r\n    rows{ \r\n    \tid \r\n    \tslug\r\n    \ttitle\r\n    \tdescription\r\n    \tremark\r\n    \tcreatedBy{ \r\n            username\r\n            fullName\r\n            image\r\n            website\r\n            instagram\r\n            facebook\r\n        }\r\n    }\r\n  }\r\n}",
+								"variables": "{\r\n  \"key\": {\r\n    \"categoryId\": 1\r\n  }\r\n}"
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/api/search",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"search"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "ingredients",
+			"item": [
+				{
+					"name": "ingredients - username",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query ($key: searchIngredients!) {\r\n  viewIngredients(key:$key){\r\n    rowCount \r\n    searchKey{\r\n        type\r\n        key\r\n    }\r\n    rows{ \r\n    \tid \r\n    \tslug\r\n    \ttitle\r\n    \tdescription\r\n    \tremark\r\n    \tcreatedBy{ \r\n            username\r\n            fullName\r\n            image\r\n            website\r\n            instagram\r\n            facebook\r\n        }\r\n    }\r\n  }\r\n}",
+								"variables": "{\r\n  \"key\": {\r\n    \"  \": \"waleerat2\"\r\n  }\r\n}"
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/api/search",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"search"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ingredients - ingredientSlug",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query ($key: searchIngredients!) {\r\n  viewIngredients(key:$key){\r\n    rowCount \r\n    searchKey{\r\n        type\r\n        key\r\n    }\r\n    rows{ \r\n    \tid \r\n    \tslug\r\n    \ttitle\r\n    \tdescription\r\n    \tremark\r\n    \tcreatedBy{ \r\n            username\r\n            fullName\r\n            image\r\n            website\r\n            instagram\r\n            facebook\r\n        }\r\n    }\r\n  }\r\n}",
+								"variables": "{\r\n  \"key\": {\r\n    \"ingredientId\": 947\r\n  }\r\n}"
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/api/search",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"search"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "recipes",
+			"item": [
+				{
+					"name": "recipes - username",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query ($key: searchRecipes!) {\r\n  viewRecipes(key:$key){\r\n    rowCount \r\n    totalPage\r\n    searchKey{\r\n      page\r\n      limit\r\n      searchKey\r\n      searchOption\r\n    }\r\n    rows{ \r\n    \tid \r\n    \tslug\r\n    \ttitle \r\n    }\r\n  }\r\n}",
+								"variables": "{\r\n  \"key\": {\r\n    \"page\": 1,\r\n    \"limit\": 4,\r\n    \"searchOption\": \"username\",\r\n    \"searchKey\": \"waleerat2\"\r\n  }\r\n}"
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/api/search",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"search"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "recipes - RecipeId",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query ($key: searchRecipes!) {\r\n  viewRecipes(key:$key){\r\n    rowCount \r\n    searchKey{\r\n        type\r\n        key\r\n    }\r\n    rows{ \r\n    \tid \r\n    \tslug\r\n    \ttitle\r\n    \tdescription\r\n    \tremark\r\n    \tcategory{\r\n    \t\tid\r\n    \t\tslug\r\n    \t\ttitle\r\n    \t\tdescription\r\n    \t}\r\n        ingredients{\r\n          title\r\n          amount\r\n          remark\r\n        }\r\n        howto{\r\n          orderStep\r\n          title\r\n          description\r\n        } \r\n        createdBy{ \r\n            username\r\n            fullName\r\n            image\r\n            website\r\n            instagram\r\n            facebook\r\n        }\r\n    }\r\n  }\r\n}",
+								"variables": "{\r\n  \"key\": {\r\n    \"recipeId\": 126\r\n  }\r\n}\r\n\r\n "
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/api/search",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"search"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "recipes - recipeSlug",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query ($key: searchRecipes!) {\r\n  viewRecipes(key:$key){\r\n    rowCount \r\n    searchKey{\r\n        type\r\n        key\r\n    }\r\n    rows{ \r\n    \tid \r\n    \tslug\r\n    \ttitle\r\n    \tdescription\r\n    \tremark\r\n    \tcategory{\r\n    \t\tid\r\n    \t\tslug\r\n    \t\ttitle\r\n    \t\tdescription\r\n    \t}\r\n        ingredients{\r\n          title\r\n          amount\r\n          remark\r\n        }\r\n        howto{\r\n          orderStep\r\n          title\r\n          description\r\n        } \r\n        createdBy{ \r\n            username\r\n            fullName\r\n            image\r\n            website\r\n            instagram\r\n            facebook\r\n        }\r\n    }\r\n  }\r\n}",
+								"variables": "{\r\n  \"key\": {\r\n    \"recipeSlug\": \"Yes i can do#5\"\r\n  }\r\n}\r\n\r\n "
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/api/search",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"search"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "recipes - categorySlug",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query ($key: searchRecipes!) {\r\n  viewRecipes(key:$key){\r\n    rowCount \r\n    searchKey{\r\n        type\r\n        key\r\n    }\r\n    rows{ \r\n    \tid \r\n    \tslug\r\n    \ttitle\r\n    \tdescription\r\n    \tremark\r\n    \tcategory{\r\n    \t\tid\r\n    \t\tslug\r\n    \t\ttitle\r\n    \t\tdescription\r\n    \t}\r\n        ingredients{\r\n          title\r\n          amount\r\n          remark\r\n        }\r\n        howto{\r\n          orderStep\r\n          title\r\n          description\r\n        } \r\n        createdBy{ \r\n            username\r\n            fullName\r\n            image\r\n            website\r\n            instagram\r\n            facebook\r\n        }\r\n    }\r\n  }\r\n}",
+								"variables": "{\r\n  \"key\": {\r\n    \"categorySlug\": \"starters\"\r\n  }\r\n}\r\n\r\n "
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/api/search",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"search"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "recipes - IngredientSlug",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query ($key: searchRecipes!) {\r\n  viewRecipes(key:$key){\r\n    rowCount \r\n    searchKey{\r\n        type\r\n        key\r\n    }\r\n    rows{ \r\n    \tid \r\n    \tslug\r\n    \ttitle\r\n    \tdescription\r\n    \tremark\r\n    \tcategory{\r\n    \t\tid\r\n    \t\tslug\r\n    \t\ttitle\r\n    \t\tdescription\r\n    \t}\r\n        ingredients{\r\n          title\r\n          amount\r\n          remark\r\n        }\r\n        howto{\r\n          orderStep\r\n          title\r\n          description\r\n        } \r\n        createdBy{ \r\n            username\r\n            fullName\r\n            image\r\n            website\r\n            instagram\r\n            facebook\r\n        }\r\n    }\r\n  }\r\n}",
+								"variables": "{\r\n  \"key\": {\r\n    \"IngredientSlug\": \"ingredient Title#4.3.3\"\r\n  }\r\n}\r\n\r\n "
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/api/search",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"search"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		}
+	],
+	"protocolProfileBehavior": {}
+}

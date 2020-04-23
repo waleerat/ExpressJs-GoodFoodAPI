@@ -1,0 +1,195 @@
+{
+	"info": {
+		"_postman_id": "09eed02b-0e0c-4f16-8506-95ee8e0db1eb",
+		"name": "Recipe",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Add recipe",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IndhbGVlcmF0MiIsInRva2VuIjoiNWQ1MjA2MTFiZWM0YjRmNjIzMTY0ZTZlNmU5MzBlZGUiLCJpYXQiOjE1ODcxNTgxNzF9.zYAsdhU3MdcNRjAg78VY9Qf_3hy_lK06t_YMd2sOonM",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "mutation modifyRecipe($input: inputFields!) {\r\n  modifyResult(input: $input) {\r\n \tstatus\r\n \tmessage\r\n  }\r\n} ",
+						"variables": "{\r\n  \"input\": {\r\n    \"recipe\": {\r\n\t\t\t\"categoryId\": 1,\r\n      \"title\": \"Yes i can do#5-image22232324\",\r\n      \"description\": \"222222222recipe descrtiption\",\r\n      \"image\": \"https://www.bbcgoodfood.com/sites/default/files/recipe-collections/collection-image/2013/05/chorizo-mozarella-gnocchi-bake-cropped.jpg\",\r\n      \"ingredients\": [\r\n        {\r\n         \r\n          \"title\": \"ingredient Title#1\",\r\n           \"image\": \"https://www.bbcgoodfood.com/sites/default/files/recipe-collections/collection-image/2013/05/chorizo-mozarella-gnocchi-bake-cropped.jpg\",\r\n          \"amount\": \"20 g.eidt\",\r\n          \"remark\": \"ingredient remark\"\r\n        },\r\n        {\r\n       \r\n          \"title\": \"ingredient Title#2.2\",\r\n           \"image\": \"https://www.bbcgoodfood.com/sites/default/files/recipe-collections/collection-image/2013/05/chorizo-mozarella-gnocchi-bake-cropped.jpg\",\r\n          \"amount\": \"20 cups.edit\",\r\n          \"remark\": \"ingredient remark\"\r\n        }\r\n        ,\r\n        {\r\n       \r\n          \"title\": \"ingredient Title#4.3.3\",\r\n          \"amount\": \"20 cups.edit\",\r\n          \"remark\": \"ingredient remark\"\r\n        },\r\n       \r\n        {\r\n       \r\n          \"title\": \"ingredient Title#3.3.3.3..3\",\r\n          \"amount\": \"20 cups.edit\",\r\n          \"remark\": \"ingredient remark\"\r\n        }\r\n      ],\r\n      \r\n      \"howto\": [ \r\n        { \r\n        \t\"title\": \"Step 1-Edit\",\r\n        \t\"order\": 1,\r\n        \t\"description\": \"Description1\",\r\n        \t \"image\": \"https://www.bbcgoodfood.com/sites/default/files/recipe-collections/collection-image/2013/05/chorizo-mozarella-gnocchi-bake-cropped.jpg\",\r\n        \t\"remark\": \"Remark\"},\r\n        { \r\n        \t\"title\": \"Step 2-Edit\",\r\n        \t\"order\": 2,\r\n        \t\"description\": \"Description2\",\r\n        \t\"remark\": \"Remark\"\r\n        },\r\n        { \r\n        \t\"title\": \"Step 3-Edit3333\",\r\n        \t \"image\": \"https://www.bbcgoodfood.com/sites/default/files/recipe-collections/collection-image/2013/05/chorizo-mozarella-gnocchi-bake-cropped.jpg\",\r\n        \t\"order\": 3,\r\n        \t\"description\": \"Description3\",\r\n        \t\"remark\": \"Remark\"\r\n        }\r\n      ],\r\n      \"remark\": \"recipe Remark\"\r\n    }\r\n  }\r\n}"
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8000/api/recipe",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"recipe"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Recipe(s)",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IndhbGVlcmF0MiIsInRva2VuIjoiNWQ1MjA2MTFiZWM0YjRmNjIzMTY0ZTZlNmU5MzBlZGUiLCJpYXQiOjE1ODcxNTgxNzF9.zYAsdhU3MdcNRjAg78VY9Qf_3hy_lK06t_YMd2sOonM",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "mutation DeleteRecords($input: DeleteIDs!) {\r\n  deleteResult(input: $input) {\r\n \tstatus\r\n    message\r\n  }\r\n} ",
+						"variables": "{\r\n  \"input\": { \r\n    \"recipes\": [\r\n      {\r\n        \"id\": 220\r\n      },\r\n      {\r\n        \"id\": 296\r\n      },\r\n      {\r\n        \"id\": 97\r\n      }\r\n    ]\r\n  }\r\n}"
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8000/api/recipe",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"recipe"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Status Recipe(s)",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IndhbGVlcmF0MiIsInRva2VuIjoiNWQ1MjA2MTFiZWM0YjRmNjIzMTY0ZTZlNmU5MzBlZGUiLCJpYXQiOjE1ODcxNTgxNzF9.zYAsdhU3MdcNRjAg78VY9Qf_3hy_lK06t_YMd2sOonM",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "mutation updateStatusRecords($input: UpdateIDs!) {\r\n  updateStatusResult(input: $input) {\r\n \tstatus\r\n    message\r\n  }\r\n} ",
+						"variables": "{\r\n  \"input\": {\r\n    \"newStatus\": \"inactive\",\r\n    \"ingredients\": [\r\n      {\r\n        \"id\": 220\r\n      },\r\n      {\r\n        \"id\": 296\r\n      },\r\n      {\r\n        \"id\": 97\r\n      }\r\n    ]\r\n  }\r\n}"
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8000/api/ingredient",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"ingredient"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "modify - recipe(s)",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IndhbGVlcmF0MiIsInRva2VuIjoiNWQ1MjA2MTFiZWM0YjRmNjIzMTY0ZTZlNmU5MzBlZGUiLCJpYXQiOjE1ODcxNTgxNzF9.zYAsdhU3MdcNRjAg78VY9Qf_3hy_lK06t_YMd2sOonM",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "mutation modifyRecipe($input: inputFields!) {\r\n  modifyResult(input: $input) {\r\n  id\r\n  category{\r\n    id\r\n    slug\r\n    title\r\n    description\r\n  }\r\n slug\r\n title\r\n  description\r\n  remark\r\n    ingredients{\r\n      title\r\n      amount\r\n      remark\r\n    }\r\n    howto{\r\n      orderStep\r\n      title\r\n      description\r\n    } \r\n    createdBy{ \r\n      username\r\n      fullName\r\n      image\r\n      website\r\n      instagram\r\n      facebook\r\n    }\r\n    responseStatus{\r\n      status\r\n      message\r\n    }\r\n  }\r\n} \r\n\r\n",
+						"variables": "{\r\n  \"input\": {\r\n    \"recipe\": {\r\n      \"category\": {\r\n        \"title\": \"Category Title\",\r\n        \"description\": \"Category Description\",\r\n        \"image\": \"Image\"\r\n      },\r\n      \"title\": \"#1How to Stock a Thai Pantry\",\r\n      \"description\": \"<p>In all previous solutions, you must know the name of the attribute or field. A more generic solution for any attribute is this:</p>\",\r\n      \"image\": \"https://www.bbcgoodfood.com/sites/default/files/recipe-collections/collection-image/2013/05/chorizo-mozarella-gnocchi-bake-cropped.jpg\",\r\n      \"ingredients\": [\r\n        {\r\n          \"title\": \"ingredient Title#1\",\r\n          \"image\": \"https://www.bbcgoodfood.com/sites/default/files/recipe-collections/collection-image/2013/05/chorizo-mozarella-gnocchi-bake-cropped.jpg\",\r\n          \"amount\": \"20 g.eidt\",\r\n          \"remark\": \"ingredient remark\"\r\n        },\r\n        {\r\n          \"title\": \"ingredient Title#2.2\",\r\n          \"image\": \"https://www.bbcgoodfood.com/sites/default/files/recipe-collections/collection-image/2013/05/chorizo-mozarella-gnocchi-bake-cropped.jpg\",\r\n          \"amount\": \"20 cups.edit\",\r\n          \"remark\": \"ingredient remark\"\r\n        },\r\n        {\r\n          \"title\": \"ingredient Title#4.3.3\",\r\n          \"amount\": \"20 cups.edit\",\r\n          \"remark\": \"ingredient remark\"\r\n        },\r\n        {\r\n          \"title\": \"ingredient Title#3.3.3.3..3\",\r\n          \"amount\": \"20 cups.edit\",\r\n          \"remark\": \"ingredient remark\"\r\n        }\r\n      ],\r\n      \"howto\": [\r\n        {\r\n          \"title\": \"Step 1-Edit\",\r\n          \"order\": 1,\r\n          \"description\": \"Description1\",\r\n          \"image\": \"https://www.bbcgoodfood.com/sites/default/files/recipe-collections/collection-image/2013/05/chorizo-mozarella-gnocchi-bake-cropped.jpg\",\r\n          \"remark\": \"Remark\"\r\n        },\r\n        {\r\n          \"title\": \"Step 2-Edit\",\r\n          \"order\": 2,\r\n          \"description\": \"Description2\",\r\n          \"remark\": \"Remark\"\r\n        },\r\n        {\r\n          \"title\": \"Step 3-Edit3333\",\r\n          \"image\": \"https://www.bbcgoodfood.com/sites/default/files/recipe-collections/collection-image/2013/05/chorizo-mozarella-gnocchi-bake-cropped.jpg\",\r\n          \"order\": 3,\r\n          \"description\": \"Description3\",\r\n          \"remark\": \"Remark\"\r\n        }\r\n      ],\r\n      \"remark\": \"recipe Remark\"\r\n    }\r\n  }\r\n}"
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8000/api/recipe",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"recipe"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Modify Recipe",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IndhbGVlcmF0MiIsInRva2VuIjoiNWQ1MjA2MTFiZWM0YjRmNjIzMTY0ZTZlNmU5MzBlZGUiLCJpYXQiOjE1ODcxNTgxNzF9.zYAsdhU3MdcNRjAg78VY9Qf_3hy_lK06t_YMd2sOonM",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "mutation modifyRecipe($input: inputFields!) {\r\n  modifyResult(input: $input) {\r\n  id \r\n \tslug\r\n \ttitle\r\n  description\r\n  image\r\n  category{\r\n    slug\r\n    title\r\n    description\r\n    image\r\n  }\r\n  remark\r\n    ingredients{\r\n      title\r\n      description\r\n      image\r\n      amount\r\n      remark\r\n    }\r\n    howto{\r\n      order\r\n      title\r\n      description\r\n      image\r\n    } \r\n    createdBy{ \r\n      username\r\n      fullName\r\n      image\r\n      website\r\n      instagram\r\n      facebook\r\n    }\r\n    responseStatus{\r\n      status\r\n      message\r\n    }\r\n  }\r\n} \r\n\r\n",
+						"variables": "{\r\n  \"input\": {\r\n    \"recipe\": {\r\n      \"category\": {\r\n        \"title\": \"20-category\",\r\n        \"description\": \"20-Category Description\",\r\n        \"image\": \"Image\"\r\n      },\r\n      \"title\": \"20-1How to Stock a Thai Pantry\",\r\n      \"description\": \"222222222recipe descrtiption\",\r\n      \"image\": \"https://www.bbcgoodfood.com/sites/default/files/recipe-collections/collection-image/2013/05/chorizo-mozarella-gnocchi-bake-cropped.jpg\",\r\n      \"ingredients\": [\r\n        {\r\n          \"title\": \"20-ingredient Title#1\",\r\n          \"image\": \"https://www.bbcgoodfood.com/sites/default/files/recipe-collections/collection-image/2013/05/chorizo-mozarella-gnocchi-bake-cropped.jpg\",\r\n          \"amount\": \"20 g.eidt\",\r\n          \"remark\": \"ingredient remark\"\r\n        },\r\n        {\r\n          \"title\": \"20-ingredient Title#2.2\",\r\n          \"image\": \"https://www.bbcgoodfood.com/sites/default/files/recipe-collections/collection-image/2013/05/chorizo-mozarella-gnocchi-bake-cropped.jpg\",\r\n          \"amount\": \"20 cups.edit\",\r\n          \"remark\": \"ingredient remark\"\r\n        },\r\n        {\r\n          \"title\": \"20-ingredient Title#4.3.3\",\r\n          \"amount\": \"20 cups.edit\",\r\n          \"remark\": \"ingredient remark\"\r\n        },\r\n        {\r\n          \"title\": \"20-ingredient Title#3.3.3.3..3\",\r\n          \"amount\": \"20 cups.edit\",\r\n          \"remark\": \"ingredient remark\"\r\n        }\r\n      ],\r\n      \"howto\": [\r\n        {\r\n          \"title\": \"20-Step 1-Edit\",\r\n          \"order\": 1,\r\n          \"description\": \"Description1\",\r\n          \"image\": \"https://www.bbcgoodfood.com/sites/default/files/recipe-collections/collection-image/2013/05/chorizo-mozarella-gnocchi-bake-cropped.jpg\",\r\n          \"remark\": \"Remark\"\r\n        },\r\n        {\r\n          \"title\": \"20-Step 2-Edit\",\r\n          \"order\": 2,\r\n          \"description\": \"Description2\",\r\n          \"remark\": \"Remark\"\r\n        },\r\n        {\r\n          \"title\": \"20-Step 3-Edit3333\",\r\n          \"image\": \"https://www.bbcgoodfood.com/sites/default/files/recipe-collections/collection-image/2013/05/chorizo-mozarella-gnocchi-bake-cropped.jpg\",\r\n          \"order\": 3,\r\n          \"description\": \"Description3\",\r\n          \"remark\": \"Remark\"\r\n        }\r\n      ],\r\n      \"remark\": \"recipe Remark\"\r\n    }\r\n  }\r\n}"
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8000/api/recipe",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"recipe"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
