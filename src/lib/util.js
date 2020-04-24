@@ -1,7 +1,6 @@
 const humps = require('humps');
 const _ = require('lodash');
-const striptags = require('striptags');
-
+const striptags = require('striptags'); 
 
 module.exports = {
   nodeEnv: process.env.NODE_ENV || 'development',

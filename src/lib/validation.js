@@ -18,11 +18,11 @@ module.exports = {
     return response;
   },
   slugTag: (title,slug) =>{
-    if (slug == ''){
-      title= util.striptags(title);
+    if (slug === ''  || (typeof slug === 'undefined')){
+      title= util.striptags(title.toLowerCase());
       return slugify(title); 
     } else {
-      slug= util.striptags(slug); 
+      slug= util.striptags(slug.toLowerCase()); 
       return slugify(slug);
     } 
   },
@@ -36,10 +36,11 @@ module.exports = {
     } 
     return response;
   },
-  urlFormat: (str) =>{
-    var regex = /(http|https):\/\/(\w+:{0,1}\w*)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%!\-\/]))?/;
+  urlFormat: (str) =>{ 
+    var expression = /(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,})/gi;
+    var regex = new RegExp(expression); 
     if(!regex .test(str)) {
-      return util.getResponseStatusTag(912);
+      return '';
     } else {
       return str;
     }

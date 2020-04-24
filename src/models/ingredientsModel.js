@@ -70,6 +70,7 @@ module.exports = pgPool => {
       if (isvalidate.status == 200){
         i.slug = validation.slugTag(i.title,i.slug); // #2 category: check slug format
         i.description = util.striptags(i.description);
+        i.image = util.urlFormat(i.image);
         isvalidate = validation.maxLengthValue(i.slug,'slug'); // #3 category :check length of slug 
          if (isvalidate.status == 200){ // #4 check length of recipe Title 
           let sqlString = `INSERT INTO ingredients (user_id,slug, title, description,image) VALUES ($1, $2, $3, $4,$5)

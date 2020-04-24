@@ -52,6 +52,7 @@ module.exports = pgPool => {
           const user = humps.camelizeKeys(res.rows[0]);
           const playload = jwtToken.setTokenAccess(res.rows[0]); 
           user.token = jwtToken.signToken(playload); 
+          //this(pgPool).saveAuthenToken(user.id,user.token);
           returnRoot = user;
           responseStatusTag = util.getResponseStatusTag(200); 
         } else { 
@@ -63,6 +64,10 @@ module.exports = pgPool => {
         return returnRoot;
       });
     }, 
+    testValidate(i){
+      let isEmailFormat = validation.urlFormat(i.email);
+      console.log(isEmailFormat);
+    },
     async saveRecord(i){ 
       let savedUserinfo = {};
       let returnRoot = {}
@@ -73,7 +78,8 @@ module.exports = pgPool => {
          savedUserinfo = await this.saveUser(i); 
         
         if (savedUserinfo) { 
-          returnRoot = savedUserinfo; 
+          returnRoot = savedUserinfo;
+          //this.saveAuthenToken(savedUserinfo.id,savedUserinfo.token);
           //console.log(returnRoot);
           responseStatusTag = util.getResponseStatusTag(200);  
         }else{
@@ -86,7 +92,7 @@ module.exports = pgPool => {
       returnRoot.responseStatus=responseStatusTag;
       return returnRoot;
     }, 
-    async saveUser(i){
+    saveUser(i){
       let sqlString = `INSERT INTO  users (username, password, email, token) VALUES ($1, $2, $3,$4)
         ON CONFLICT (token) DO NOTHING
         returning *`;  
@@ -96,11 +102,18 @@ module.exports = pgPool => {
           if (res.rows[0]){
             const user = humps.camelizeKeys(res.rows[0]);
             const playload = jwtToken.setTokenAccess(res.rows[0]); 
-            user.token = jwtToken.signToken(playload); 
+            user.token = jwtToken.signToken(playload);
             return user;
           }
         });
-    }, 
+    },
+
+    /* saveAuthenToken(userId,token){
+      let sqlString = `INSERT INTO  authen_token (user_id, token) VALUES ($1, $2)`; 
+      pgPool.query(sqlString, userId, token);
+      sqlString = `update authen_token set status='inactive' where user_id = $1 and status='active'`; 
+      pgPool.query(sqlString, userId);
+    }, */
 
     updateRecord({firstName,lastName,image,facebook,website,instagram}){  
       const sqlString = `update users set first_name =$2, last_name =$3, image  =$4, facebook =$5, website =$6, instagram =$7

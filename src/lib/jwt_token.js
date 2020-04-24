@@ -6,8 +6,8 @@ module.exports = {
   return jwt.sign(payload , process.env.JWT_KEY);
 /*   return new Promise(resolve => {
     resolve(jwt.sign(payload , process.env.JWT_KEY))
-  }) */
- /*  var signOptions = {  // ** Note: not sure how it works
+  }) 
+   var signOptions = {  // ** Note: not sure how it works
     issuer:  process.env.ISSUER,
     subject:  process.env.SUBJECT,
     audience:  process.env.AUDIENCE,

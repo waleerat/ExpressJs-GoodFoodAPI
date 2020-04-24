@@ -45,8 +45,7 @@ module.exports = pgPool => {
      // let deletedRows = recipeIds.length;
       let sqlString  = ''; 
       let rowCount = 0;
-       sqlString = `DELETE FROM ingredient_bundle WHERE recipe_id=ANY($1) and recipe_id 
-       in (select recipe_id from ingredients where user_id=$2);`;
+       sqlString = `DELETE FROM ingredient_bundle WHERE recipe_id=ANY($1)and user_id=$2;`;
         let res = pgPool.query(sqlString, [recipeIds,global.UserId]); 
         
         sqlString = `DELETE FROM recipe_howto WHERE recipe_id=ANY($1) and user_id=$2;`;
@@ -137,6 +136,7 @@ module.exports = pgPool => {
       if (isvalidate.status == 200){
         r.slug = validation.slugTag(r.title,r.slug); // #2 category: check slug format
         r.description = util.striptags(r.description);
+        r.image = util.urlFormat(r.image);
         isvalidate = validation.maxLengthValue(r.slug,'slug'); // #3 category :check length of slug 
          if (isvalidate.status == 200){ // #4 check length of recipe Title
           let sqlString = `
@@ -171,6 +171,7 @@ module.exports = pgPool => {
     },
     saveHowtoSteps(s){
        // #save How to 
+      s.image = util.urlFormat(s.image);
       s.description = util.striptags(s.description);
       let sqlString = `INSERT INTO recipe_howto (user_id,recipe_id,order_step, description,image) VALUES ($1, $2, $3, $4,$5)
         ON CONFLICT (recipe_id,order_step) DO UPDATE SET description=$4,image=$5,status='active'

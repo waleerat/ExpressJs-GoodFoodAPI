@@ -70,6 +70,7 @@ module.exports = pgPool => {
       if (isvalidate.status == 200){
         c.slug = validation.slugTag(c.title,c.slug); // #2 category: check slug format        
         c.description = util.striptags(c.description);
+        c.image = util.urlFormat(c.image);
         isvalidate = validation.maxLengthValue(c.slug,'slug'); // #3 category :check length of slug 
          if (isvalidate.status == 200){ // #4 check length of recipe Title 
           
