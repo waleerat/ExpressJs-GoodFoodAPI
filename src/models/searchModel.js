@@ -112,7 +112,7 @@ module.exports = pgPool => {
         queryString = `select * from recipes  order by id asc `+pageLimit;
       break;
       } 
-      //console.log(queryString);
+      console.log(queryString);
        
       let resCount = await pgPool.query(queryCountString, searchCondition);
       console.log(resCount.rows[0].totalrows); 
@@ -166,6 +166,7 @@ module.exports = pgPool => {
         queryString = `select * from categories order by id asc `+pageLimit;
       break;
       } 
+        console.log(queryString);
         
       let resCount = await pgPool.query(queryCountString, searchCondition);
       //console.log(resCount.rows[0].totalrows); 

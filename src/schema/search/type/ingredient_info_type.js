@@ -20,6 +20,7 @@ module.exports = new GraphQLObjectType({
     description: { type: GraphQLString },
     image : { type: GraphQLString },
     remark: { type: GraphQLString },
+    status: { type: GraphQLString },
     createdBy: {type: new GraphQLNonNull(authorInfo),
       resolve(obj, args, { loaders }) { 
         return loaders.usersByIds.load(obj.userId);

@@ -22,6 +22,7 @@ module.exports = new GraphQLObjectType({
     description: { type: GraphQLString },
     image: { type: GraphQLString },
     remark: { type: GraphQLString },
+    status: { type: GraphQLString },
     category: { type: new GraphQLNonNull(catgoryInfo),
       resolve(obj, args, { loaders }) {
         return loaders.categoryByIds.load(obj.categoryId);

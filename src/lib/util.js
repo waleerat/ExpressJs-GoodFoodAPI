@@ -28,9 +28,10 @@ module.exports = {
       offset = 0;
       if (getpage == 0) resGetpage = 1; else resGetpage = getpage;
     }else{
-      if (resGetpage == 1) offset = 0;
-      else offset = (resGetpage-1)*resLimit;
+      if (getpage) offset = (resGetpage-1)*resLimit;
+      else offset = 0;
     } 
+    console.log('offset = '+offset);
     
     return { "limit": resLimit,"offset":offset};
   },
