@@ -33,13 +33,13 @@ module.exports = pgPool => {
         return util.orderedFor(res.rows, recipeIds, 'recipe_id', false); 
       });
     },
-    getRecipes(recipeId) {
-      console.log(recipeId); 
+   /*  getRecipes(recipeId) 
+      console.log(recipeId);
       const queryString = `select * from recipes limit 1`; // where recipe_id = $1
       return pgPool.query(queryString).then(res => {  
         return humps.camelizeKeys(res.rows); 
-      });
-    },
+      })
+    }, */
     getHowtoByRecipeId(recipeId) {
       const queryString = `select * from recipe_howto where recipe_id = $1`;
       return pgPool.query(queryString, [recipeId]).then(res => {  
@@ -112,10 +112,8 @@ module.exports = pgPool => {
         queryString = `select * from recipes  order by id asc `+pageLimit;
       break;
       } 
-      console.log(queryString);
        
       let resCount = await pgPool.query(queryCountString, searchCondition);
-      console.log(resCount.rows[0].totalrows); 
       let data = await pgPool.query(queryString, searchCondition); 
 
       let resVal = {};
@@ -165,8 +163,7 @@ module.exports = pgPool => {
         resSearchOption.searchKey = 'Non';
         queryString = `select * from categories order by id asc `+pageLimit;
       break;
-      } 
-        console.log(queryString);
+      }
         
       let resCount = await pgPool.query(queryCountString, searchCondition);
       //console.log(resCount.rows[0].totalrows); 
