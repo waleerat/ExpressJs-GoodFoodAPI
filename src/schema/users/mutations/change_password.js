@@ -1,5 +1,5 @@
 const description = require('../../../lib/shema_description');  
-const { getResponseStatusTag } = require('../../../lib/util');
+const util = require('../../../lib/util');
 
 const {
   GraphQLInputObjectType,
@@ -25,13 +25,11 @@ module.exports = {
   args: {
     input: { type: new GraphQLNonNull(InputType) }
   },
-   resolve(obj,{ input }, { pgPool }) {  
-     console.log(global.isAuthen);
-     
+   resolve(obj,{ input }, { pgPool }) { 
     if (global.isAuthen){
       return userModel(pgPool).changePassword(input); 
     }else{
-      return getResponseStatusTag(902);
+      return util.returnResponseStatusTag(902);
     }
   }
 };

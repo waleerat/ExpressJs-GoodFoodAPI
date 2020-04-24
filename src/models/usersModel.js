@@ -40,15 +40,18 @@ module.exports = pgPool => {
       
     },
     changePassword({ oldpassword, newpassword }) {
-      const sqlString = `update users set password =$3
+      let newToken = crypto.createHash('md5').update(global.userLoginInfo.username+newpassword).digest("hex"); 
+      const sqlString = `update users set password =$3,token =$4
         where password = $2 and token = $1
-        returning username
+        returning username,token
         `; 
-      return pgPool.query(sqlString , [global.token,oldpassword, newpassword]).then(res => {
+      return pgPool.query(sqlString , [global.userLoginInfo.token,oldpassword, newpassword,newToken]).then(res => {
         let returnRoot = {}
         let responseStatusTag = {};
         if (res.rows[0]){ 
           const user = humps.camelizeKeys(res.rows[0]);
+          const playload = jwtToken.setTokenAccess(res.rows[0]); 
+          user.token = jwtToken.signToken(playload); 
           returnRoot = user;
           responseStatusTag = util.getResponseStatusTag(200); 
         } else { 
@@ -63,31 +66,31 @@ module.exports = pgPool => {
     async saveRecord(i){ 
       let savedUserinfo = {};
       let returnRoot = {}
-      let responseStatusTag = {};
-
-      i.token = crypto.createHash('md5').update(i.username).digest("hex"); 
+      let responseStatusTag = {}; 
+      
       let isEmailFormat = validation.emailFormat(i.email);
       if (isEmailFormat){
          savedUserinfo = await this.saveUser(i); 
-        //console.log(savedUserinfo); 
+        
         if (savedUserinfo) { 
           returnRoot = savedUserinfo; 
           //console.log(returnRoot);
-          responseStatusTag = util.returnResponseStatusTag(200);  
+          responseStatusTag = util.getResponseStatusTag(200);  
         }else{
-          responseStatusTag = util.returnResponseStatusTag(903);  
+          responseStatusTag = util.getResponseStatusTag(903);  
         } 
       }else{
-        responseStatusTag = util.returnResponseStatusTag(913);  
+        responseStatusTag = util.getResponseStatusTag(913);  
       } 
        // return value 
-      returnRoot=responseStatusTag;
+      returnRoot.responseStatus=responseStatusTag;
       return returnRoot;
     }, 
-    saveUser(i){
+    async saveUser(i){
       let sqlString = `INSERT INTO  users (username, password, email, token) VALUES ($1, $2, $3,$4)
         ON CONFLICT (token) DO NOTHING
         returning *`;  
+        i.token = crypto.createHash('md5').update(i.username+i.passowrd).digest("hex"); 
       return pgPool.query(sqlString, [i.username, i.password, i.email,i.token])
         .then(res => {  
           if (res.rows[0]){

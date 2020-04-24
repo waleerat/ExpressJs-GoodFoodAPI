@@ -3,9 +3,10 @@ const jwt   = require('jsonwebtoken');
 module.exports = {
   signToken: (payload) => {
   // Token signing options
-  return new Promise(resolve => {
+  return jwt.sign(payload , process.env.JWT_KEY);
+/*   return new Promise(resolve => {
     resolve(jwt.sign(payload , process.env.JWT_KEY))
-  })
+  }) */
  /*  var signOptions = {  // ** Note: not sure how it works
     issuer:  process.env.ISSUER,
     subject:  process.env.SUBJECT,

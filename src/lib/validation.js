@@ -18,12 +18,13 @@ module.exports = {
     return response;
   },
   slugTag: (title,slug) =>{
-    title= util.striptags(title.toLowerCase());
-    slug= util.striptags(slug.toLowerCase());
-    
     if (slug == ''){
+      title= util.striptags(title);
       return slugify(title); 
-    }return slugify(slug); 
+    } else {
+      slug= util.striptags(slug); 
+      return slugify(slug);
+    } 
   },
   htmlTag: (inputValue) =>{
     let response = {"isvalidate": false}; let result={};
