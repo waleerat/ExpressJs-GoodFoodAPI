@@ -1,6 +1,8 @@
 const humps = require('humps');
 const _ = require('lodash');
 const striptags = require('striptags'); 
+const crypto = require('crypto');
+const bcrypt = require('bcrypt'); 
 
 module.exports = {
   nodeEnv: process.env.NODE_ENV || 'development',
@@ -17,6 +19,10 @@ module.exports = {
   }, 
   striptags: str => {
     return striptags(str);
+  },
+  endcodeMD5: str => {
+    return crypto.createHash('md5').update(str).digest("hex"); 
+
   },
   getPageLimitText: (getpage,limit) => {
     let resGetpage = 0;
@@ -51,6 +57,26 @@ module.exports = {
 
     returnRoot.responseStatus=responseStatusTag;
     return returnRoot;
+  },
+  makeid(length) {
+    var result           = '';
+    var characters       = '0123456789'; //'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    var charactersLength = characters.length;
+    for ( var i = 0; i < length; i++ ) {
+       result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+    return parseInt(result);
+  },
+  async bcrypt(password){ console.log('Password : '+ password); 
+    let min = 1; let max = 10; 
+      let salt_rounds = Math.floor(Math.random() * (max - min) ) + min;
+       await bcrypt.genSalt(salt_rounds, function(err, salt) { 
+        return bcrypt.hash(password, salt, function(err, hash) {
+          let r = {'salt_rounds':salt_rounds, "hash": hash};
+          console.log(r);
+            return r
+          });
+      });
   }
 };
 

@@ -27,7 +27,8 @@ module.exports = {
   },
    resolve(obj,{ input }, { pgPool }) { 
     if (global.isAuthen){
-      return userModel(pgPool).changePassword(input); 
+      let r = userModel(pgPool).changePassword(input);
+      return r; 
     }else{
       return util.returnResponseStatusTag(902);
     }

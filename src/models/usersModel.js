@@ -2,7 +2,8 @@ const util = require('../lib/util');
 const validation = require('../lib/validation');
 const jwtToken = require('../lib/jwt_token');
 const humps = require('humps');
-const crypto = require('crypto'); 
+const bcrypt = require('bcrypt');
+
 
 module.exports = pgPool => {
   return {
@@ -29,7 +30,6 @@ module.exports = pgPool => {
           user.token = jwtToken.signToken(playload); 
           returnRoot = user;
           responseStatusTag = util.getResponseStatusTag(200);
-          
         } else {
           responseStatusTag = util.getResponseStatusTag(900);  
         }
@@ -38,36 +38,7 @@ module.exports = pgPool => {
         return returnRoot;
       });
       
-    },
-    changePassword({ oldpassword, newpassword }) {
-      let newToken = crypto.createHash('md5').update(global.userLoginInfo.username+newpassword).digest("hex"); 
-      const sqlString = `update users set password =$3,token =$4
-        where password = $2 and token = $1
-        returning username,token
-        `; 
-      return pgPool.query(sqlString , [global.userLoginInfo.token,oldpassword, newpassword,newToken]).then(res => {
-        let returnRoot = {}
-        let responseStatusTag = {};
-        if (res.rows[0]){ 
-          const user = humps.camelizeKeys(res.rows[0]);
-          const playload = jwtToken.setTokenAccess(res.rows[0]); 
-          user.token = jwtToken.signToken(playload); 
-          //this(pgPool).saveAuthenToken(user.id,user.token);
-          returnRoot = user;
-          responseStatusTag = util.getResponseStatusTag(200); 
-        } else { 
-          responseStatusTag = util.getResponseStatusTag(901); 
-        } 
-        responseStatusTag.message = responseStatusTag.message.replace('#oldPassword#',oldpassword); 
-        returnRoot.responseStatus = responseStatusTag; 
-       // console.log(returnRoot);
-        return returnRoot;
-      });
     }, 
-    testValidate(i){
-      let isEmailFormat = validation.urlFormat(i.email);
-      console.log(isEmailFormat);
-    },
     async saveRecord(i){ 
       let savedUserinfo = {};
       let returnRoot = {}
@@ -93,28 +64,41 @@ module.exports = pgPool => {
       return returnRoot;
     }, 
     saveUser(i){
-      let sqlString = `INSERT INTO  users (username, password, email, token) VALUES ($1, $2, $3,$4)
+      i.token = util.endcodeMD5(i.username+i.password); 
+      let sqlString = `INSERT INTO  users (username, email, token) VALUES ($1, $2, $3)
         ON CONFLICT (token) DO NOTHING
         returning *`;  
-        i.token = crypto.createHash('md5').update(i.username+i.passowrd).digest("hex"); 
-      return pgPool.query(sqlString, [i.username, i.password, i.email,i.token])
+      return pgPool.query(sqlString, [i.username, i.email,i.token])
         .then(res => {  
-          if (res.rows[0]){
+          if (res.rows[0]){  
             const user = humps.camelizeKeys(res.rows[0]);
             const playload = jwtToken.setTokenAccess(res.rows[0]); 
             user.token = jwtToken.signToken(playload);
+            this.saveAuthenToken(user.id,user.token);
+            this.savebcryptPassword(user.id,user.username,i.password);
             return user;
           }
         });
     },
-
-    /* saveAuthenToken(userId,token){
-      let sqlString = `INSERT INTO  authen_token (user_id, token) VALUES ($1, $2)`; 
-      pgPool.query(sqlString, userId, token);
-      sqlString = `update authen_token set status='inactive' where user_id = $1 and status='active'`; 
-      pgPool.query(sqlString, userId);
-    }, */
-
+    saveAuthenToken(userId,token){ 
+      let sqlString = `INSERT INTO  authen_token (user_id, http_token) VALUES ($1, $2)
+                      ON CONFLICT (user_id) DO UPDATE SET http_token=$2`; 
+      pgPool.query(sqlString, [userId, token]);
+      
+    },
+    savebcryptPassword(user_id,username,password){
+      let min = 1; let max = 10; 
+      let salt_rounds = Math.floor(Math.random() * (max - min) ) + min;
+      bcrypt.genSalt(salt_rounds, function(err, salt) { 
+        bcrypt.hash(password, salt, function(err, hash) {
+            // Store hash in your password DB.
+            let sqlString = `INSERT INTO  user_bcrypt (user_id, username, salt , salt_rounds, hash) VALUES ($1, $2, $3,$4,$5)
+            ON CONFLICT (user_id,username) DO UPDATE SET salt=$3, salt_rounds=$4, hash=$5
+            returning hash`;   
+            pgPool.query(sqlString, [user_id, username, salt, salt_rounds,hash]);
+          });
+      });
+    },
     updateRecord({firstName,lastName,image,facebook,website,instagram}){  
       const sqlString = `update users set first_name =$2, last_name =$3, image  =$4, facebook =$5, website =$6, instagram =$7
             where token = $1
@@ -134,10 +118,64 @@ module.exports = pgPool => {
         return returnRoot
       });
     },
+    getUserBcrypt() {
+      const queryString = `select * from user_bcrypt where user_id = $1 and username = $2`; 
+      return pgPool.query(queryString, [global.userLoginInfo.id,global.userLoginInfo.username]).then(res => {  
+        return res.rows[0]; 
+      });
+    },
+
+    async getUserHash(password, salt){
+     /*  let r =   bcrypt.hash(password, salt, function(err, hash) {
+        return hash;
+      }); */
+      return  bcrypt.hash(password, salt).then(hash => {
+        return hash;
+      }); 
+      
+    },
+    async changePassword({ oldpassword, newpassword }) { 
+      let returnRoot = {}
+      let responseStatusTag = {};
+      let userBcrypt = await this.getUserBcrypt();
+
+      if (userBcrypt){
+        let HashInputOldPassword = await this.getUserHash(oldpassword, userBcrypt.salt);
+
+        if (HashInputOldPassword === userBcrypt.hash){ 
+          let HashInputNewPassword = await this.getUserHash(newpassword, userBcrypt.salt);
+
+          let sqlString = '';
+          let newToken = util.endcodeMD5(global.userLoginInfo.username+newpassword);
+          let tokenJson = {"username": userBcrypt.username, "token": newToken}
+          const playload = jwtToken.setTokenAccess(tokenJson); 
+          returnRoot.token = jwtToken.signToken(playload); 
+          // update authen token
+           this.saveAuthenToken(userBcrypt.user_id,returnRoot.token); 
+          // update user token
+          sqlString = `update users set token =$1  where id = $2`; 
+          pgPool.query(sqlString , [newToken, userBcrypt.user_id]);
+          // update hash 
+          sqlString = `update user_bcrypt set hash =$1  where user_id = $2 and salt = $3`; 
+          pgPool.query(sqlString , [HashInputNewPassword, userBcrypt.user_id, userBcrypt.salt]); 
+          responseStatusTag = util.getResponseStatusTag(200); 
+        }else{
+          responseStatusTag = util.getResponseStatusTag(901);               
+        }
+          responseStatusTag.message = responseStatusTag.message.replace('#oldPassword#',oldpassword); 
+          returnRoot.responseStatus = responseStatusTag; 
+          //console.log(returnRoot);
+          return returnRoot;  
+      } else {
+        responseStatusTag = util.getResponseStatusTag(901);
+        responseStatusTag.message = responseStatusTag.message.replace('#oldPassword#',oldpassword); 
+        returnRoot.responseStatus = responseStatusTag; 
+        return returnRoot; 
+      }
+      
+    }, 
     deleteRecord(tokens){
-      const sqlString = ` delete from users where token = ANY($1)
-        returning *
-        `; 
+      const sqlString = ` delete from users where token = ANY($1) returning * `; 
       return pgPool.query(sqlString ,[tokens]).then(res => {
         return humps.camelizeKeys(res.rows[0]);
       });
