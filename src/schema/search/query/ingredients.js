@@ -1,6 +1,6 @@
 const {
   GraphQLInputObjectType,
-  GraphQLString,
+  GraphQLList,
   GraphQLID,
   GraphQLNonNull
 } = require('graphql');
@@ -9,6 +9,7 @@ const description = require('../../../lib/shema_description');
 const searchModel = require('../../../models/searchModel');
 const recipeInfo = require('../type/ingredients_type'); 
 const searchOption = require('../type/ingredient_search_option_type');
+const searchKeys = require('../../share/input_target_search_key');
 
 const InputType = new GraphQLInputObjectType({
   name: "searchIngredients",
@@ -18,7 +19,8 @@ const InputType = new GraphQLInputObjectType({
       page: { type: GraphQLID  },
       limit: { type: GraphQLID  },
       searchOption: { type: new GraphQLNonNull(searchOption) },
-      searchKey: { type: GraphQLString  }
+      //searchKey: { type: GraphQLString  }
+      searchKeys: { type: new GraphQLList(searchKeys) }
     }
 });
 

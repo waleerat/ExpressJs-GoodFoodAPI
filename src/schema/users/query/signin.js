@@ -24,7 +24,7 @@ module.exports = {
     input: { type: new GraphQLNonNull(InputType) }
   },
    resolve(obj, { input }, { pgPool }) { 
-    const r = userModel(pgPool).getAuthenticationInfo(input);
+    const r = userModel(pgPool).signIn(input);
     return r; 
   }
 };

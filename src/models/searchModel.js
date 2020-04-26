@@ -60,69 +60,73 @@ module.exports = pgPool => {
       let pagination = util.getPageLimitText(inputSearch.getpage,inputSearch.limit);
       let pageLimit = " LIMIT "+pagination.limit+" OFFSET "+pagination.offset;
       let resSearchOption = inputSearch; 
-      let searchCondition = [inputSearch.searchKey];
+      let searchCondition = [];
 
       switch(inputSearch.searchOption){
       case "recipeId" : 
-        if (inputSearch.searchKey > 0){  
-          queryCountString = `select count(*) as totalrows from recipes where id=$1`;
-          queryString = `select * from recipes where id=$1 order by id asc `+pageLimit;
+        if (inputSearch.searchKeys){
+          searchCondition = [util.searchKeysToArray(inputSearch.searchKeys)];
+          queryCountString = `select count(*) as totalrows from recipes where id=ANY($1)`;
+          queryString = `select * from recipes where id=ANY($1) order by id asc `+pageLimit;
         }else{
           searchCondition = [];
           resSearchOption.searchOption = 'Non';
-          resSearchOption.searchKey = 'Non';
+          resSearchOption.searchKeys = 'Non';
           queryCountString = `select count(*) as totalrows from recipes`;
           queryString = `select * from recipes order by id asc `+pageLimit;
         }
       break;
       case "username" : 
+        searchCondition = [util.searchKeysToArray(inputSearch.searchKeys)];
         queryCountString = `select count(*) as totalrows from recipes r
           inner join users u on r.user_id = u.id
-          where  u.username = $1 and u.approved = 'approved'`; 
+          where  u.username = ANY($1) and u.approved = 'approved'`; 
         queryString = `SELECT r.* from recipes r
           inner join users u on r.user_id = u.id
-          where  u.username = $1 and u.approved = 'approved' order by r.id asc `+pageLimit; 
+          where  u.username = ANY($1) and u.approved = 'approved' order by r.id asc `+pageLimit; 
       break;
       case "recipeSlug" : 
-        queryCountString = `select count(*) as totalrows from recipes where slug = $1`;
-        queryString = `select * from recipes where slug = $1 order by id asc `+pageLimit;
+        searchCondition = [util.searchKeysToArray(inputSearch.searchKeys)];
+        queryCountString = `select count(*) as totalrows from recipes where slug = ANY($1)`;
+        queryString = `select * from recipes where slug = ANY($1) order by id asc `+pageLimit;
       break;
       case "categorySlug" : 
+        searchCondition = [util.searchKeysToArray(inputSearch.searchKeys)];
         queryCountString = `select count(*) as totalrows from recipes r
           inner join categories ca on r.category_id = ca.id 
-          where ca.slug =$1`;
+          where ca.slug = ANY($1)`;
         queryString = `SELECT r.* from recipes r
           inner join categories ca on r.category_id = ca.id 
-          where ca.slug =$1 order by r.id asc `+pageLimit;
+          where ca.slug = ANY($1) order by r.id asc `+pageLimit;
       break;
-      case "IngredientSlug" : 
+      case "ingredientSlug" : 
+        searchCondition = [util.searchKeysToArray(inputSearch.searchKeys)];
         queryCountString = `select count(*) as totalrows from ingredients i
           inner join ingredient_bundle b on b.ingredient_id = i.id
           inner join recipes r on b.recipe_id = r.id
-          where i.slug =$1`;
+          where i.slug = ANY($1)`;
         queryString = `SELECT r.* from ingredients i
           inner join ingredient_bundle b on b.ingredient_id = i.id
           inner join recipes r on b.recipe_id = r.id
-          where i.slug =$1  order by r.id asc `+pageLimit;
+          where i.slug = ANY($1)  order by r.id asc `+pageLimit;
       break;
       default: 
         searchCondition = [];
         resSearchOption.searchOption = 'Non';
-        resSearchOption.searchKey = 'Non';
+        resSearchOption.searchKeys = 'Non';
+        queryCountString = `select count(*) as totalrows from recipes`;
         queryString = `select * from recipes  order by id asc `+pageLimit;
       break;
-      } 
-       
+      }  
+      
       let resCount = await pgPool.query(queryCountString, searchCondition);
       let data = await pgPool.query(queryString, searchCondition); 
 
       let resVal = {};
+      resVal = resSearchOption;
       resVal.rowCount = resCount.rows[0].totalrows;
       resVal.totalPage = Math.ceil(resCount.rows[0].totalrows/pagination.limit); 
-      resVal.searchKey = resSearchOption;
-      resVal.rows = humps.camelizeKeys(data.rows);  
-      //console.log(resVal);
-      
+      resVal.rows = humps.camelizeKeys(data.rows);   
       return resVal
     },
     async searchCategories(inputSearch){ 
@@ -130,51 +134,52 @@ module.exports = pgPool => {
       let pagination = util.getPageLimitText(inputSearch.page,inputSearch.limit);
       let pageLimit = " LIMIT "+pagination.limit+" OFFSET "+pagination.offset;
       let resSearchOption = inputSearch; 
-      let searchCondition = [inputSearch.searchKey]; 
+      let searchCondition = []; 
 
       switch(inputSearch.searchOption){
       case "categoryId" : 
-        if (inputSearch.searchKey > 0){  
-          queryCountString = `select count(*) as totalrows from categories where slug = $1`;
-          queryString = queryString = `select * from categories where slug = $1 order by id asc `+pageLimit;
+        if (inputSearch.searchKeys){  
+          searchCondition = [util.searchKeysToArray(inputSearch.searchKeys)];
+          queryCountString = `select count(*) as totalrows from categories where id = ANY($1)`;
+          queryString = queryString = `select * from categories where id = ANY($1) order by id asc `+pageLimit;
         }else{
           searchCondition = [];
-          resSearchOption.searchOption = 'Non';
-          resSearchOption.searchKey = 'Non';
           queryCountString = `select count(*) as totalrows from categories`;
           queryString = `select * from categories order by id asc `+pageLimit;
         }
       break;
-      case "categorySlug" :  
-        queryCountString = `select count(*) as totalrows from categories where slug = $1`;
-        queryString = queryString = `select * from categories where slug = $1 order by r.id asc `+pageLimit; 
+      case "categorySlug" : 
+        searchCondition = [util.searchKeysToArray(inputSearch.searchKeys)];
+        queryCountString = `select count(*) as totalrows from categories where slug = ANY($1)`;
+        queryString = queryString = `select * from categories where slug = ANY($1) order by id asc `+pageLimit; 
       break;
       case "username" :  
+        searchCondition = [util.searchKeysToArray(inputSearch.searchKeys)];
         queryCountString = `select count(*) as totalrows from categories ca
           inner join users u on ca.user_id = u.id
-          where  u.username = $1 and u.approved = 'approved' `;
+          where  u.username = ANY($1) and u.approved = 'approved' `;
         queryString = `SELECT ca.* from categories ca
           inner join users u on ca.user_id = u.id
-          where  u.username = $1 and u.approved = 'approved'  order by ca.id asc `+pageLimit; 
+          where  u.username = ANY($1) and u.approved = 'approved'  order by ca.id asc `+pageLimit; 
       break;
       default: 
         searchCondition = [];
-        resSearchOption.searchOption = 'Non';
-        resSearchOption.searchKey = 'Non';
+        queryCountString = `select count(*) as totalrows from categories`;
         queryString = `select * from categories order by id asc `+pageLimit;
       break;
       }
+      console.log(queryCountString);
+      
         
       let resCount = await pgPool.query(queryCountString, searchCondition);
-      //console.log(resCount.rows[0].totalrows); 
       let data = await pgPool.query(queryString, searchCondition); 
 
       let resVal = {};
+      resVal = resSearchOption;
       resVal.rowCount = resCount.rows[0].totalrows;
       resVal.totalPage = Math.ceil(resCount.rows[0].totalrows/pagination.limit); 
-      resVal.searchKey = resSearchOption;
-      resVal.rows = humps.camelizeKeys(data.rows);  
-      return resVal
+      resVal.rows = humps.camelizeKeys(data.rows);   
+      return resVal;
 
     },
     async searchIngredients(inputSearch){
@@ -182,37 +187,37 @@ module.exports = pgPool => {
       let pagination = util.getPageLimitText(inputSearch.page,inputSearch.limit);
       let pageLimit = " LIMIT "+pagination.limit+" OFFSET "+pagination.offset;
       let resSearchOption = inputSearch; 
-      let searchCondition = [inputSearch.searchKey]; 
+      let searchCondition = []; 
 
       switch(inputSearch.searchOption){
       case "ingredientId" : 
-        if (inputSearch.searchKey > 0){  
-          queryCountString = `select count(*) as totalrows from ingredients where id = $1`;
-          queryString = `select * from ingredients where id = $1 order by id asc `+pageLimit;
+        if (inputSearch.searchKeys){  
+          searchCondition = [util.searchKeysToArray(inputSearch.searchKeys)];
+          queryCountString = `select count(*) as totalrows from ingredients where id = ANY($1)`;
+          queryString = `select * from ingredients where id = ANY($1) order by id asc `+pageLimit;
         }else{
           searchCondition = [];
-          resSearchOption.searchOption = 'Non';
-          resSearchOption.searchKey = 'Non';
           queryCountString = `select count(*) as totalrows from ingredients `;
           queryString = `select * from ingredients order by id asc `+pageLimit;
         }
       break;
       case "ingredientSlug" :  
-        queryCountString = `select count(*) as totalrows from ingredients where slug = $1`;
-        queryString = `select * from ingredients where slug = $1 order by id asc `+pageLimit; 
+      
+        searchCondition = [util.searchKeysToArray(inputSearch.searchKeys)];
+        queryCountString = `select count(*) as totalrows from ingredients where slug = ANY($1)`;
+        queryString = `select * from ingredients where slug = ANY($1) order by id asc `+pageLimit; 
       break;
-      case "username" :  
-             queryCountString = `select count(*) as totalrows from ingredients i
-                inner join users u on i.user_id = u.id
-                where  u.username = $1 and u.approved = 'approved'  `;
-             queryString = `SELECT i.* from ingredients i
-                inner join users u on i.user_id = u.id
-                where  u.username = $1 and u.approved = 'approved'  order by i.id asc ` +pageLimit; 
+      case "username" : 
+      searchCondition = [util.searchKeysToArray(inputSearch.searchKeys)];
+      queryCountString = `select count(*) as totalrows from ingredients i
+        inner join users u on i.user_id = u.id
+        where  u.username = ANY($1) and u.approved = 'approved'  `;
+      queryString = `SELECT i.* from ingredients i
+        inner join users u on i.user_id = u.id
+        where  u.username = ANY($1) and u.approved = 'approved'  order by i.id asc ` +pageLimit; 
       break;
       default: 
         searchCondition = [];
-        resSearchOption.searchOption = 'Non';
-        resSearchOption.searchKey = 'Non';
         queryCountString = `select count(*) as totalrows from ingredients`;
         queryString = `select * from ingredients order by id asc `+pageLimit;
       break;
@@ -222,12 +227,11 @@ module.exports = pgPool => {
       let data = await pgPool.query(queryString, searchCondition); 
 
       let resVal = {};
+      resVal = resSearchOption;
       resVal.rowCount = resCount.rows[0].totalrows;
       resVal.totalPage = Math.ceil(resCount.rows[0].totalrows/pagination.limit); 
-      resVal.searchKey = resSearchOption;
-      resVal.rows = humps.camelizeKeys(data.rows);  
-      
-      return resVal
+      resVal.rows = humps.camelizeKeys(data.rows);   
+      return resVal;
     },
     
   }

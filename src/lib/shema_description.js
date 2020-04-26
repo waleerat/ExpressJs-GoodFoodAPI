@@ -40,6 +40,4 @@ var graphQLDescription = {
   'IngredientSearchOption': '',
   
 }; 
-
-
 module.exports = graphQLDescription;

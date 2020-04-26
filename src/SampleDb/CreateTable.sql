@@ -23,7 +23,7 @@ CREATE TABLE "users" (
 CREATE TABLE "ingredients" (
   "id" SERIAL PRIMARY KEY,
   "user_id" integer NOT NULL,
-  "slug" varchar(50) UNIQUE NOT NULL,
+  "slug" varchar(50)  NOT NULL,
   "title" varchar(90),
   "description" text,
   "remark" varchar(255),
@@ -36,7 +36,7 @@ CREATE TABLE "ingredients" (
 CREATE TABLE "categories" (
   "id" SERIAL PRIMARY KEY,
   "user_id" int,
-  "slug" varchar(50) UNIQUE NOT NULL,
+  "slug" varchar(50)  NOT NULL,
   "title" varchar(90),
   "description" text,
   "remark" varchar(255),
@@ -50,7 +50,7 @@ CREATE TABLE "recipes" (
   "id" SERIAL PRIMARY KEY,
   "user_id" integer NOT NULL,
   "category_id" integer NOT NULL,
-  "slug" varchar(50) UNIQUE NOT NULL,
+  "slug" varchar(50)  NOT NULL,
   "title" varchar(90),
   "description" text,
   "remark" varchar(255),
@@ -132,3 +132,8 @@ CREATE UNIQUE INDEX recipe_howto_order_step_key
   CREATE UNIQUE INDEX recipe_id_and_ingredient_id_unique
     ON public.ingredient_bundle USING btree
     (ingredient_id ASC NULLS LAST, recipe_id ASC NULLS LAST);
+
+
+    CREATE UNIQUE INDEX users_username_unique
+    ON public.users USING btree
+    (username COLLATE pg_catalog."default" ASC NULLS LAST);

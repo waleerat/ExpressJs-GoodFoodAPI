@@ -13,7 +13,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImVtaWxpYSIsInRva2VuIjoiYWFmY2M2MTViNjdhNWEyZTM2MGZkZDdiMzkwMDYwZWUiLCJpYXQiOjE1ODc2Mjk0NDZ9._rNp81hs3ygNgm87Y7uuUOlf6UOMn1ljO8nYeH_t4-Y",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IndhbGVlcmF0IiwidG9rZW4iOiJmNWEwMjQwNTM0YzJjYmM2YTY5NmYwNzQ3YmYwOTlkOSIsImlhdCI6MTU4NzkyODY1MH0.WN6k8bLYVlU80SsFJp1L3C9Es_J6RSZknDy9HOBR-U8",
 							"type": "string"
 						}
 					]
@@ -24,7 +24,7 @@
 					"mode": "graphql",
 					"graphql": {
 						"query": "mutation updateCategoriesStatus($input: UpdateIDs!) {\r\n  updateResult(input: $input) {\r\n \tstatus\r\n    message\r\n  }\r\n} ",
-						"variables": "{\r\n  \"input\": {\r\n    \"newStatus\": \"trash\",\r\n    \"categories\": [\r\n      {\r\n        \"id\": 1\r\n      },\r\n      {\r\n        \"id\": 66\r\n      }\r\n    ]\r\n  }\r\n}"
+						"variables": "{\r\n  \"input\": {\r\n    \"newStatus\": \"trash\",\r\n    \"categories\": [\r\n      {\r\n        \"id\": 24\r\n      },\r\n      {\r\n        \"id\": 66\r\n      }\r\n    ]\r\n  }\r\n}"
 					}
 				},
 				"url": {
@@ -50,7 +50,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImVtaWxpYSIsInRva2VuIjoiYWFmY2M2MTViNjdhNWEyZTM2MGZkZDdiMzkwMDYwZWUiLCJpYXQiOjE1ODc2Mjk0NDZ9._rNp81hs3ygNgm87Y7uuUOlf6UOMn1ljO8nYeH_t4-Y",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IndhbGVlcmF0IiwidG9rZW4iOiJmNWEwMjQwNTM0YzJjYmM2YTY5NmYwNzQ3YmYwOTlkOSIsImlhdCI6MTU4NzkyODY1MH0.WN6k8bLYVlU80SsFJp1L3C9Es_J6RSZknDy9HOBR-U8",
 							"type": "string"
 						}
 					]
@@ -61,7 +61,7 @@
 					"mode": "graphql",
 					"graphql": {
 						"query": "mutation modifyRecipe($input: inputFields!) {\r\n  modifyRecord(input: $input) {\r\n  id\r\n  slug\r\n  title\r\n  description\r\n  image\r\n  remark\r\n  responseStatus{\r\n    status\r\n    message\r\n  }\r\n  }\r\n} ",
-						"variables": "{\r\n  \"input\": {\r\n    \"category\": {\r\n      \"slug\": \"starters\",\r\n      \"title\": \"starters\",\r\n      \"description\": \"Kick off your meal in style with our chic selection of starters.\",\r\n      \"image\": \"https://www.bbcgoodfood.com/sites/default/files/recipe-collections/collection-image/2013/05/smoked-salmon-prawn-salad.jpg\",\r\n      \"remark\": \"Dishes are sure to impress\"\r\n    }\r\n  }\r\n}"
+						"variables": "{\r\n  \"input\": {\r\n    \"category\": {\r\n      \"slug\": \"starters2\",\r\n      \"title\": \"starters222\",\r\n      \"description\": \"Kick off your meal in style with our chic selection of starters.\",\r\n      \"image\": \"https://www.bbcgoodfood.com/sites/default/files/recipe-collections/collection-image/2013/05/smoked-salmon-prawn-salad.jpg\",\r\n      \"remark\": \"Dishes are sure to impress\"\r\n    }\r\n  }\r\n}"
 					}
 				},
 				"url": {
@@ -87,7 +87,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImVtaWxpYSIsInRva2VuIjoiYWFmY2M2MTViNjdhNWEyZTM2MGZkZDdiMzkwMDYwZWUiLCJpYXQiOjE1ODc2Mjk0NDZ9._rNp81hs3ygNgm87Y7uuUOlf6UOMn1ljO8nYeH_t4-Y",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IndhbGVlcmF0IiwidG9rZW4iOiJmNWEwMjQwNTM0YzJjYmM2YTY5NmYwNzQ3YmYwOTlkOSIsImlhdCI6MTU4NzkyODY1MH0.WN6k8bLYVlU80SsFJp1L3C9Es_J6RSZknDy9HOBR-U8",
 							"type": "string"
 						}
 					]
@@ -98,7 +98,7 @@
 					"mode": "graphql",
 					"graphql": {
 						"query": "mutation DeleteRecords($input: DeleteIDs!) {\r\n  deleteResult(input: $input) {\r\n \tstatus\r\n    message\r\n  }\r\n} ",
-						"variables": "{\r\n  \"input\": {\r\n    \"categories\": [\r\n      { \"id\": 2 },\r\n      { \"id\": 85 }\r\n    ]\r\n  }\r\n}"
+						"variables": "{\r\n  \"input\": {\r\n    \"categories\": [\r\n      { \"id\": 24 },\r\n      { \"id\": 85 }\r\n    ]\r\n  }\r\n}"
 					}
 				},
 				"url": {

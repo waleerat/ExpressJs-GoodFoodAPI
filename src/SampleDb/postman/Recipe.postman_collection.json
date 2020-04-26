@@ -23,8 +23,8 @@
 				"body": {
 					"mode": "graphql",
 					"graphql": {
-						"query": "mutation DeleteRecords($input: DeleteIDs!) {\r\n  deleteResult(input: $input) {\r\n \tstatus\r\n    message\r\n  }\r\n} ",
-						"variables": "{\r\n  \"input\": { \r\n    \"recipes\": [\r\n      {\r\n        \"id\": 2\r\n      }\r\n    ]\r\n  }\r\n}"
+						"query": "mutation DeleteRecipe($input: DeleteIDs!) {\r\n  deleteResult(input: $input) {\r\n \tstatus\r\n    message\r\n  }\r\n} ",
+						"variables": "{\r\n  \"input\": { \r\n    \"recipes\": [\r\n        {\"id\": 2},\r\n        {\"id\": 10}\r\n    ]\r\n  }\r\n}"
 					}
 				},
 				"url": {
@@ -50,7 +50,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImVtaWxpYSIsInRva2VuIjoiYWFmY2M2MTViNjdhNWEyZTM2MGZkZDdiMzkwMDYwZWUiLCJpYXQiOjE1ODc2Mjk0NDZ9._rNp81hs3ygNgm87Y7uuUOlf6UOMn1ljO8nYeH_t4-Y",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IndhbGVlcmF0IiwidG9rZW4iOiJmNWEwMjQwNTM0YzJjYmM2YTY5NmYwNzQ3YmYwOTlkOSIsImlhdCI6MTU4NzkyODY1MH0.WN6k8bLYVlU80SsFJp1L3C9Es_J6RSZknDy9HOBR-U8",
 							"type": "string"
 						}
 					]
@@ -60,12 +60,12 @@
 				"body": {
 					"mode": "graphql",
 					"graphql": {
-						"query": "mutation updateStatus($input: UpdateIDs!) {\r\n  updateResult(input: $input) {\r\n \tstatus\r\n    message\r\n  }\r\n} ",
-						"variables": "{\r\n  \"input\": {\r\n    \"newStatus\": \"inactive\",\r\n    \"ingredients\": [\r\n      { \"id\": 1 },\r\n      { \"id\": 296}\r\n    ]\r\n  }\r\n}"
+						"query": "mutation updateStatus($input: UpdateIDs!) {\r\n  updateStatusResult(input: $input) {\r\n \tstatus\r\n    message\r\n  }\r\n} ",
+						"variables": "{\r\n  \"input\": {\r\n    \"newStatus\": \"inactive\",\r\n    \"recipes\": [\r\n      { \"id\": 21 },\r\n      { \"id\": 296}\r\n    ]\r\n  }\r\n}"
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8000/api/ingredient",
+					"raw": "http://localhost:8000/api/recipe",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -73,7 +73,7 @@
 					"port": "8000",
 					"path": [
 						"api",
-						"ingredient"
+						"recipe"
 					]
 				}
 			},
@@ -87,7 +87,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImVtaWxpYSIsInRva2VuIjoiYWFmY2M2MTViNjdhNWEyZTM2MGZkZDdiMzkwMDYwZWUiLCJpYXQiOjE1ODc2Mjk0NDZ9._rNp81hs3ygNgm87Y7uuUOlf6UOMn1ljO8nYeH_t4-Y",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IndhbGVlcmF0IiwidG9rZW4iOiJmNWEwMjQwNTM0YzJjYmM2YTY5NmYwNzQ3YmYwOTlkOSIsImlhdCI6MTU4NzkyODY1MH0.WN6k8bLYVlU80SsFJp1L3C9Es_J6RSZknDy9HOBR-U8",
 							"type": "string"
 						}
 					]
@@ -98,7 +98,7 @@
 					"mode": "graphql",
 					"graphql": {
 						"query": "mutation modifyRecipe($input: inputFields!) {\r\n  modifyResult(input: $input) {\r\n  id\r\n  category{\r\n    id\r\n    slug\r\n    title\r\n    description\r\n  }\r\n slug\r\n title\r\n  description\r\n  remark\r\n    ingredients{\r\n      title\r\n      amount\r\n    }\r\n    howto{\r\n      orderStep\r\n      title\r\n      description\r\n      remark\r\n    } \r\n    responseStatus{\r\n      status\r\n      message\r\n    }\r\n  }\r\n} \r\n\r\n",
-						"variables": "{\r\n  \"input\": {\r\n    \"recipe\": {\r\n      \"category\": {\r\n        \"title\": \"Main course\",\r\n        \"description\": \"The main course is the featured or primary dish in a meal consisting of several courses. It usually follows the entrée course.\",\r\n        \"image\": \"https://www.bbcgoodfood.com/sites/default/files/partridge-in-cider-with-apples-celery.jpg\"\r\n      },\r\n      \"title\": \"2-Partridge in cider with apples & celery\",\r\n      \"description\": \"<p>Serve a partridge as an individual portion for one in this seasonal stew with smoked bacon, Bramley apples, thyme and sage</p>\",\r\n      \"image\": \"https://www.bbcgoodfood.com/sites/default/files/styles/recipe/public/user-collections/my-colelction-image/2015/12/partridge-in-cider-with-apples-celery.jpg?itok=miWiD9Hi\",\r\n      \"ingredients\": [\r\n        {\r\n          \"title\": \"olive oil\",\r\n          \"image\": \"https://3.imimg.com/data3/BE/KX/MY-364767/extra-virgin-olive-oil-500x500.jpg\",\r\n          \"amount\": \"2 tbsp\",\r\n          \"remark\": \"\"\r\n        },\r\n        {\r\n          \"title\": \"plain flour\",\r\n          \"image\": \"https://www.bbcgoodfood.com/sites/default/files/recipe-collections/collection-image/2013/05/chorizo-mozarella-gnocchi-bake-cropped.jpg\",\r\n          \"amount\": \"100 g.\",\r\n          \"remark\": \"for dusting\"\r\n        },\r\n        {\r\n          \"title\": \"smoked bacon\",\r\n          \"amount\": \"150g\",\r\n          \"remark\": \"pack smoked bacon lardons\"\r\n        },\r\n        {\r\n          \"title\": \"onion\",\r\n          \"amount\": \"1\",\r\n          \"remark\": \"finely diced\"\r\n        }\r\n      ],\r\n      \"howto\": [\r\n        {\r\n          \"order\": 1,\r\n          \"description\": \"Heat oven to 150C/130C fan/gas 2. Place a large frying pan over a medium heat and pour in 1 tbsp of the oil. Dust the partridges in the flour and fry until evenly browned all over. Remove from the pan and drain on a piece of kitchen paper.\",\r\n          \"image\": \"\",\r\n          \"remark\": \"Remark\"\r\n        },\r\n        {\r\n          \"order\": 2,\r\n          \"description\": \"Put a large casserole dish on the heat. Pour in the remaining oil, add the lardons and cook until the fat has rendered out and the lardons are crisp. Add the onion and celery to the pan and sweat down until soft. Stir in the apples to soften a little. Add the thyme, sage and the partridges, then pour over the cider and chicken stock and bring to the boil. Cover and transfer to the oven for 25 mins or until the thigh meat is cooked through and will come away from the bone, and the sauce has reduced and thickened. Remove from the oven and serve with the Smoked butter mash (see 'Goes well with').\",\r\n          \"remark\": \"Remark\"\r\n        }\r\n      ],\r\n      \"remark\": \"Recipe from Good Food magazine, November 2014\"\r\n    }\r\n  }\r\n}"
+						"variables": "{\r\n  \"input\": {\r\n    \"recipe\": {\r\n      \"category\": {\r\n      \t\"slug\": \"main-course\",\r\n        \"title\": \"Main course22\",\r\n        \"description\": \"The main course is the featured or primary dish in a meal consisting of several courses. It usually follows the entrée course.\",\r\n        \"image\": \"https://www.bbcgoodfood.com/sites/default/files/partridge-in-cider-with-apples-celery.jpg\"\r\n      },\r\n      \"title\": \"2-Partridge in cider with apples & celery\",\r\n      \"description\": \"<p>Serve a partridge as an individual portion for one in this seasonal stew with smoked bacon, Bramley apples, thyme and sage</p>\",\r\n      \"image\": \"https://www.bbcgoodfood.com/sites/default/files/styles/recipe/public/user-collections/my-colelction-image/2015/12/partridge-in-cider-with-apples-celery.jpg?itok=miWiD9Hi\",\r\n      \"ingredients\": [\r\n        {\r\n          \"title\": \"olive oil\",\r\n          \"image\": \"https://3.imimg.com/data3/BE/KX/MY-364767/extra-virgin-olive-oil-500x500.jpg\",\r\n          \"amount\": \"2 tbsp\",\r\n          \"remark\": \"\"\r\n        },\r\n        {\r\n          \"title\": \"plain flour\",\r\n          \"image\": \"https://www.bbcgoodfood.com/sites/default/files/recipe-collections/collection-image/2013/05/chorizo-mozarella-gnocchi-bake-cropped.jpg\",\r\n          \"amount\": \"100 g.\",\r\n          \"remark\": \"for dusting\"\r\n        },\r\n        {\r\n          \"title\": \"smoked bacon\",\r\n          \"amount\": \"150g\",\r\n          \"remark\": \"pack smoked bacon lardons\"\r\n        },\r\n        {\r\n          \"title\": \"onion\",\r\n          \"amount\": \"1\",\r\n          \"remark\": \"finely diced\"\r\n        }\r\n      ],\r\n      \"howto\": [\r\n        {\r\n          \"order\": 1,\r\n          \"description\": \"Heat oven to 150C/130C fan/gas 2. Place a large frying pan over a medium heat and pour in 1 tbsp of the oil. Dust the partridges in the flour and fry until evenly browned all over. Remove from the pan and drain on a piece of kitchen paper.\",\r\n          \"image\": \"\",\r\n          \"remark\": \"Remark\"\r\n        },\r\n        {\r\n          \"order\": 2,\r\n          \"description\": \"Put a large casserole dish on the heat. Pour in the remaining oil, add the lardons and cook until the fat has rendered out and the lardons are crisp. Add the onion and celery to the pan and sweat down until soft. Stir in the apples to soften a little. Add the thyme, sage and the partridges, then pour over the cider and chicken stock and bring to the boil. Cover and transfer to the oven for 25 mins or until the thigh meat is cooked through and will come away from the bone, and the sauce has reduced and thickened. Remove from the oven and serve with the Smoked butter mash (see 'Goes well with').\",\r\n          \"remark\": \"Remark\"\r\n        }\r\n      ],\r\n      \"remark\": \"Recipe from Good Food magazine, November 2014\"\r\n    }\r\n  }\r\n}"
 					}
 				},
 				"url": {

@@ -13,7 +13,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImVtaWxpYSIsInRva2VuIjoiYWFmY2M2MTViNjdhNWEyZTM2MGZkZDdiMzkwMDYwZWUiLCJpYXQiOjE1ODc2Mjk0NDZ9._rNp81hs3ygNgm87Y7uuUOlf6UOMn1ljO8nYeH_t4-Y",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IndhbGVlcmF0IiwidG9rZW4iOiJmNWEwMjQwNTM0YzJjYmM2YTY5NmYwNzQ3YmYwOTlkOSIsImlhdCI6MTU4NzkyODY1MH0.WN6k8bLYVlU80SsFJp1L3C9Es_J6RSZknDy9HOBR-U8",
 							"type": "string"
 						}
 					]
@@ -24,7 +24,7 @@
 					"mode": "graphql",
 					"graphql": {
 						"query": "mutation modifyRecipe($input: inputFields!) {\r\n  modifyRecord(input: $input) {\r\n \tid\r\n  slug\r\n  title\r\n  description\r\n  image\r\n  remark\r\n  responseStatus{\r\n    status\r\n    message\r\n  }\r\n  }\r\n} ",
-						"variables": "{\r\n  \"input\": {\r\n    \"ingredient\": {\r\n      \"title\": \"tomato2\",\r\n      \"description\": \"The tomato is the edible, often red, berry of the plant Solanum lycopersicum, commonly known as a tomato plant. The species originated in western South America and Central America. \",\r\n      \"image\": \"https://www.almanac.com/sites/default/files/styles/primary_image_in_article/public/image_nodes/tomatoes_helios4eos_gettyimages-edit.jpeg?itok=4KrW14a4\",\r\n      \"remark\": \"\"\r\n    }\r\n  }\r\n}"
+						"variables": "{\r\n  \"input\": {\r\n    \"ingredient\": {\r\n      \"slug\": \"tomato2\",\r\n      \"title\": \"tomato22\",\r\n      \"description\": \"The tomato is the edible, often red, berry of the plant Solanum lycopersicum, commonly known as a tomato plant. The species originated in western South America and Central America. \",\r\n      \"image\": \"https://www.almanac.com/sites/default/files/styles/primary_image_in_article/public/image_nodes/tomatoes_helios4eos_gettyimages-edit.jpeg?itok=4KrW14a4\",\r\n      \"remark\": \"\"\r\n    }\r\n  }\r\n}"
 					}
 				},
 				"url": {
@@ -50,7 +50,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImVtaWxpYSIsInRva2VuIjoiYWFmY2M2MTViNjdhNWEyZTM2MGZkZDdiMzkwMDYwZWUiLCJpYXQiOjE1ODc2Mjk0NDZ9._rNp81hs3ygNgm87Y7uuUOlf6UOMn1ljO8nYeH_t4-Y",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IndhbGVlcmF0IiwidG9rZW4iOiJmNWEwMjQwNTM0YzJjYmM2YTY5NmYwNzQ3YmYwOTlkOSIsImlhdCI6MTU4NzkyODY1MH0.WN6k8bLYVlU80SsFJp1L3C9Es_J6RSZknDy9HOBR-U8",
 							"type": "string"
 						}
 					]
@@ -61,7 +61,7 @@
 					"mode": "graphql",
 					"graphql": {
 						"query": "mutation updateStatus($input: UpdateIDs!) {\r\n  updateResult(input: $input) {\r\n \tstatus\r\n    message\r\n  }\r\n} ",
-						"variables": "{\r\n  \"input\": {\r\n    \"newStatus\": \"inactive\",\r\n    \"ingredients\": [\r\n      { \"id\": 1 },\r\n      { \"id\": 296 }\r\n    ]\r\n  }\r\n}"
+						"variables": "{\r\n  \"input\": {\r\n    \"newStatus\": \"inactive\",\r\n    \"ingredients\": [\r\n      { \"id\": 33 },\r\n      { \"id\": 296 }\r\n    ]\r\n  }\r\n}"
 					}
 				},
 				"url": {
@@ -87,7 +87,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImVtaWxpYSIsInRva2VuIjoiYWFmY2M2MTViNjdhNWEyZTM2MGZkZDdiMzkwMDYwZWUiLCJpYXQiOjE1ODc2Mjk0NDZ9._rNp81hs3ygNgm87Y7uuUOlf6UOMn1ljO8nYeH_t4-Y",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IndhbGVlcmF0IiwidG9rZW4iOiJmNWEwMjQwNTM0YzJjYmM2YTY5NmYwNzQ3YmYwOTlkOSIsImlhdCI6MTU4NzkyODY1MH0.WN6k8bLYVlU80SsFJp1L3C9Es_J6RSZknDy9HOBR-U8",
 							"type": "string"
 						}
 					]
@@ -98,7 +98,7 @@
 					"mode": "graphql",
 					"graphql": {
 						"query": "mutation DeleteRecords($input: DeleteIDs!) {\r\n  deleteResult(input: $input) {\r\n \tstatus\r\n    message\r\n  }\r\n}",
-						"variables": "{\r\n  \"input\": {\r\n    \"ingredients\": [\r\n      { \"id\": 2 },\r\n      { \"id\": 296 }\r\n    ]\r\n  }\r\n}"
+						"variables": "{\r\n  \"input\": {\r\n    \"ingredients\": [\r\n      { \"id\": 2 },\r\n      { \"id\": 33 }\r\n    ]\r\n  }\r\n}"
 					}
 				},
 				"url": {

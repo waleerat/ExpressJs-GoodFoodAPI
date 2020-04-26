@@ -1,22 +1,24 @@
 const {
   GraphQLObjectType,
-  GraphQLNonNull,
+  GraphQLString,
   GraphQLList,
   GraphQLID
 } = require('graphql');
 
 module.exports = new GraphQLObjectType({
-  name: 'ingredientsInfo', 
-
+  name: 'ingredientsInfo',  
   fields: () => {
     const recipesInfo = require('./ingredient_info_type');
     const searchKey = require('../../share/search_key');
     return {
       rowCount : { type: GraphQLID },
       totalPage: { type: GraphQLID  },
-      searchKey : { type: new GraphQLNonNull(searchKey),
+      page: { type: GraphQLID  },
+      limit: { type: GraphQLID  },
+      searchOption: { type: GraphQLString },
+      searchKeys : { type: new GraphQLList(searchKey),
         resolve(obj) {
-          return obj.searchKey;
+          return obj.searchKeys;
         }
       }, 
       rows: {
@@ -25,6 +27,6 @@ module.exports = new GraphQLObjectType({
           return obj.rows;
         }
       }
-    };
+    };;
   }
 });

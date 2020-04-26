@@ -39,6 +39,46 @@ module.exports = pgPool => {
       });
       
     }, 
+    async signIn(i){
+      let returnRoot = {}
+      let responseStatusTag = {};
+      // get userId by username
+      let queryString = `select * from users where username = $1`;
+      let res = await pgPool.query(queryString, [i.username]);
+      if (res.rows[0]){
+        // check status 
+        if (res.rows[0].approved === 'approved'){
+          let user = humps.camelizeKeys(res.rows[0]);
+          queryString = `select * from user_bcrypt where user_id = $1 and username = $2`; 
+          // get bcrypt
+          let userBcrypt = await pgPool.query(queryString, [user.id,user.username]);     
+          if (userBcrypt.rows[0]){
+              let b = userBcrypt.rows[0];
+              let HashInputPassword = await this.getUserHash(i.password, b.salt);
+              // check password
+              if (HashInputPassword === b.hash){  
+                const playload = jwtToken.setTokenAccess(user); 
+                user.token = jwtToken.signToken(playload); 
+                returnRoot = user;
+                this.saveAuthenToken(user.id,user.token);
+                responseStatusTag = util.getResponseStatusTag(200);
+              }else{
+                responseStatusTag = util.getResponseStatusTag(905); 
+              }
+          }else{
+            responseStatusTag = util.getResponseStatusTag(906); 
+            
+          }
+        }else{
+          responseStatusTag = util.getResponseStatusTag(907); 
+        }
+      }else{
+        responseStatusTag = util.getResponseStatusTag(908);
+      }
+      returnRoot.responseStatus = responseStatusTag; 
+       console.log(returnRoot);
+       return returnRoot;
+    },
     async saveRecord(i){ 
       let savedUserinfo = {};
       let returnRoot = {}
@@ -50,8 +90,6 @@ module.exports = pgPool => {
         
         if (savedUserinfo) { 
           returnRoot = savedUserinfo;
-          //this.saveAuthenToken(savedUserinfo.id,savedUserinfo.token);
-          //console.log(returnRoot);
           responseStatusTag = util.getResponseStatusTag(200);  
         }else{
           responseStatusTag = util.getResponseStatusTag(903);  
@@ -64,9 +102,9 @@ module.exports = pgPool => {
       return returnRoot;
     }, 
     saveUser(i){
-      i.token = util.endcodeMD5(i.username+i.password); 
+      i.token = util.encodeMD5(util.makeid(10)); 
       let sqlString = `INSERT INTO  users (username, email, token) VALUES ($1, $2, $3)
-        ON CONFLICT (token) DO NOTHING
+        ON CONFLICT (username) DO NOTHING
         returning *`;  
       return pgPool.query(sqlString, [i.username, i.email,i.token])
         .then(res => {  
@@ -145,8 +183,8 @@ module.exports = pgPool => {
         if (HashInputOldPassword === userBcrypt.hash){ 
           let HashInputNewPassword = await this.getUserHash(newpassword, userBcrypt.salt);
 
-          let sqlString = '';
-          let newToken = util.endcodeMD5(global.userLoginInfo.username+newpassword);
+          let sqlString = ''; 
+          let newToken = util.encodeMD5(util.makeid(10));
           let tokenJson = {"username": userBcrypt.username, "token": newToken}
           const playload = jwtToken.setTokenAccess(tokenJson); 
           returnRoot.token = jwtToken.signToken(playload); 

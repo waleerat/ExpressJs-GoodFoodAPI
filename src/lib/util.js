@@ -20,7 +20,7 @@ module.exports = {
   striptags: str => {
     return striptags(str);
   },
-  endcodeMD5: str => {
+  encodeMD5: str => {
     return crypto.createHash('md5').update(str).digest("hex"); 
 
   },
@@ -36,7 +36,6 @@ module.exports = {
       if (getpage) offset = (resGetpage-1)*resLimit;
       else offset = 0;
     } 
-    console.log('offset = '+offset);
     
     return { "limit": resLimit,"offset":offset};
   },
@@ -60,12 +59,12 @@ module.exports = {
   },
   makeid(length) {
     var result           = '';
-    var characters       = '0123456789'; //'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
     var charactersLength = characters.length;
     for ( var i = 0; i < length; i++ ) {
        result += characters.charAt(Math.floor(Math.random() * charactersLength));
     }
-    return parseInt(result);
+    return result;
   },
   async bcrypt(password){ console.log('Password : '+ password); 
     let min = 1; let max = 10; 
@@ -77,6 +76,13 @@ module.exports = {
             return r
           });
       });
+  },
+  searchKeysToArray(searchKeys){
+    let keys = [];
+    for (let s of searchKeys) {
+      keys.push(s.key);
+    }
+    return keys;
   }
 };
 
@@ -91,7 +97,11 @@ function getMessageStatus(status){
     case 901 : message = "Your current password #oldPassword# is not correct"; break;
     case 902 : message = "Require Login"; break; 
     case 903 : message = "Username is exist"; break; 
-    case 904 : message = "Updating faild!"; break; 
+    case 904 : message = "Updating faild!"; break;
+    case 905 : message = "wrong password"; break;
+    case 906 : message = "not found bycript"; break;  // found record in users table but not found in user_bycript (must be error program)
+    case 907 : message = "status not approved"; break;
+    case 908 : message = "not found username"; break; 
     case 910 : message = "Length of title is more than 90"; break; 
     case 911 : message = "Length of title is more than 50"; break; 
     case 912 : message = "Wrong URL format"; break;
